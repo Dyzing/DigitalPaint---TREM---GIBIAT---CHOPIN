@@ -103,7 +103,7 @@ public:
 		if (button.text == "Pen") { selectedButton = 0; }
 		if (button.text == "Move") { selectedButton = 1; }
 		if (button.text == "Fill") { selectedButton = 2; }
-		if (button.text == "Rect") { selectedButton = 3; }
+		if (button.text == "Line") { selectedButton = 3; }
 		if (button.text == "Circ") { selectedButton = 4; }
 		ToolEvents::Start();
 	}
@@ -119,7 +119,7 @@ public:
 		penButton = Button::Create(0, 100, 78, 40, (char *)"Pen", ToolButtonPressed, true);
 		moveButton = Button::Create(0, 140, 78, 40, (char *)"Move", ToolButtonPressed, true);
 		fillButton = Button::Create(0, 180, 78, 40, (char *)"Fill", ToolButtonPressed, true);
-		rectButton = Button::Create(0, 220, 78, 40, (char *)"Rect", ToolButtonPressed, true);
+		rectButton = Button::Create(0, 220, 78, 40, (char *)"Line", ToolButtonPressed, true);
 		circleButton = Button::Create(0, 260, 78, 40, (char *)"Circ", ToolButtonPressed, true);
 	}
 
