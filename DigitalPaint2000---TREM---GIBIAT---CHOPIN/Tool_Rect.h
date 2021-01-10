@@ -5,6 +5,11 @@
 
 #pragma once
 
+void swap(int& a, int& b)
+{
+	a, b = b, a;
+}
+
 
 /*
 	Handles mouse press events passed onto the Rect tool
@@ -33,18 +38,44 @@ bool Tool_Rect::Pressed(int button, int state, int x, int y) {
 				// if the mouse hasn't moved, just colour one pixel
 				currentCanvas.SetPixelColour(cx, cy, selectedColour);
 			}
-			else {
+			else
+			{
 				// get the rect coordinates
-				int minX = std::min(cx, startMouseX);
-				int maxX = std::max(cx, startMouseX);
-				int minY = std::min(cy, startMouseY);
-				int maxY = std::max(cy, startMouseY);
-				for (int px = 0; px <= maxX - minX; px++) {
-					for (int py = 0; py <= maxY - minY; py++) {
-						// fill in the pixels
-						currentCanvas.SetPixelColour(minX + px, minY + py, selectedColour);
+				float minX = startMouseX;
+				float maxX = cx;
+				float minY = startMouseY;
+				float maxY = cy;
+				float difX = abs(minX - maxX);
+				float difY = abs(minY - maxY);
+				float y;
+				float x;
+				float CoefD = ((maxY - minY) / (maxX - minX));
+				float b = minY - CoefD * minX;
+
+				if (difX > difY) 
+				{
+					for (x = std::min(cx, startMouseX); x <= std::max(cx, startMouseX); x++) 
+					{
+						y = CoefD * x + b;
+						currentCanvas.SetPixelColour(x, y, selectedColour);
 					}
 				}
+				else 
+				{
+					for (y = std::min(cy, startMouseY); y <= std::max(cy, startMouseY); y++) 
+					{
+						if (difX == 0)
+						{
+							x = minX;
+						}
+						else
+						{
+							x = (y - b) / CoefD;
+						}
+						currentCanvas.SetPixelColour(x, y, selectedColour);
+					}
+				}
+				
 			}
 			isMouseDown = false;
 			return true;
