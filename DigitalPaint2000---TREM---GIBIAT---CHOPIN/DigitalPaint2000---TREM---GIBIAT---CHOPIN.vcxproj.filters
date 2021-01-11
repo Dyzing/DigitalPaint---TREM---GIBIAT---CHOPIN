@@ -56,9 +56,6 @@
     <ClInclude Include="Save File Dialogue.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
-    <ClInclude Include="Tool_Circ.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
     <ClInclude Include="Tool_Fill.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
@@ -81,6 +78,9 @@
       <Filter>Fichiers sources</Filter>
     </ClInclude>
     <ClInclude Include="Yes No Dialogue.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool_Selection.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
   </ItemGroup>

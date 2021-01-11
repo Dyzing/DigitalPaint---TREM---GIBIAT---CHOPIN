@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>GL</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,7 +158,7 @@
     <ClInclude Include="Pointer.h" />
     <ClInclude Include="Save File Dialogue.h" />
     <ClInclude Include="Toolbar.h" />
-    <ClInclude Include="Tool_Circ.h" />
+    <ClInclude Include="Tool_Selection.h" />
     <ClInclude Include="Tool_Fill.h" />
     <ClInclude Include="Tool_Move.h" />
     <ClInclude Include="Tool_Pen.h" />

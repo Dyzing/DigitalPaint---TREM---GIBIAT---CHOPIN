@@ -64,7 +64,7 @@ public:
 	static bool BlockMousePress(int button, int state, int x, int y);
 };
 
-class Tool_Circ {
+class Tool_Selection {
 public:
 	static bool isMouseDown;
 	static int startMouseX;
@@ -90,7 +90,7 @@ public:
 	static Button moveButton;
 	static Button fillButton;
 	static Button rectButton;
-	static Button circleButton;
+	static Button selectionButton;
 
 
 	/*
@@ -104,7 +104,7 @@ public:
 		if (button.text == "Move") { selectedButton = 1; }
 		if (button.text == "Fill") { selectedButton = 2; }
 		if (button.text == "Line") { selectedButton = 3; }
-		if (button.text == "Circ") { selectedButton = 4; }
+		if (button.text == "Select") { selectedButton = 4; }
 		ToolEvents::Start();
 	}
 
@@ -120,7 +120,7 @@ public:
 		moveButton = Button::Create(0, 140, 78, 40, (char *)"Move", ToolButtonPressed, true);
 		fillButton = Button::Create(0, 180, 78, 40, (char *)"Fill", ToolButtonPressed, true);
 		rectButton = Button::Create(0, 220, 78, 40, (char *)"Line", ToolButtonPressed, true);
-		circleButton = Button::Create(0, 260, 78, 40, (char *)"Circ", ToolButtonPressed, true);
+		selectionButton = Button::Create(0, 260, 78, 40, (char *)"Select", ToolButtonPressed, true);
 	}
 
 
@@ -136,7 +136,7 @@ public:
 		moveButton.Display(window_width, window_height);
 		fillButton.Display(window_width, window_height);
 		rectButton.Display(window_width, window_height);
-		circleButton.Display(window_width, window_height);
+		selectionButton.Display(window_width, window_height);
 		// draw a blue overlay on the selected button
 		glColor4f(0.0f, 1.0f, 1.0f, 0.4f);
 		glBegin(GL_QUADS);
@@ -171,7 +171,7 @@ public:
 		if ((selectedButton != 3) && (rectButton.Pressed(button, state, x, y))) {
 			return true;
 		}
-		if ((selectedButton != 4) && (circleButton.Pressed(button, state, x, y))) {
+		if ((selectedButton != 4) && (selectionButton.Pressed(button, state, x, y))) {
 			return true;
 		}
 		return false;
@@ -199,7 +199,7 @@ public:
 		if (rectButton.Hover(x, y)) {
 			output = true;
 		}
-		if (circleButton.Hover(x, y)) {
+		if (selectionButton.Hover(x, y)) {
 			output = true;
 		}
 		return output;
@@ -279,7 +279,7 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		}
 		break;
 	case 4:
-		if (Tool_Circ::Pressed(button, state, x, y)) {
+		if (Tool_Selection::Pressed(button, state, x, y)) {
 			return true;
 		}
 		break;
@@ -354,7 +354,7 @@ bool ToolEvents::BlockMousePress(int button, int state, int x, int y) {
 		}
 		break;
 	case 4:
-		if (Tool_Circ::BlockMousePress(button, state, x, y)) {
+		if (Tool_Selection::BlockMousePress(button, state, x, y)) {
 			return true;
 		}
 		break;

@@ -1,5 +1,5 @@
 /*
-	Tool_Circ.h
+	Tool_Selection.h
 	Implements the Circle drawing tool
 */
 
@@ -14,8 +14,14 @@
 	@param x - The x coordinate of the mouse when pressed
 	@param y - The y coordinate of the mouse when pressed
 	@return Has the tool handled the event?
+	@return Has the tool handled the event?
 */
-bool Tool_Circ::Pressed(int button, int state, int x, int y) {
+Colour selection = { 0.4f, 0.0f, 0.80f };
+Colour blanc = { 1.0f, 1.0f, 1.0f };
+bool operator==(const Colour col1, const Colour col2) {
+	return (col1.b == col2.b && col1.r == col2.r && col1.g == col2.g);
+}
+bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 	if (currentCanvas.checkInside(x, y)) {
 		// convert mouse position into canvas coordinates
 		int cx = (x - currentCanvas.xOffset) / currentCanvas.zoom;
@@ -25,13 +31,14 @@ bool Tool_Circ::Pressed(int button, int state, int x, int y) {
 			isMouseDown = true;
 			startMouseX = cx;
 			startMouseY = cy;
+			currentCanvas.SetPixelColour(cx, cy, selection);
 			return true;
 		}
 		// draw the circle if this is the end of a drag
 		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_UP) && isMouseDown) {
 			if ((startMouseX == cx) && (startMouseY == cy)) {
 				// if the mouse hasn't moved, just colour one pixel
-				currentCanvas.SetPixelColour(cx, cy, selectedColour);
+				currentCanvas.SetPixelColour(cx, cy, selection);
 			}
 			else {
 				// get the rect coordinates to put the circle in
@@ -39,19 +46,32 @@ bool Tool_Circ::Pressed(int button, int state, int x, int y) {
 				int maxX = std::max(cx, startMouseX);
 				int minY = std::min(cy, startMouseY);
 				int maxY = std::max(cy, startMouseY);
-				// work out the radii and center coords
-				float radH = (maxX - minX) / 2;
-				float radV = (maxY - minY) / 2;
-				float centX = (maxX + minX) / 2;
-				float centY = (maxY + minY) / 2;
-				// go through each pixel in the bounding rect, colour it if it lies within ellipse
-				for (int px = 0; px <= maxX - minX; px++) {
-					for (int py = 0; py <= maxY - minY; py++) {
-						if ((std::pow(((px+minX) - centX) / radH, 2) + std::pow(((py+minY) - centY) / radV, 2)) < 1) {
-							currentCanvas.SetPixelColour(minX + px, minY + py, selectedColour);
-						 }
+				for (int x = 0; x < currentCanvas.width; x++) {
+
+					for (int y = 0; y < currentCanvas.height; y++) {
+						if (!(x > minX && x < maxX && y > minY && y < maxY) || currentCanvas.GetPixelColour(x, y) == selection) {
+							currentCanvas.SetPixelColour(x, y, blanc);
+
+						}
 					}
 				}
+				for (int x = minX; x <= maxX; x++) {
+					currentCanvas.SetPixelColour(x, minY, selection);
+				}
+				for (int x = minX; x <= maxX; x++) {
+					currentCanvas.SetPixelColour(x, maxY, selection);
+				}
+				for (int y = minY; y <= maxY; y++) {
+					currentCanvas.SetPixelColour(minX,y, selection);
+				}
+				for (int y = minY; y <= maxY; y++) {
+					currentCanvas.SetPixelColour(maxX, y, selection);
+				}
+
+				
+				
+				// go through each pixel in the bounding rect, colour it if it lies within ellipse
+				
 			}
 			isMouseDown = false;
 			return true;
@@ -70,7 +90,7 @@ bool Tool_Circ::Pressed(int button, int state, int x, int y) {
 	@param y - The y coordinate of the mouse when pressed
 	@return Should this tool take priority for receiving mouse events
 */
-bool Tool_Circ::BlockMousePress(int button, int state, int x, int y) {
+bool Tool_Selection::BlockMousePress(int button, int state, int x, int y) {
 	// if during a drag, this tool should take the mouse events first
 	if (isMouseDown) {
 		if (currentCanvas.checkInside(x, y)) {
