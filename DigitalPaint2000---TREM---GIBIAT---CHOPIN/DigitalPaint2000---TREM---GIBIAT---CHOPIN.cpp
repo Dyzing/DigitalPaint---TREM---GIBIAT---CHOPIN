@@ -68,7 +68,7 @@ Button Toolbar::penButton;
 Button Toolbar::moveButton;
 Button Toolbar::fillButton;
 Button Toolbar::rectButton;
-Button Toolbar::circleButton;
+Button Toolbar::selectionButton;
 #include "Tool_Pen.h"
 bool Tool_Pen::isMouseDown = false;
 int Tool_Pen::mouseLastX = 0;
@@ -78,10 +78,10 @@ int Tool_Pen::mouseLastY = 0;
 bool Tool_Rect::isMouseDown = false;
 int Tool_Rect::startMouseX = 0;
 int Tool_Rect::startMouseY = 0;
-#include "Tool_Circ.h"
-bool Tool_Circ::isMouseDown = false;
-int Tool_Circ::startMouseX = 0;
-int Tool_Circ::startMouseY = 0;
+#include "Tool_Selection.h"
+bool Tool_Selection::isMouseDown = false;
+int Tool_Selection::startMouseX = 0;
+int Tool_Selection::startMouseY = 0;
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;
