@@ -116,11 +116,11 @@ public:
 		// start with pen tool selected
 		selectedButton = 0;
 		// create the buttons for the toolbar
-		penButton = Button::Create(0, 100, 78, 40, (char *)"Pen", ToolButtonPressed, true);
-		moveButton = Button::Create(0, 140, 78, 40, (char *)"Move", ToolButtonPressed, true);
-		fillButton = Button::Create(0, 180, 78, 40, (char *)"Fill", ToolButtonPressed, true);
-		rectButton = Button::Create(0, 220, 78, 40, (char *)"Line", ToolButtonPressed, true);
-		selectionButton = Button::Create(0, 260, 78, 40, (char *)"Select", ToolButtonPressed, true);
+		penButton = Button::Create(0, 100, 95, 40, (char *)"Pen", ToolButtonPressed, true);
+		moveButton = Button::Create(0, 140, 95, 40, (char *)"Move", ToolButtonPressed, true);
+		fillButton = Button::Create(0, 180, 95, 40, (char *)"Fill", ToolButtonPressed, true);
+		rectButton = Button::Create(0, 220, 95, 40, (char *)"Line", ToolButtonPressed, true);
+		selectionButton = Button::Create(0, 260, 95, 40, (char *)"Select", ToolButtonPressed, true);
 	}
 
 
@@ -142,8 +142,8 @@ public:
 		glBegin(GL_QUADS);
 			int selY = window_height - ( 100 + (selectedButton * 40));
 			glVertex2f(0, selY);
-			glVertex2f(100, selY);
-			glVertex2f(100, selY - 40);
+			glVertex2f(95, selY);
+			glVertex2f(95, selY - 40);
 			glVertex2f(0, selY - 40);
 		glEnd();
 	}
