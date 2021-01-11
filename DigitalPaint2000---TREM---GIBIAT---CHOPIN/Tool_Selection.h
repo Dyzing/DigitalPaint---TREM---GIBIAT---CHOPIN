@@ -57,14 +57,10 @@ bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 				}
 				for (int x = minX; x <= maxX; x++) {
 					currentCanvas.SetPixelColour(x, minY, selection);
-				}
-				for (int x = minX; x <= maxX; x++) {
 					currentCanvas.SetPixelColour(x, maxY, selection);
 				}
 				for (int y = minY; y <= maxY; y++) {
 					currentCanvas.SetPixelColour(minX,y, selection);
-				}
-				for (int y = minY; y <= maxY; y++) {
 					currentCanvas.SetPixelColour(maxX, y, selection);
 				}
 
