@@ -104,7 +104,7 @@ public:
 		if (button.text == "Move") { selectedButton = 1; }
 		if (button.text == "Fill") { selectedButton = 2; }
 		if (button.text == "Line") { selectedButton = 3; }
-		if (button.text == "Circ") { selectedButton = 4; }
+		if (button.text == "Window") { selectedButton = 4; }
 		ToolEvents::Start();
 	}
 
@@ -116,11 +116,11 @@ public:
 		// start with pen tool selected
 		selectedButton = 0;
 		// create the buttons for the toolbar
-		penButton = Button::Create(0, 100, 78, 40, (char *)"Pen", ToolButtonPressed, true);
-		moveButton = Button::Create(0, 140, 78, 40, (char *)"Move", ToolButtonPressed, true);
-		fillButton = Button::Create(0, 180, 78, 40, (char *)"Fill", ToolButtonPressed, true);
-		rectButton = Button::Create(0, 220, 78, 40, (char *)"Line", ToolButtonPressed, true);
-		circleButton = Button::Create(0, 260, 78, 40, (char *)"Circ", ToolButtonPressed, true);
+		penButton = Button::Create(0, 100, 100, 40, (char *)"Pen", ToolButtonPressed, true);
+		moveButton = Button::Create(0, 140, 100, 40, (char *)"Move", ToolButtonPressed, true);
+		fillButton = Button::Create(0, 180, 100, 40, (char *)"Fill", ToolButtonPressed, true);
+		rectButton = Button::Create(0, 220, 100, 40, (char *)"Line", ToolButtonPressed, true);
+		circleButton = Button::Create(0, 260, 100, 40, (char *)"Window", ToolButtonPressed, true);
 	}
 
 
@@ -142,8 +142,8 @@ public:
 		glBegin(GL_QUADS);
 			int selY = window_height - ( 100 + (selectedButton * 40));
 			glVertex2f(0, selY);
-			glVertex2f(78, selY);
-			glVertex2f(78, selY - 40);
+			glVertex2f(100, selY);
+			glVertex2f(100, selY - 40);
 			glVertex2f(0, selY - 40);
 		glEnd();
 	}
