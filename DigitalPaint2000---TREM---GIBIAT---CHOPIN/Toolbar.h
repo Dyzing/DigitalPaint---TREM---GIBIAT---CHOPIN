@@ -104,11 +104,7 @@ public:
 		if (button.text == "Move") { selectedButton = 1; }
 		if (button.text == "Fill") { selectedButton = 2; }
 		if (button.text == "Line") { selectedButton = 3; }
-<<<<<<< HEAD
-		if (button.text == "Window") { selectedButton = 4; }
-=======
 		if (button.text == "Select") { selectedButton = 4; }
->>>>>>> 1135dc55d84a755a78dd5527372f30e9250b900c
 		ToolEvents::Start();
 	}
 
@@ -120,19 +116,11 @@ public:
 		// start with pen tool selected
 		selectedButton = 0;
 		// create the buttons for the toolbar
-<<<<<<< HEAD
-		penButton = Button::Create(0, 100, 100, 40, (char *)"Pen", ToolButtonPressed, true);
-		moveButton = Button::Create(0, 140, 100, 40, (char *)"Move", ToolButtonPressed, true);
-		fillButton = Button::Create(0, 180, 100, 40, (char *)"Fill", ToolButtonPressed, true);
-		rectButton = Button::Create(0, 220, 100, 40, (char *)"Line", ToolButtonPressed, true);
-		circleButton = Button::Create(0, 260, 100, 40, (char *)"Window", ToolButtonPressed, true);
-=======
 		penButton = Button::Create(0, 100, 78, 40, (char *)"Pen", ToolButtonPressed, true);
 		moveButton = Button::Create(0, 140, 78, 40, (char *)"Move", ToolButtonPressed, true);
 		fillButton = Button::Create(0, 180, 78, 40, (char *)"Fill", ToolButtonPressed, true);
 		rectButton = Button::Create(0, 220, 78, 40, (char *)"Line", ToolButtonPressed, true);
 		selectionButton = Button::Create(0, 260, 78, 40, (char *)"Select", ToolButtonPressed, true);
->>>>>>> 1135dc55d84a755a78dd5527372f30e9250b900c
 	}
 
 
