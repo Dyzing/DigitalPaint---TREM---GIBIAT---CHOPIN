@@ -93,6 +93,35 @@ int Tool_Move::endMouseY;
 bool Tool_Move::isDisplaying;
 
 
+void vRappelSousMenu1(int i)
+{
+	printf("rappel de l'element %d\n", i);
+}
+
+void vRappelSousMenu2(int i)
+{
+	printf("rappel de l'element %d\n", i);
+}
+
+void vRappelMenuPrincipal(int i)
+{
+	printf("rappel de l'element %d\n", i);
+}
+
+void menu(int item)
+{
+	switch (item) {
+	case 1:
+		vRappelSousMenu2(item);
+		break;
+	case 2:
+		exit(0);
+		break;
+	}
+}
+
+int nSousmenu1, nSousmenu2, nMenuprincipal; // Numéros (identifiants) des menus
+int nTue = 0;
 
 
 /*
@@ -130,6 +159,29 @@ void display()
 	SaveFileDialogue::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 	AlertDialogue::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 	YesNoDialogue::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+
+	//glutCreateMenu(menu);
+	//glutAddMenuEntry("Next Drawing Mode", 1);
+	//glutAddMenuEntry("Quit", 2);
+	//glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+	nSousmenu1 = glutCreateMenu(vRappelSousMenu1);
+	glutAddMenuEntry("Rouge", 11);
+	glutAddMenuEntry("Vert", 12);
+	glutAddMenuEntry("Bleu", 13);
+	glutAddMenuEntry("Noir", 14);
+	glutAddMenuEntry("Blanc", 15);
+
+	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
+
+	glutAddSubMenu("Couleurs", nSousmenu1);
+
+	glutAddMenuEntry("Polygone à découper", 1);
+	glutAddMenuEntry("Tracé fenêtre", 2);
+	glutAddMenuEntry("Fenêtrage", 3);
+	glutAddMenuEntry("Remplissage", 4);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	// Draw mouse pointer last (so it appears above everything else)
 	Display_Pointer();
@@ -343,6 +395,8 @@ void idle() {
 }
 
 
+
+
 /*
 	Main entry point of application
 */
@@ -376,5 +430,10 @@ int main(int argc, char* argv[])
 
 	// start first render cycle
 	glutMainLoop();
+
+
+	// Gestion de menus
+	
+
 	return 0;
 }
