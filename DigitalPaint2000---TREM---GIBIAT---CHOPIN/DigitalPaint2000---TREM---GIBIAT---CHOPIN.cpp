@@ -82,6 +82,10 @@ int Tool_Rect::startMouseY = 0;
 bool Tool_Selection::isMouseDown = false;
 int Tool_Selection::startMouseX = 0;
 int Tool_Selection::startMouseY = 0;
+#include "Tool_Circle.h"
+bool Tool_Circle::isMouseDown = false;
+int Tool_Circle::startMouseX = 0;
+int Tool_Circle::startMouseY = 0;
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;
@@ -95,7 +99,29 @@ bool Tool_Move::isDisplaying;
 
 void vRappelSousMenu1(int i)
 {
-	printf("rappel de l'element %d\n", i);
+	switch (i)
+	{
+	case 11:
+		// Rouge
+		selectedColour = ColourPalette::colours[0];
+		break;
+	case 12:
+		// Vert
+		selectedColour = ColourPalette::colours[1];
+		break;
+	case 13:
+		// Bleu
+		selectedColour = ColourPalette::colours[2];
+		break;
+	case 14:
+		// Noir
+		selectedColour = ColourPalette::colours[3];
+		break;
+	case 15:
+		// Blanc
+		selectedColour = ColourPalette::colours[4];
+		break;
+	}
 }
 
 void vRappelSousMenu2(int i)
@@ -105,7 +131,24 @@ void vRappelSousMenu2(int i)
 
 void vRappelMenuPrincipal(int i)
 {
-	printf("rappel de l'element %d\n", i);
+	switch (i) {
+	case 1:
+		// Bouton Ligne selectionner
+		Toolbar::selectedButton = 3;
+		break;
+	case 2:
+		// Bouton ??? selectionner
+		break;
+	case 3:
+		// Bouton Fenetre/Select selectionner
+		Toolbar::selectedButton = 4;
+		break;
+	case 4:
+		// Bouton Remplissage selectionner
+		Toolbar::selectedButton = 2;
+		break;
+
+	}
 }
 
 void menu(int item)

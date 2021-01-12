@@ -83,5 +83,8 @@
     <ClInclude Include="Tool_Selection.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
+    <ClInclude Include="Tool_Circle.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

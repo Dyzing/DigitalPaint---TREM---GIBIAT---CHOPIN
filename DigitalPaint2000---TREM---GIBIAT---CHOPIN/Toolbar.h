@@ -73,6 +73,15 @@ public:
 	static bool BlockMousePress(int button, int state, int x, int y);
 };
 
+class Tool_Circle {
+public:
+	static bool isMouseDown;
+	static int startMouseX;
+	static int startMouseY;
+	static bool Pressed(int button, int state, int cx, int cy);
+	static bool BlockMousePress(int button, int state, int x, int y);
+};
+
 
 
 /*
