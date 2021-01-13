@@ -153,7 +153,7 @@ void vRappelMenuPrincipal(int i)
 		Toolbar::selectedButton = 0;
 		break;
 	case 2:
-		// Bouton cercle
+		// Bouton Tracé fenêtre
 		Toolbar::selectedButton = 3;
 		break;
 	}
@@ -226,7 +226,7 @@ void display()
 	nSousmenu2 = glutCreateMenu(vRappelMenuPrincipal);
 	glutAddMenuEntry("Pinceau libre", 6);
 	glutAddMenuEntry("Lignes", 1);
-	glutAddMenuEntry("Cerlce", 5);
+	glutAddMenuEntry("Cercle", 5);
 
 	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
 

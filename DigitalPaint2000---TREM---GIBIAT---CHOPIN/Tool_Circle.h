@@ -5,6 +5,10 @@
 */
 
 #pragma once
+#include <cstdio>
+#include <cmath>
+#define M_PI 3.14159265358979323846
+
 
 
 /*
@@ -36,11 +40,38 @@ bool Tool_Circle::Pressed(int button, int state, int x, int y) {
 			}
 			else {
 				// get the rect coordinates to put the circle in
-				int minX = std::min(cx, startMouseX);
+
+				float minX = startMouseX;
+				float maxX = cx;
+				float minY = startMouseY;
+				float maxY = cy;
+
+				float Ox = (maxX + minX)/2;
+				float Oy = (maxY + minY)/2;
+
+				float rayonX = maxX - Ox;
+				float rayonY = maxY - Oy;
+
+				float difX = abs(minX - maxX);
+				float difY = abs(minY - maxY);
+				float y;
+				float x;
+				double Tmax = 5000;
+				for (int t = 0 ; t < Tmax; t++)
+				{
+					y = Oy + rayonY * sin(t * 2 * M_PI/ Tmax);
+					x = Ox + rayonX * cos(t * 2 * M_PI/ Tmax);;
+					currentCanvas.SetPixelColour(x, y, selectedColour);
+				}
+				
+
+
+				/*int minX = std::min(cx, startMouseX);
 				int maxX = std::max(cx, startMouseX);
 				int minY = std::min(cy, startMouseY);
 				int maxY = std::max(cy, startMouseY);
 				// work out the radii and center coords
+				
 				float radH = (maxX - minX) / 2;
 				float radV = (maxY - minY) / 2;
 				float centX = (maxX + minX) / 2;
@@ -52,7 +83,7 @@ bool Tool_Circle::Pressed(int button, int state, int x, int y) {
 							currentCanvas.SetPixelColour(minX + px, minY + py, selectedColour);
 						}
 					}
-				}
+				}*/
 			}
 			isMouseDown = false;
 			return true;
