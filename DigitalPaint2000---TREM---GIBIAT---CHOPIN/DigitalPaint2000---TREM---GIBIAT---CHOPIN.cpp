@@ -136,8 +136,9 @@ void vRappelMenuPrincipal(int i)
 		// Bouton Ligne selectionner
 		Toolbar::selectedButton = 3;
 		break;
-	case 2:
-		// Bouton ??? selectionner
+	case 5:
+		// Bouton cercle
+		Toolbar::selectedButton = 5;
 		break;
 	case 3:
 		// Bouton Fenetre/Select selectionner
@@ -147,7 +148,14 @@ void vRappelMenuPrincipal(int i)
 		// Bouton Remplissage selectionner
 		Toolbar::selectedButton = 2;
 		break;
-
+	case 6:		
+		// Bouton Remplissage selectionner
+		Toolbar::selectedButton = 0;
+		break;
+	case 2:
+		// Bouton cercle
+		Toolbar::selectedButton = 3;
+		break;
 	}
 }
 
@@ -215,11 +223,16 @@ void display()
 	glutAddMenuEntry("Noir", 14);
 	glutAddMenuEntry("Blanc", 15);
 
+	nSousmenu2 = glutCreateMenu(vRappelMenuPrincipal);
+	glutAddMenuEntry("Pinceau libre", 6);
+	glutAddMenuEntry("Lignes", 1);
+	glutAddMenuEntry("Cerlce", 5);
+
 	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
 
 	glutAddSubMenu("Couleurs", nSousmenu1);
+	glutAddSubMenu("Formes", nSousmenu2);
 
-	glutAddMenuEntry("Polygone à découper", 1);
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
 	glutAddMenuEntry("Remplissage", 4);

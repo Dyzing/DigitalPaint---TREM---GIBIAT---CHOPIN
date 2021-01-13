@@ -292,6 +292,10 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 			return true;
 		}
 		break;
+	case 5:
+		if (Tool_Circle::Pressed(button, state, x, y)) {
+			return true;
+		}
 	}
 	return false;
 }
@@ -364,6 +368,11 @@ bool ToolEvents::BlockMousePress(int button, int state, int x, int y) {
 		break;
 	case 4:
 		if (Tool_Selection::BlockMousePress(button, state, x, y)) {
+			return true;
+		}
+		break;
+	case 5:
+		if (Tool_Circle::BlockMousePress(button, state, x, y)) {
 			return true;
 		}
 		break;
