@@ -72,7 +72,6 @@ public:
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
 };
-
 class Tool_Circle {
 public:
 	static bool isMouseDown;
@@ -81,6 +80,19 @@ public:
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
 };
+
+class Tool_Polygone {
+public:
+	static bool isMouseDown;
+	static int startMouseX;
+	static int startMouseY;
+	static int departX;
+	static int departY;
+	static bool Pressed(int button, int state, int cx, int cy);
+	static bool BlockMousePress(int button, int state, int x, int y);
+	static void EndPolygon();
+};
+
 
 
 
@@ -294,6 +306,10 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		break;
 	case 5:
 		if (Tool_Circle::Pressed(button, state, x, y)) {
+			return true;
+		}
+	case 6:
+		if (Tool_Polygone::Pressed(button, state, x, y)) {
 			return true;
 		}
 	}

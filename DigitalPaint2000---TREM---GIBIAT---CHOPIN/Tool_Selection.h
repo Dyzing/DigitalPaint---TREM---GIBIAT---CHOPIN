@@ -18,9 +18,9 @@
 */
 Colour selection = { 0.4f, 0.0f, 0.80f };
 Colour blanc = { 1.0f, 1.0f, 1.0f };
-bool operator==(const Colour col1, const Colour col2) {
+/*bool operator==(const Colour col1, const Colour col2) {
 	return (col1.b == col2.b && col1.r == col2.r && col1.g == col2.g);
-}
+}*/
 bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 	if (currentCanvas.checkInside(x, y)) {
 		// convert mouse position into canvas coordinates

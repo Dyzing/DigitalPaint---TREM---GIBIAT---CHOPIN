@@ -86,6 +86,12 @@ int Tool_Selection::startMouseY = 0;
 bool Tool_Circle::isMouseDown = false;
 int Tool_Circle::startMouseX = 0;
 int Tool_Circle::startMouseY = 0;
+#include "Tool_Polygone.h"
+bool Tool_Polygone::isMouseDown = false;
+int Tool_Polygone::startMouseX = 0;
+int Tool_Polygone::startMouseY = 0;
+int Tool_Polygone::departX = 0;
+int Tool_Polygone::departY = 0;
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;
@@ -155,6 +161,10 @@ void vRappelMenuPrincipal(int i)
 	case 2:
 		// Bouton Tracé fenêtre
 		Toolbar::selectedButton = 3;
+		break;
+	case 7:
+		// Bouton Polygone
+		Toolbar::selectedButton = 6;
 		break;
 	}
 }
@@ -236,6 +246,7 @@ void display()
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
 	glutAddMenuEntry("Remplissage", 4);
+	glutAddMenuEntry("Tracé Polygone", 7);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
@@ -379,6 +390,12 @@ void keyboard(unsigned char key, int x, int y)
 			if (currentCanvas.zoom > 1) {
 				currentCanvas.zoom--;
 			}
+		}
+		break;
+	case 'a':
+		// End a Polygon
+		if (canvasAssigned) {
+			Tool_Polygone::EndPolygon();
 		}
 		break;
 	}
