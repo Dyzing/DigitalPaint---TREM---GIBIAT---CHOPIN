@@ -63,7 +63,10 @@ bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 					currentCanvas.SetPixelColour(minX,y, selection);
 					currentCanvas.SetPixelColour(maxX, y, selection);
 				}
-
+				posDepX = minX;
+				posDepY = minY;
+				posFinX = maxX;
+				posFinY = maxY;
 				
 				
 				// go through each pixel in the bounding rect, colour it if it lies within ellipse

@@ -86,5 +86,8 @@
     <ClInclude Include="Tool_Circle.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
+    <ClInclude Include="Tool_Polygone.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

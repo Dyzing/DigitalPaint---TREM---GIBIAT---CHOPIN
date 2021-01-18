@@ -2,7 +2,7 @@
 	Toolbar.h
 	Implements the toolbar on the left of the screen
 */
-
+#include <list>
 #pragma once
 
 // define class structures
@@ -69,6 +69,10 @@ public:
 	static bool isMouseDown;
 	static int startMouseX;
 	static int startMouseY;
+	static int posDepX;
+	static int posDepY;
+	static int posFinX;
+	static int posFinY;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
 };
@@ -92,10 +96,6 @@ public:
 	static bool BlockMousePress(int button, int state, int x, int y);
 	static void EndPolygon();
 };
-
-
-
-
 /*
 	This class implements the toolbar on the left of the window
 */

@@ -4,12 +4,6 @@
 */
 
 
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-
-#endif
-
 #include <stddef.h>
 #include <iostream>
 #include <math.h>
@@ -82,6 +76,10 @@ int Tool_Rect::startMouseY = 0;
 bool Tool_Selection::isMouseDown = false;
 int Tool_Selection::startMouseX = 0;
 int Tool_Selection::startMouseY = 0;
+int Tool_Selection::posDepX = 0;
+int Tool_Selection::posDepY = 0;
+int Tool_Selection::posFinX = 0;
+int Tool_Selection::posFinY = 0;
 #include "Tool_Circle.h"
 bool Tool_Circle::isMouseDown = false;
 int Tool_Circle::startMouseX = 0;
@@ -92,6 +90,7 @@ int Tool_Polygone::startMouseX = 0;
 int Tool_Polygone::startMouseY = 0;
 int Tool_Polygone::departX = 0;
 int Tool_Polygone::departY = 0;
+
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;

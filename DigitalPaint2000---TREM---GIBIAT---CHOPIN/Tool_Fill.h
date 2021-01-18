@@ -21,7 +21,52 @@ struct Tuple {
 	@param cx - x coordinate of pixel to fill from
 	@param cy - y coordinate of pixel to fill from
 */
+
+void affichage() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	glPushMatrix();
+	if (canvasAssigned) {
+		currentCanvas.Draw(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+		ToolEvents::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	}
+
+
+	glPopMatrix();
+	glutSwapBuffers();
+}
+
+
+Tuple c = { 0,0 };
 void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
+	Tuple LCA[2] = { {0,0},{0,0} };
+	for (int y = Tool_Selection::posDepY+1; y < Tool_Selection::posFinY; y++) {
+		for (int x = Tool_Selection::posDepX+1; x < Tool_Selection::posFinX; x++) {
+			if (currentCanvas.GetPixelColour(x, y) != startColour) {
+				if (LCA[0].x == 0 and LCA[0].y == 0) {
+					Tuple tmp = { x,y };
+					LCA[0] = tmp;
+				}
+				else if (LCA[1].x == 0 and LCA[1].y == 0) {
+					Tuple tmp = { x,y };
+					LCA[1] = tmp;
+					break;
+				}
+			}
+		}
+		if (LCA[0].x != c.x and LCA[0].y != c.y and LCA[1].x != c.x and LCA[1].y != c.y) {
+			for (int x2 = LCA[0].x; x2 < LCA[1].x; x2++) {
+				currentCanvas.SetPixelColour(x2, LCA[1].y, selectedColour);
+				
+			}
+			affichage();
+			Tuple tmp = { 0,0 };
+			LCA[0] = tmp;
+			LCA[1] = tmp;
+		}
+	}
+}
+
+/*void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 	// algorithm expands from point filling an area
 	// vec stores outer pixels for the next iteration
 	std::vector<Tuple> vec;
@@ -34,6 +79,9 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 			Colour colourAtPixel = currentCanvas.GetPixelColour(vec[i].x, vec[i].y);
 			if ((colourAtPixel.r == startColour.r) && (colourAtPixel.g == startColour.g) && (colourAtPixel.b == startColour.b)) {
 				currentCanvas.SetPixelColour(vec[i].x, vec[i].y, selectedColour);
+				if (i % 10 == 0) {
+					affichage();
+				}
 				// add neighbours to the outside vector for the next iteration
 				if (vec[i].x < currentCanvas.width - 1) {
 					Tuple newCoord = { vec[i].x + 1, vec[i].y };
@@ -59,8 +107,8 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 		std::vector<Tuple> b;
 		newvec = b;
 	}
-}
-
+} 
+*/
 
 /*
 	Handles mouse press events passed onto the Fill tool
