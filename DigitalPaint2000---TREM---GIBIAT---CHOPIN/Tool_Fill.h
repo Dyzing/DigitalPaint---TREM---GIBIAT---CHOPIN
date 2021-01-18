@@ -6,13 +6,7 @@
 #pragma once
 
 #include <vector>
-
-// struct for storing coordinates
-struct Tuple {
-	int x;
-	int y;
-};
-
+#include <list>
 
 /*
 	Fill algorithm from a position
@@ -21,7 +15,12 @@ struct Tuple {
 	@param cx - x coordinate of pixel to fill from
 	@param cy - y coordinate of pixel to fill from
 */
-
+struct Intersection {
+	int x;
+	int ymax;
+	int coefD;
+	int y;
+};
 void affichage() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
@@ -34,35 +33,49 @@ void affichage() {
 	glPopMatrix();
 	glutSwapBuffers();
 }
+void CreateSI(std::list<Tuple> cote) {
+	const int y1 = Tool_Selection::posFinY;
+	const int y2 = Tool_Selection::posDepY;
+	std::list<std::list<Intersection>> SI;
+	for (int y = Tool_Selection::posDepY + 1; y < Tool_Selection::posFinY; y++) {
+		for (int x = Tool_Selection::posDepX + 1; x < Tool_Selection::posFinX; x++) {
+			for (Tuple tp : cote) {
+				cote.size();
+			}
+		}
+	}
 
+}
+std::list<Intersection> SI[4];
 
 Tuple c = { 0,0 };
 void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
-	Tuple LCA[2] = { {0,0},{0,0} };
+	std::list<Tuple> LCA = {};
+	Tool_Polygone::ListeCotes;
+	//CreateSI(Tool_Polygone::ListeCotes);
+	LCA.push_back(c);
+	//Tuple LCA[2] = { {0,0},{0,0} };
 	for (int y = Tool_Selection::posDepY+1; y < Tool_Selection::posFinY; y++) {
 		for (int x = Tool_Selection::posDepX+1; x < Tool_Selection::posFinX; x++) {
 			if (currentCanvas.GetPixelColour(x, y) != startColour) {
-				if (LCA[0].x == 0 and LCA[0].y == 0) {
-					Tuple tmp = { x,y };
-					LCA[0] = tmp;
-				}
-				else if (LCA[1].x == 0 and LCA[1].y == 0) {
-					Tuple tmp = { x,y };
-					LCA[1] = tmp;
-					break;
-				}
-			}
-		}
-		if (LCA[0].x != c.x and LCA[0].y != c.y and LCA[1].x != c.x and LCA[1].y != c.y) {
-			for (int x2 = LCA[0].x; x2 < LCA[1].x; x2++) {
-				currentCanvas.SetPixelColour(x2, LCA[1].y, selectedColour);
+				Tuple tmp = { x,y };
+				LCA.push_back(tmp);
 				
 			}
-			affichage();
-			Tuple tmp = { 0,0 };
-			LCA[0] = tmp;
-			LCA[1] = tmp;
 		}
+		while (LCA.size() != 0 and LCA.size() != 1) {
+			Tuple t1 = LCA.front();
+			LCA.pop_front();
+			Tuple t2 = LCA.front();
+			LCA.pop_front();
+			for (int x2 = t1.x; x2 < t2.x; x2++) {
+					currentCanvas.SetPixelColour(x2, t2.y, selectedColour);
+				
+				}
+				
+		}
+		affichage();
+		LCA.clear();
 	}
 }
 

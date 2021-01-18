@@ -90,7 +90,7 @@ int Tool_Polygone::startMouseX = 0;
 int Tool_Polygone::startMouseY = 0;
 int Tool_Polygone::departX = 0;
 int Tool_Polygone::departY = 0;
-
+std::list<cotes> Tool_Polygone::ListeCotes = {};
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;
@@ -225,29 +225,7 @@ void display()
 	//glutAddMenuEntry("Quit", 2);
 	//glutAttachMenu(GLUT_RIGHT_BUTTON);
 
-	nSousmenu1 = glutCreateMenu(vRappelSousMenu1);
-	glutAddMenuEntry("Rouge", 11);
-	glutAddMenuEntry("Vert", 12);
-	glutAddMenuEntry("Bleu", 13);
-	glutAddMenuEntry("Noir", 14);
-	glutAddMenuEntry("Blanc", 15);
-
-	nSousmenu2 = glutCreateMenu(vRappelMenuPrincipal);
-	glutAddMenuEntry("Pinceau libre", 6);
-	glutAddMenuEntry("Lignes", 1);
-	glutAddMenuEntry("Cercle", 5);
-
-	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
-
-	glutAddSubMenu("Couleurs", nSousmenu1);
-	glutAddSubMenu("Formes", nSousmenu2);
-
-	glutAddMenuEntry("Tracé fenêtre", 2);
-	glutAddMenuEntry("Fenêtrage", 3);
-	glutAddMenuEntry("Remplissage", 4);
-	glutAddMenuEntry("Tracé Polygone", 7);
-
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	
 
 	// Draw mouse pointer last (so it appears above everything else)
 	Display_Pointer();
@@ -474,6 +452,8 @@ void idle() {
 */
 int main(int argc, char* argv[])
 {
+
+
 	// create window with title and fixed start size
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
@@ -499,7 +479,29 @@ int main(int argc, char* argv[])
 
 	// initialize everything
 	init();
+	nSousmenu1 = glutCreateMenu(vRappelSousMenu1);
+	glutAddMenuEntry("Rouge", 11);
+	glutAddMenuEntry("Vert", 12);
+	glutAddMenuEntry("Bleu", 13);
+	glutAddMenuEntry("Noir", 14);
+	glutAddMenuEntry("Blanc", 15);
 
+	nSousmenu2 = glutCreateMenu(vRappelMenuPrincipal);
+	glutAddMenuEntry("Pinceau libre", 6);
+	glutAddMenuEntry("Lignes", 1);
+	glutAddMenuEntry("Cercle", 5);
+
+	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
+
+	glutAddSubMenu("Couleurs", nSousmenu1);
+	glutAddSubMenu("Formes", nSousmenu2);
+
+	glutAddMenuEntry("Tracé fenêtre", 2);
+	glutAddMenuEntry("Fenêtrage", 3);
+	glutAddMenuEntry("Remplissage", 4);
+	glutAddMenuEntry("Tracé Polygone", 7);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle
 	glutMainLoop();
 

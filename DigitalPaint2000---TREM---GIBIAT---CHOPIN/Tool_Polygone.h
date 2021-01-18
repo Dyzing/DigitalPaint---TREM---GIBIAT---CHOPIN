@@ -69,8 +69,11 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 					}
 				}
 
+				
+				ListeCotes.push_back({ cx,cy,12,22 });
 			}
-			
+
+			ListeCotes.push_back({ cx,cy });
 			startMouseX = cx;
 			startMouseY = cy;
 			isMouseDown = false;

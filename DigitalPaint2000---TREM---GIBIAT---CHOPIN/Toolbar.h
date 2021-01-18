@@ -8,6 +8,18 @@
 // define class structures
 
 // class to pass on events to the selected tool
+struct Tuple {
+	int x;
+	int y;
+};
+
+struct cotes {
+	int xA;
+	int yA;
+	int xB;
+	int yB;
+	int coefD;
+};
 class ToolEvents {
 public:
 	static void Start();
@@ -92,6 +104,7 @@ public:
 	static int startMouseY;
 	static int departX;
 	static int departY;
+	static std::list<cotes> ListeCotes;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
 	static void EndPolygon();
