@@ -18,7 +18,7 @@ struct cotes {
 	int yA;
 	int xB;
 	int yB;
-	int coefD;
+	float coefD;
 };
 class ToolEvents {
 public:

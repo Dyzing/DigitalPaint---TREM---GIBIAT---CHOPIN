@@ -70,10 +70,9 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 				}
 
 				
-				ListeCotes.push_back({ cx,cy,12,22 });
+				ListeCotes.push_back({ startMouseX,startMouseY,cx,cy,CoefD });
 			}
-
-			ListeCotes.push_back({ cx,cy });
+			
 			startMouseX = cx;
 			startMouseY = cy;
 			isMouseDown = false;
@@ -139,5 +138,6 @@ void Tool_Polygone::EndPolygon() {
 			currentCanvas.SetPixelColour(x, y, selectedColour);
 		}
 	}
+	ListeCotes.push_back({ departX,departY,startMouseX,startMouseY,CoefD });
 	firstPick = true;
 }
