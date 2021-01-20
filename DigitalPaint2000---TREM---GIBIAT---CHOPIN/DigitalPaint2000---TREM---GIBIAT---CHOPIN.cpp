@@ -63,6 +63,7 @@ Button Toolbar::moveButton;
 Button Toolbar::fillButton;
 Button Toolbar::rectButton;
 Button Toolbar::selectionButton;
+Button Toolbar::LCAButton;
 #include "Tool_Pen.h"
 bool Tool_Pen::isMouseDown = false;
 int Tool_Pen::mouseLastX = 0;
@@ -136,7 +137,8 @@ void vRappelSousMenu2(int i)
 
 void vRappelMenuPrincipal(int i)
 {
-	switch (i) {
+	switch (i) 
+	{
 	case 1:
 		// Bouton Ligne selectionner
 		Toolbar::selectedButton = 3;
@@ -153,7 +155,7 @@ void vRappelMenuPrincipal(int i)
 		// Bouton Remplissage selectionner
 		Toolbar::selectedButton = 2;
 		break;
-	case 6:		
+	case 6:
 		// Bouton Remplissage selectionner
 		Toolbar::selectedButton = 0;
 		break;
@@ -165,6 +167,12 @@ void vRappelMenuPrincipal(int i)
 		// Bouton Polygone
 		Toolbar::selectedButton = 6;
 		break;
+
+	case 8:
+		// Bouton LCA
+		Toolbar::selectedButton = 7;
+		break;
+	
 	}
 }
 
@@ -499,6 +507,7 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
 	glutAddMenuEntry("Remplissage", 4);
+	glutAddMenuEntry("LCA", 8);
 	glutAddMenuEntry("Tracé Polygone", 7);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);

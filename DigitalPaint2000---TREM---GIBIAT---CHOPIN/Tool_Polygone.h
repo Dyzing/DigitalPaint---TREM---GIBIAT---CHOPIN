@@ -23,6 +23,7 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 		int cy = (y - currentCanvas.yOffset) / currentCanvas.zoom;
 		// remember the start mouse position if this is start of a drag
 		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown && firstPick) {
+			Tool_Fill::initEdgeTable();
 			isMouseDown = true;
 			startMouseX = cx;
 			startMouseY = cy;
@@ -71,6 +72,7 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 
 				
 				ListeCotes.push_back({ startMouseX,startMouseY,cx,cy,CoefD });
+				storeEdgeInTable(startMouseX, startMouseY, cx, cy);
 			}
 			
 			startMouseX = cx;
@@ -139,5 +141,6 @@ void Tool_Polygone::EndPolygon() {
 		}
 	}
 	ListeCotes.push_back({ departX,departY,startMouseX,startMouseY,CoefD });
+	storeEdgeInTable(departX, departY, startMouseX, startMouseY);
 	firstPick = true;
 }
