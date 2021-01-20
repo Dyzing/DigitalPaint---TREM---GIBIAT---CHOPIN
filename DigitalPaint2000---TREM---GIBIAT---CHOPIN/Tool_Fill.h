@@ -349,7 +349,7 @@ void Tool_Fill::Fill(Colour startColour)
 
 
 //Tuple c = { 0,0 };
-void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
+/*void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 
 
 	std::vector<Tuple> intersection;
@@ -382,7 +382,7 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 		}
 
 	}
-
+	*/
 	/*Tuple LCA[2] = { {0,0},{0,0} };
 	for (int y = Tool_Selection::posDepY+1; y < Tool_Selection::posFinY; y++) {
 		for (int x = Tool_Selection::posDepX+1; x < Tool_Selection::posFinX; x++) {
@@ -408,10 +408,10 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 			LCA[0] = tmp;
 			LCA[1] = tmp;
 		}
-	}*/
+	}
 }
-
-/*void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
+*/
+void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 	// algorithm expands from point filling an area
 	// vec stores outer pixels for the next iteration
 	std::vector<Tuple> vec;
@@ -424,7 +424,7 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 			Colour colourAtPixel = currentCanvas.GetPixelColour(vec[i].x, vec[i].y);
 			if ((colourAtPixel.r == startColour.r) && (colourAtPixel.g == startColour.g) && (colourAtPixel.b == startColour.b)) {
 				currentCanvas.SetPixelColour(vec[i].x, vec[i].y, selectedColour);
-				if (i % 10 == 0) {
+				if (i % 15 == 0) {
 					affichage();
 				}
 				// add neighbours to the outside vector for the next iteration
@@ -453,7 +453,7 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 		newvec = b;
 	}
 } 
-*/
+
 
 /*
 	Handles mouse press events passed onto the Fill tool
