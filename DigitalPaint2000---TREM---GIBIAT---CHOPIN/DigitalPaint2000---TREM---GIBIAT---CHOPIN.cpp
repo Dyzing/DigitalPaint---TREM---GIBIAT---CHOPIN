@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 	main.cpp
 	Entry point for 2D Drawing Tool
 */
@@ -6,11 +6,7 @@
 #include "imgui/imgui.h"
 #include "backends/imgui_impl_glut.h"
 #include "backends/imgui_impl_opengl2.h"
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
 
-#endif
 
 #include <stddef.h>
 #include <iostream>
@@ -71,6 +67,7 @@ Button Toolbar::moveButton;
 Button Toolbar::fillButton;
 Button Toolbar::rectButton;
 Button Toolbar::selectionButton;
+Button Toolbar::LCAButton;
 #include "Tool_Pen.h"
 bool Tool_Pen::isMouseDown = false;
 int Tool_Pen::mouseLastX = 0;
@@ -84,6 +81,14 @@ int Tool_Rect::startMouseY = 0;
 bool Tool_Selection::isMouseDown = false;
 int Tool_Selection::startMouseX = 0;
 int Tool_Selection::startMouseY = 0;
+int Tool_Selection::posDepX = 0;
+int Tool_Selection::posDepY = 0;
+int Tool_Selection::posFinX = 0;
+int Tool_Selection::posFinY = 0;
+int Tool_Selection::departX = 0;
+int Tool_Selection::departY = 0;
+bool Tool_Selection::firstPickSelect = true;
+std::list<Tuple> Tool_Selection::CotesFenetre = {};
 #include "Tool_Circle.h"
 bool Tool_Circle::isMouseDown = false;
 int Tool_Circle::startMouseX = 0;
@@ -94,6 +99,10 @@ int Tool_Polygone::startMouseX = 0;
 int Tool_Polygone::startMouseY = 0;
 int Tool_Polygone::departX = 0;
 int Tool_Polygone::departY = 0;
+bool Tool_Polygone::firstPick = true;
+std::list<Tuple> Tool_Polygone::ListeSommets = {};
+std::list<cotes> Tool_Polygone::ListeCotes = {};
+std::list<std::list<Tuple>> Tool_Polygone::MultiSommets = {};
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;
@@ -140,7 +149,8 @@ void vRappelSousMenu2(int i)
 
 void vRappelMenuPrincipal(int i)
 {
-	switch (i) {
+	switch (i) 
+	{
 	case 1:
 		// Bouton Ligne selectionner
 		Toolbar::selectedButton = 3;
@@ -157,18 +167,24 @@ void vRappelMenuPrincipal(int i)
 		// Bouton Remplissage selectionner
 		Toolbar::selectedButton = 2;
 		break;
-	case 6:		
+	case 6:
 		// Bouton Remplissage selectionner
 		Toolbar::selectedButton = 0;
 		break;
 	case 2:
-		// Bouton Tracé fenêtre
+		// Bouton Tracï¿½ fenï¿½tre
 		Toolbar::selectedButton = 3;
 		break;
 	case 7:
 		// Bouton Polygone
 		Toolbar::selectedButton = 6;
 		break;
+
+	case 8:
+		// Bouton LCA
+		Toolbar::selectedButton = 7;
+		break;
+	
 	}
 }
 
@@ -220,7 +236,7 @@ void my_display_code()
 	}
 }
 
-int nSousmenu1, nSousmenu2, nMenuprincipal; // Numéros (identifiants) des menus
+int nSousmenu1, nSousmenu2, nMenuprincipal; // Numï¿½ros (identifiants) des menus
 int nTue = 0;
 /*
 	OpenGL display function
@@ -276,29 +292,7 @@ void display()
 	//glutAddMenuEntry("Quit", 2);
 	//glutAttachMenu(GLUT_RIGHT_BUTTON);
 
-	nSousmenu1 = glutCreateMenu(vRappelSousMenu1);
-	glutAddMenuEntry("Rouge", 11);
-	glutAddMenuEntry("Vert", 12);
-	glutAddMenuEntry("Bleu", 13);
-	glutAddMenuEntry("Noir", 14);
-	glutAddMenuEntry("Blanc", 15);
-
-	nSousmenu2 = glutCreateMenu(vRappelMenuPrincipal);
-	glutAddMenuEntry("Pinceau libre", 6);
-	glutAddMenuEntry("Lignes", 1);
-	glutAddMenuEntry("Cercle", 5);
-
-	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
-
-	glutAddSubMenu("Couleurs", nSousmenu1);
-	glutAddSubMenu("Formes", nSousmenu2);
-
-	glutAddMenuEntry("Tracé fenêtre", 2);
-	glutAddMenuEntry("Fenêtrage", 3);
-	glutAddMenuEntry("Remplissage", 4);
-	glutAddMenuEntry("Tracé Polygone", 7);
-
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	
 
 	// Draw mouse pointer last (so it appears above everything else)
 	Display_Pointer();
@@ -457,6 +451,7 @@ void mouse_motion(int x, int y)
 }
 
 
+
 /*
 	Handles standard keyboard events
 
@@ -464,6 +459,7 @@ void mouse_motion(int x, int y)
 	@param x - The x position of the mouse
 	@param y - The y position of the mouse
 */
+
 void keyboard(unsigned char key, int x, int y)
 {
 	// Save File Dialogue should steal the input events if active
@@ -474,8 +470,7 @@ void keyboard(unsigned char key, int x, int y)
 	// Now pass on to Save File Dialogue
 	if (SaveFileDialogue::KeyboardPressed(key, x, y)) {
 		return;
-	}
-
+	} //Telling glut what function to call when the event occurs
 	// otherwise check for quitting or zoom
 	switch (key)
 	{
@@ -485,7 +480,7 @@ void keyboard(unsigned char key, int x, int y)
 			currentCanvas.zoom++;
 		}
 		break;
-	case 'S':
+	case 'd':
 		// zoom out
 		if (canvasAssigned) {
 			if (currentCanvas.zoom > 1) {
@@ -499,6 +494,11 @@ void keyboard(unsigned char key, int x, int y)
 			Tool_Polygone::EndPolygon();
 		}
 		break;
+	case 'z':
+		// End a Selection
+		if (canvasAssigned) {
+			Tool_Selection::End_Selection();
+		}
 	}
 }
 
@@ -576,6 +576,8 @@ void idle() {
 */
 int main(int argc, char* argv[])
 {
+
+
 	// create window with title and fixed start size
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
@@ -623,7 +625,32 @@ int main(int argc, char* argv[])
 	glutMotionFunc(mouse_motion); // << when mouse is being pressed
 
 
+	// initialize everything
+	init();
+	nSousmenu1 = glutCreateMenu(vRappelSousMenu1);
+	glutAddMenuEntry("Rouge", 11);
+	glutAddMenuEntry("Vert", 12);
+	glutAddMenuEntry("Bleu", 13);
+	glutAddMenuEntry("Noir", 14);
+	glutAddMenuEntry("Blanc", 15);
 
+	nSousmenu2 = glutCreateMenu(vRappelMenuPrincipal);
+	glutAddMenuEntry("Pinceau libre", 6);
+	glutAddMenuEntry("Lignes", 1);
+	glutAddMenuEntry("Cercle", 5);
+
+	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
+
+	glutAddSubMenu("Couleurs", nSousmenu1);
+	glutAddSubMenu("Formes", nSousmenu2);
+
+	glutAddMenuEntry("TracÃ© fenÃªtre", 2);
+	glutAddMenuEntry("FenÃªtrage", 3);
+	glutAddMenuEntry("Remplissage", 4);
+	glutAddMenuEntry("LCA", 8);
+	glutAddMenuEntry("TracÃ© Polygone", 7);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle
 	glutMainLoop();
 

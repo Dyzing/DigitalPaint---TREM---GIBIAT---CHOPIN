@@ -9,8 +9,7 @@
 #include "Cover.h"
 #include "Open File Dialogue.h"
 #include "Save File Dialogue.h"
-
-
+#include "Toolbar.h"
 /*
 	"New" pressed then "Yes" pressed in "are you sure" dialogue
 
@@ -19,6 +18,11 @@
 void NewConfirmedCallback(Button button) {
 	canvasAssigned = true;
 	currentCanvas = NewCanvas(500, 500, 100, 100);
+	Tool_Polygone::ListeCotes.clear();
+	Tool_Polygone::ListeSommets.clear();
+	Tool_Polygone::MultiSommets.clear();
+	Tool_Polygone::firstPick = true;
+	Tool_Selection::firstPickSelect = true;
 }
 
 
@@ -34,6 +38,7 @@ void NewButtonPressed(Button button) {
 	else {
 		canvasAssigned = true;
 		currentCanvas = NewCanvas(500, 500, 100, 100);
+		
 	}
 }
 

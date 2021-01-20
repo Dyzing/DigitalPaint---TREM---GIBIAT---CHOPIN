@@ -107,6 +107,7 @@
     <ClInclude Include="Tool_Circle.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="backends\imgui_impl_glut.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
@@ -119,5 +120,10 @@
     <ClInclude Include="imgui\imgui_internal.h">
       <Filter>imgui</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="Tool_Polygone.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+>>>>>>> 8834d353ecd79dc12847e0bbff003ff15a50f8c9
   </ItemGroup>
 </Project>

@@ -2,12 +2,25 @@
 	Toolbar.h
 	Implements the toolbar on the left of the screen
 */
-
+#include <list>
 #pragma once
 
 // define class structures
 
 // class to pass on events to the selected tool
+struct Tuple {
+	int x;
+	int y;
+};
+
+struct cotes {
+	int xA;
+	int yA;
+	int xB;
+	int yB;
+	float coefD;
+	float b;
+};
 class ToolEvents {
 public:
 	static void Start();
@@ -52,7 +65,12 @@ public:
 class Tool_Fill {
 public:
 	static void Fill(Colour startColour, int x, int y);
+	static void Fill(Colour startColour);
 	static bool Pressed(int button, int state, int x, int y);
+	static bool PressedLCA(int button, int state, int x, int y);
+	static void initEdgeTable();
+	static void printTable();
+
 };
 
 class Tool_Rect {
@@ -69,8 +87,17 @@ public:
 	static bool isMouseDown;
 	static int startMouseX;
 	static int startMouseY;
+	static int posDepX;
+	static int posDepY;
+	static int posFinX;
+	static int posFinY;
+	static int departX;
+	static int departY;
+	static bool firstPickSelect;
+	static std::list<Tuple> CotesFenetre;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
+	static void End_Selection();
 };
 class Tool_Circle {
 public:
@@ -88,14 +115,14 @@ public:
 	static int startMouseY;
 	static int departX;
 	static int departY;
+	static bool firstPick;
+	static std::list<cotes> ListeCotes;
+	static std::list<Tuple> ListeSommets;
+	static std::list<std::list<Tuple>> MultiSommets;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
 	static void EndPolygon();
 };
-
-
-
-
 /*
 	This class implements the toolbar on the left of the window
 */
@@ -112,6 +139,7 @@ public:
 	static Button fillButton;
 	static Button rectButton;
 	static Button selectionButton;
+	static Button LCAButton;
 
 
 	/*
@@ -126,6 +154,7 @@ public:
 		if (button.text == "Fill") { selectedButton = 2; }
 		if (button.text == "Line") { selectedButton = 3; }
 		if (button.text == "Select") { selectedButton = 4; }
+		if (button.text == "LCA") { selectedButton = 7; }
 		ToolEvents::Start();
 	}
 
@@ -142,6 +171,8 @@ public:
 		fillButton = Button::Create(0, 180, 95, 40, (char *)"Fill", ToolButtonPressed, true);
 		rectButton = Button::Create(0, 220, 95, 40, (char *)"Line", ToolButtonPressed, true);
 		selectionButton = Button::Create(0, 260, 95, 40, (char *)"Select", ToolButtonPressed, true);
+		LCAButton = Button::Create(0, 380, 95, 40, (char*)"LCA", ToolButtonPressed, true);
+
 	}
 
 
@@ -158,6 +189,7 @@ public:
 		fillButton.Display(window_width, window_height);
 		rectButton.Display(window_width, window_height);
 		selectionButton.Display(window_width, window_height);
+		LCAButton.Display(window_width, window_height);
 		// draw a blue overlay on the selected button
 		glColor4f(0.0f, 1.0f, 1.0f, 0.4f);
 		glBegin(GL_QUADS);
@@ -195,6 +227,9 @@ public:
 		if ((selectedButton != 4) && (selectionButton.Pressed(button, state, x, y))) {
 			return true;
 		}
+		if ((selectedButton != 7) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
 		return false;
 	}
 
@@ -221,6 +256,9 @@ public:
 			output = true;
 		}
 		if (selectionButton.Hover(x, y)) {
+			output = true;
+		}
+		if (LCAButton.Hover(x, y)) {
 			output = true;
 		}
 		return output;
@@ -309,7 +347,12 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 			return true;
 		}
 	case 6:
-		if (Tool_Polygone::Pressed(button, state, x, y)) {
+		if (Tool_Polygone::Pressed(button, state, x, y)){
+			return true;
+		}
+		Tool_Fill::printTable();
+	case 7:
+		if (Tool_Fill::PressedLCA(button, state, x, y)){
 			return true;
 		}
 	}

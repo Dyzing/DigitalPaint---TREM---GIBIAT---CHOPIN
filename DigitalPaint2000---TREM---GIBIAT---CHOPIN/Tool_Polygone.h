@@ -14,7 +14,6 @@
 	@param y - The y coordinate of the mouse when pressed
 	@return Has the tool handled the event?
 */
-bool firstPick = true;
 bool isEnded = false;
 bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 	if (currentCanvas.checkInside(x, y)) {
@@ -23,11 +22,14 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 		int cy = (y - currentCanvas.yOffset) / currentCanvas.zoom;
 		// remember the start mouse position if this is start of a drag
 		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown && firstPick) {
+			Tool_Fill::initEdgeTable();
 			isMouseDown = true;
 			startMouseX = cx;
 			startMouseY = cy;
 			departX = cx;
 			departY = cy;
+			ListeSommets.clear();
+			ListeSommets.push_back({ startMouseX, startMouseY });
 			firstPick = false;
 			return true;
 		}
@@ -40,34 +42,14 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 				float maxY = cy;
 				float difX = abs(minX - maxX);
 				float difY = abs(minY - maxY);
-				float y;
-				float x;
 				float CoefD = ((maxY - minY) / (maxX - minX));
 				float b = minY - CoefD * minX;
+				currentCanvas.DrawALine(startMouseX, startMouseY, cx, cy, selectedColour);
 
-				if (difX > difY)
-				{
-					for (x = std::min(cx, startMouseX); x <= std::max(cx, startMouseX); x++)
-					{
-						y = CoefD * x + b;
-						currentCanvas.SetPixelColour(x, y, selectedColour);
-					}
-				}
-				else
-				{
-					for (y = std::min(cy, startMouseY); y <= std::max(cy, startMouseY); y++)
-					{
-						if (difX == 0)
-						{
-							x = minX;
-						}
-						else
-						{
-							x = (y - b) / CoefD;
-						}
-						currentCanvas.SetPixelColour(x, y, selectedColour);
-					}
-				}
+				
+				ListeCotes.push_back({ startMouseX,startMouseY,cx,cy,CoefD, b });
+				ListeSommets.push_back({ cx, cy });
+				storeEdgeInTable(startMouseX, startMouseY, cx, cy);
 
 			}
 			
@@ -108,33 +90,11 @@ void Tool_Polygone::EndPolygon() {
 
 	float difX = abs(minX - maxX);
 	float difY = abs(minY - maxY);
-	float y;
-	float x;
 	float CoefD = ((maxY - minY) / (maxX - minX));
 	float b = minY - CoefD * minX;
-
-	if (difX > difY)
-	{
-		for (x = std::min(startMouseX, departX); x <= std::max(startMouseX, departX); x++)
-		{
-			y = CoefD * x + b;
-			currentCanvas.SetPixelColour(x, y, selectedColour);
-		}
-	}
-	else
-	{
-		for (y = std::min(startMouseY, departY); y <= std::max(startMouseY, departY); y++)
-		{
-			if (difX == 0)
-			{
-				x = minX;
-			}
-			else
-			{
-				x = (y - b) / CoefD;
-			}
-			currentCanvas.SetPixelColour(x, y, selectedColour);
-		}
-	}
+	currentCanvas.DrawALine(startMouseX, startMouseY, departX, departY, selectedColour);
+	ListeCotes.push_back({ departX,departY,startMouseX,startMouseY,CoefD });
+	MultiSommets.push_back(ListeSommets);
+	storeEdgeInTable(departX, departY, startMouseX, startMouseY);
 	firstPick = true;
 }
