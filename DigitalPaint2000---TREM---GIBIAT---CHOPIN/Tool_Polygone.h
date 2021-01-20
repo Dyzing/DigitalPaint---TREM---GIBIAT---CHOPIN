@@ -14,7 +14,6 @@
 	@param y - The y coordinate of the mouse when pressed
 	@return Has the tool handled the event?
 */
-bool firstPick = true;
 bool isEnded = false;
 bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 	if (currentCanvas.checkInside(x, y)) {
@@ -28,6 +27,8 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 			startMouseY = cy;
 			departX = cx;
 			departY = cy;
+			ListeSommets.clear();
+			ListeSommets.push_back({ startMouseX, startMouseY });
 			firstPick = false;
 			return true;
 		}
@@ -70,7 +71,8 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 				}
 
 				
-				ListeCotes.push_back({ startMouseX,startMouseY,cx,cy,CoefD });
+				ListeCotes.push_back({ startMouseX,startMouseY,cx,cy,CoefD, b });
+				ListeSommets.push_back({ cx, cy });
 			}
 			
 			startMouseX = cx;
@@ -139,5 +141,6 @@ void Tool_Polygone::EndPolygon() {
 		}
 	}
 	ListeCotes.push_back({ departX,departY,startMouseX,startMouseY,CoefD });
+	MultiSommets.push_back(ListeSommets);
 	firstPick = true;
 }
