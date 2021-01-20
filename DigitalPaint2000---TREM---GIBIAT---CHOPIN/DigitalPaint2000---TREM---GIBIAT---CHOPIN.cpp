@@ -3,7 +3,9 @@
 	Entry point for 2D Drawing Tool
 */
 
-
+#include "imgui/imgui.h"
+#include "backends/imgui_impl_glut.h"
+#include "backends/imgui_impl_opengl2.h"
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -101,7 +103,8 @@ int Tool_Move::startMouseY;
 int Tool_Move::endMouseX;
 int Tool_Move::endMouseY;
 bool Tool_Move::isDisplaying;
-
+static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+static bool show_demo_window = true;
 
 void vRappelSousMenu1(int i)
 {
@@ -181,16 +184,63 @@ void menu(int item)
 	}
 }
 
+
+
+void NewConfirmedCallback() {
+	canvasAssigned = true;
+	currentCanvas = NewCanvas(500, 500, 100, 100);
+}
+
+void my_display_code()
+{
+
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Nouveau", "CTRL+Z")) {
+				NewConfirmedCallback();
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Enregister", "CTRL+Y", false, false)) {}
+			if (ImGui::MenuItem("Enregister sous ", "CTRL+Z")) {}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+}
+
 int nSousmenu1, nSousmenu2, nMenuprincipal; // Numéros (identifiants) des menus
 int nTue = 0;
-
-
 /*
 	OpenGL display function
 */
 void display()
 {
+
+	// Start the Dear ImGui frame
+	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplGLUT_NewFrame();
+
+	my_display_code();
+
+	
+	
+
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	
+
 	glPushMatrix();
 
 	// Rescale to "pixel" scale - position (x, y) is x pixels along, y pixels up
@@ -253,6 +303,12 @@ void display()
 	// Draw mouse pointer last (so it appears above everything else)
 	Display_Pointer();
 
+	// Rendering
+	ImGui::Render();
+	ImGuiIO& io = ImGui::GetIO();
+
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -268,41 +324,80 @@ void display()
 */
 void mouse_click(int button, int state, int x, int y)
 {
+	ImGuiIO& io = ImGui::GetIO();
 	// If we are currently using a tool which wants all mouse events first, give it the mouse events
 	// Otherwise pass the mouse event onto each UI element in turn until it gets handled, in the order of depth
-	if ((!canvasAssigned) || (!ToolEvents::BlockMousePress(button, state, x, y))) {
-		// First pass the event onto the Dialogues
-		if (AlertDialogue::Pressed(button, state, x, y)) {
-			return;
+	if (io.WantCaptureMouse) {
+		switch (button)
+		{
+		case GLUT_LEFT_BUTTON:
+			if (state == GLUT_DOWN)
+			{
+				io.MouseDown[0] = true;
+			}
+			if (state == GLUT_UP)
+			{
+				io.MouseDown[0] = false;
+			}
+		case GLUT_MIDDLE_BUTTON:
+			if (state == GLUT_DOWN)
+			{
+				io.MouseDown[2] = true;
+			}
+			if (state == GLUT_UP)
+			{
+				io.MouseDown[2] = false;
+			}
+		case GLUT_RIGHT_BUTTON:
+			if (state == GLUT_DOWN)
+			{
+				io.MouseDown[1] = true;
+			}
+			if (state == GLUT_UP)
+			{
+				io.MouseDown[1] = false;
+			}
+		default:
+			break;
 		}
-		if (YesNoDialogue::Pressed(button, state, x, y)) {
-			return;
-		}
-		if (OpenFileDialogue::Pressed(button, state, x, y)) {
-			return;
-		}
-		if (SaveFileDialogue::Pressed(button, state, x, y)) {
-			return;
-		}
-		// If not handled, maybe the Cover will block it
-		if (Cover::Pressed(button, state, x, y)) {
-			return;
-		}
-		// If not handled pass it onto buttons/toolbars
-		if (TopMenuBar::Pressed(button, state, x, y)) {
-			return;
-		}
-		if (Toolbar::Pressed(button, state, x, y)) {
-			return;
-		}
-		if (ColourPalette::Pressed(button, state, x, y)) {
-			return;
-		}
+		return;
 	}
-	// If it hasn't been handled, pass it on to the selected tool if we have a canvas
-	if (canvasAssigned) {
-		if (ToolEvents::Pressed(button, state, x, y)) {
-			return;
+	else {
+
+		if ((!canvasAssigned) || (!ToolEvents::BlockMousePress(button, state, x, y))) {
+			// First pass the event onto the Dialogues
+			if (AlertDialogue::Pressed(button, state, x, y)) {
+				return;
+			}
+			if (YesNoDialogue::Pressed(button, state, x, y)) {
+				return;
+			}
+			if (OpenFileDialogue::Pressed(button, state, x, y)) {
+				return;
+			}
+			if (SaveFileDialogue::Pressed(button, state, x, y)) {
+				return;
+			}
+			// If not handled, maybe the Cover will block it
+			if (Cover::Pressed(button, state, x, y)) {
+				return;
+			}
+			// If not handled pass it onto buttons/toolbars
+			if (TopMenuBar::Pressed(button, state, x, y)) {
+				return;
+			}
+			if (Toolbar::Pressed(button, state, x, y)) {
+				return;
+			}
+			if (ColourPalette::Pressed(button, state, x, y)) {
+				return;
+			}
+		}
+		// If it hasn't been handled, pass it on to the selected tool if we have a canvas
+		if (canvasAssigned) {
+			if (ToolEvents::Pressed(button, state, x, y)) {
+				return;
+			}
 		}
 	}
 }
@@ -320,37 +415,43 @@ void mouse_motion(int x, int y)
 	cursorX = x;
 	cursorY = y;
 
+	ImGuiIO& io = ImGui::GetIO();
+	io.MousePos.x = x;
+	io.MousePos.y = y;
+
 	// Pass the mouse move event onto Dialogues
-	if (AlertDialogue::Hover(x, y)) {
-		return;
-	}
-	if (YesNoDialogue::Hover(x, y)) {
-		return;
-	}
-	if (OpenFileDialogue::Hover(x, y)) {
-		return;
-	}
-	if (SaveFileDialogue::Hover(x, y)) {
-		return;
-	}
-
-	// If not handled, maybe the Cover will block it
-	if (Cover::Hover(x, y)) {
-		return;
-	}
-
-	// If not handled pass it onto buttons/toolbars
-	if (Toolbar::Hover(x, y)) {
-		return;
-	}
-	if (TopMenuBar::Hover(x, y)) {
-		return;
-	}
-
-	// If it hasn't been handled, pass it on to the selected tool if we have a canvas
-	if (canvasAssigned) {
-		if (ToolEvents::Hover(x, y)) {
+	if (!io.WantCaptureMouse) {
+		if (AlertDialogue::Hover(x, y)) {
 			return;
+		}
+		if (YesNoDialogue::Hover(x, y)) {
+			return;
+		}
+		if (OpenFileDialogue::Hover(x, y)) {
+			return;
+		}
+		if (SaveFileDialogue::Hover(x, y)) {
+			return;
+		}
+
+		// If not handled, maybe the Cover will block it
+		if (Cover::Hover(x, y)) {
+			return;
+		}
+
+		// If not handled pass it onto buttons/toolbars
+		if (Toolbar::Hover(x, y)) {
+			return;
+		}
+		if (TopMenuBar::Hover(x, y)) {
+			return;
+		}
+
+		// If it hasn't been handled, pass it on to the selected tool if we have a canvas
+		if (canvasAssigned) {
+			if (ToolEvents::Hover(x, y)) {
+				return;
+			}
 		}
 	}
 }
@@ -477,12 +578,38 @@ int main(int argc, char* argv[])
 {
 	// create window with title and fixed start size
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 	glutInitWindowSize(800, 600);
 	glutCreateWindow("DigitalPaint");
 
 	// define the display function
 	glutDisplayFunc(display);
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
+	
+
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplGLUT_Init();
+	ImGui_ImplGLUT_InstallFuncs();
+	ImGui_ImplOpenGL2_Init();
+
+	
+
+	// define idle and init
+	glutIdleFunc(idle);
+
+	// initialize everything
+	init();
 
 	// handlers for keyboard input
 	glutKeyboardFunc(keyboard);
@@ -495,14 +622,16 @@ int main(int argc, char* argv[])
 	glutPassiveMotionFunc(mouse_motion); // << when mouse is not being pressed
 	glutMotionFunc(mouse_motion); // << when mouse is being pressed
 
-	// define idle and init
-	glutIdleFunc(idle);
 
-	// initialize everything
-	init();
 
 	// start first render cycle
 	glutMainLoop();
+
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplGLUT_Shutdown();
+	ImGui::DestroyContext();
+
+	
 
 
 	// Gestion de menus
