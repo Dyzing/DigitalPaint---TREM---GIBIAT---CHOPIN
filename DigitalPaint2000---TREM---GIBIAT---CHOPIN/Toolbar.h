@@ -341,6 +341,7 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		if (Tool_Selection::Pressed(button, state, x, y)) {
 			return true;
 		}
+		Tool_Fill::printTable();
 		break;
 	case 5:
 		if (Tool_Circle::Pressed(button, state, x, y)) {
