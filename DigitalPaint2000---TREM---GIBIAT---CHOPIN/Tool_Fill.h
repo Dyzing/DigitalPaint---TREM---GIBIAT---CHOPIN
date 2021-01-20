@@ -10,43 +10,6 @@
 #define maxWd 600 
 #define maxVer 10000 
 
-void DrawALine(int xP1, int yP1, int xP2, int yP2, Colour c) {
-
-	float minX = xP1;
-	float maxX = xP2;
-	float minY = yP1;
-	float maxY = yP2;
-	float difX = abs(minX - maxX);
-	float difY = abs(minY - maxY);
-	float y;
-	float x;
-	float CoefD = ((maxY - minY) / (maxX - minX));
-	float b = minY - CoefD * minX;
-
-	if (difX > difY)
-	{
-		for (x = std::min(xP2, xP1); x <= std::max(xP2, xP1); x++)
-		{
-			y = CoefD * x + b;
-			currentCanvas.SetPixelColour(x, y, c);
-		}
-	}
-	else
-	{
-		for (y = std::min(yP2, yP1); y <= std::max(yP2, yP1); y++)
-		{
-			if (difX == 0)
-			{
-				x = minX;
-			}
-			else
-			{
-				x = (y - b) / CoefD;
-			}
-			currentCanvas.SetPixelColour(x, y, c);
-		}
-	}
-}
 
 
 void affichage() {
@@ -354,7 +317,7 @@ void Tool_Fill::Fill(Colour startColour)
 				if (FillFlag)
 				{
 					//drawing actual lines... 
-					DrawALine(x1, i, x2, i, selectedColour);
+					currentCanvas.DrawALine(x1, i, x2, i, selectedColour);
 					affichage();
 					// printf("\nLine drawn from %d,%d to %d,%d",x1,i,x2,i); 
 				}

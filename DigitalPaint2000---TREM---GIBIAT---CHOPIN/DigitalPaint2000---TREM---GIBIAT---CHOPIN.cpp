@@ -348,6 +348,7 @@ void mouse_motion(int x, int y)
 }
 
 
+
 /*
 	Handles standard keyboard events
 
@@ -355,6 +356,7 @@ void mouse_motion(int x, int y)
 	@param x - The x position of the mouse
 	@param y - The y position of the mouse
 */
+
 void keyboard(unsigned char key, int x, int y)
 {
 	// Save File Dialogue should steal the input events if active
@@ -365,8 +367,7 @@ void keyboard(unsigned char key, int x, int y)
 	// Now pass on to Save File Dialogue
 	if (SaveFileDialogue::KeyboardPressed(key, x, y)) {
 		return;
-	}
-
+	} //Telling glut what function to call when the event occurs
 	// otherwise check for quitting or zoom
 	switch (key)
 	{

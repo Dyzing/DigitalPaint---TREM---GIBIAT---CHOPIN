@@ -46,36 +46,7 @@ bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 			float maxX = cx;
 			float minY = startMouseY;
 			float maxY = cy;
-			float difX = abs(minX - maxX);
-			float difY = abs(minY - maxY);
-			float y;
-			float x;
-			float CoefD = ((maxY - minY) / (maxX - minX));
-			float b = minY - CoefD * minX;
-
-			if (difX > difY)
-			{
-				for (x = std::min(cx, startMouseX); x <= std::max(cx, startMouseX); x++)
-				{
-					y = CoefD * x + b;
-					currentCanvas.SetPixelColour(x, y, selection);
-				}
-			}
-			else
-			{
-				for (y = std::min(cy, startMouseY); y <= std::max(cy, startMouseY); y++)
-				{
-					if (difX == 0)
-					{
-						x = minX;
-					}
-					else
-					{
-						x = (y - b) / CoefD;
-					}
-					currentCanvas.SetPixelColour(x, y, selection);
-				}
-			}
+			currentCanvas.DrawALine(startMouseX, startMouseY, cx, cy, selection);
 
 
 			CotesFenetre.push_back({ startMouseX,startMouseY });
@@ -184,43 +155,6 @@ int x_intersect(int x1, int y1, int x2, int y2,
     return num / den;
 }
 
-void DrawALine(int xP1, int yP1,int xP2, int yP2, Colour c) {
-
-	float minX = xP1;
-	float maxX = xP2;
-	float minY = yP1;
-	float maxY = yP2;
-	float difX = abs(minX - maxX);
-	float difY = abs(minY - maxY);
-	float y;
-	float x;
-	float CoefD = ((maxY - minY) / (maxX - minX));
-	float b = minY - CoefD * minX;
-
-	if (difX > difY)
-	{
-		for (x = std::min(xP2, xP1); x <= std::max(xP2, xP1); x++)
-		{
-			y = CoefD * x + b;
-			currentCanvas.SetPixelColour(x, y, c);
-		}
-	}
-	else
-	{
-		for (y = std::min(yP2, yP1); y <= std::max(yP2, yP1); y++)
-		{
-			if (difX == 0)
-			{
-				x = minX;
-			}
-			else
-			{
-				x = (y - b) / CoefD;
-			}
-			currentCanvas.SetPixelColour(x, y, c);
-		}
-	}
-}
 // Returns y-value of point of intersectipn of 
 // two lines 
 int y_intersect(int x1, int y1, int x2, int y2,
@@ -332,9 +266,9 @@ int suthHodgClip(int** poly_points, int poly_size,
 	
 	for (j; j < poly_size - 1; j++) {
 		//std::cout << '(' << poly_points[j][0] << ", " << poly_points[j][1] << ") " << "Draw with "<< '(' << poly_points[j+1][0] << ", " << poly_points[j+1][1] << ") \n ";
-		DrawALine(poly_points[j][0], poly_points[j][1], poly_points[j+1][0], poly_points[j+1][1],selectedColour);
+		currentCanvas.DrawALine(poly_points[j][0], poly_points[j][1], poly_points[j+1][0], poly_points[j+1][1],selectedColour);
 	}
-	DrawALine(poly_points[j][0], poly_points[j][1], poly_points[0][0], poly_points[0][1], selectedColour);
+	currentCanvas.DrawALine(poly_points[j][0], poly_points[j][1], poly_points[0][0], poly_points[0][1], selectedColour);
 
 
 	return poly_size;
@@ -347,36 +281,10 @@ void Tool_Selection::End_Selection() {
 	float minY = departY;
 	float maxY = startMouseY;
 
-	float difX = abs(minX - maxX);
-	float difY = abs(minY - maxY);
 	float y;
 	float x;
-	float CoefD = ((maxY - minY) / (maxX - minX));
-	float b = minY - CoefD * minX;
 	int i = 0;
-	if (difX > difY)
-	{
-		for (x = std::min(startMouseX, departX); x <= std::max(startMouseX, departX); x++)
-		{
-			y = CoefD * x + b;
-			currentCanvas.SetPixelColour(x, y, selection);
-		}
-	}
-	else
-	{
-		for (y = std::min(startMouseY, departY); y <= std::max(startMouseY, departY); y++)
-		{
-			if (difX == 0)
-			{
-				x = minX;
-			}
-			else
-			{
-				x = (y - b) / CoefD;
-			}
-			currentCanvas.SetPixelColour(x, y, selection);
-		}
-	}
+	currentCanvas.DrawALine(departX, departY, startMouseX, startMouseY, selection);
 	CotesFenetre.push_back({ startMouseX,startMouseY });
 	int sizeFenetre = CotesFenetre.size();
 	int** tab = new int* [sizeFenetre];
@@ -412,9 +320,9 @@ void Tool_Selection::End_Selection() {
 	}
 	int ind = 0;
 	for (ind; ind < sizeFenetre - 1; ind++) {
-		DrawALine(tab[ind][0], tab[ind][1], tab[ind + 1][0], tab[ind + 1][1], selection);
+		currentCanvas.DrawALine(tab[ind][0], tab[ind][1], tab[ind + 1][0], tab[ind + 1][1], selection);
 	}
-	DrawALine(tab[ind][0], tab[ind][1], tab[0][0], tab[0][1], selection);
+	currentCanvas.DrawALine(tab[ind][0], tab[ind][1], tab[0][0], tab[0][1], selection);
 
 	Tool_Polygone::MultiSommets.clear();
 	std::list<Tuple> tmp;
