@@ -19,6 +19,7 @@ struct cotes {
 	int xB;
 	int yB;
 	float coefD;
+	float b;
 };
 class ToolEvents {
 public:
@@ -90,8 +91,13 @@ public:
 	static int posDepY;
 	static int posFinX;
 	static int posFinY;
+	static int departX;
+	static int departY;
+	static bool firstPickSelect;
+	static std::list<Tuple> CotesFenetre;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
+	static void End_Selection();
 };
 class Tool_Circle {
 public:
@@ -109,7 +115,10 @@ public:
 	static int startMouseY;
 	static int departX;
 	static int departY;
+	static bool firstPick;
 	static std::list<cotes> ListeCotes;
+	static std::list<Tuple> ListeSommets;
+	static std::list<std::list<Tuple>> MultiSommets;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
 	static void EndPolygon();

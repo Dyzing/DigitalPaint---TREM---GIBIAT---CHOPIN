@@ -81,6 +81,10 @@ int Tool_Selection::posDepX = 0;
 int Tool_Selection::posDepY = 0;
 int Tool_Selection::posFinX = 0;
 int Tool_Selection::posFinY = 0;
+int Tool_Selection::departX = 0;
+int Tool_Selection::departY = 0;
+bool Tool_Selection::firstPickSelect = true;
+std::list<Tuple> Tool_Selection::CotesFenetre = {};
 #include "Tool_Circle.h"
 bool Tool_Circle::isMouseDown = false;
 int Tool_Circle::startMouseX = 0;
@@ -91,7 +95,10 @@ int Tool_Polygone::startMouseX = 0;
 int Tool_Polygone::startMouseY = 0;
 int Tool_Polygone::departX = 0;
 int Tool_Polygone::departY = 0;
+bool Tool_Polygone::firstPick = true;
+std::list<Tuple> Tool_Polygone::ListeSommets = {};
 std::list<cotes> Tool_Polygone::ListeCotes = {};
+std::list<std::list<Tuple>> Tool_Polygone::MultiSommets = {};
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;
@@ -369,7 +376,7 @@ void keyboard(unsigned char key, int x, int y)
 			currentCanvas.zoom++;
 		}
 		break;
-	case 'S':
+	case 'd':
 		// zoom out
 		if (canvasAssigned) {
 			if (currentCanvas.zoom > 1) {
@@ -383,6 +390,11 @@ void keyboard(unsigned char key, int x, int y)
 			Tool_Polygone::EndPolygon();
 		}
 		break;
+	case 'z':
+		// End a Selection
+		if (canvasAssigned) {
+			Tool_Selection::End_Selection();
+		}
 	}
 }
 
