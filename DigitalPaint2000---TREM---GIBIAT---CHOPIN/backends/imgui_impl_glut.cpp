@@ -30,7 +30,7 @@
 #else
 
 #endif
-#include <..\..\..\..\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\glut.h>
+#include <glut.h>
 
 #ifdef _MSC_VER
 #pragma warning (disable: 4505) // unreferenced local function has been removed (stb stuff)

@@ -33,6 +33,7 @@ const Colour ColourPalette::colours[] = {
 	{ 0.0f, 0.0f, 0.0f },		// black
 	{ 1.0f, 1.0f, 1.0f }		// white
 };
+static ImVec4 color = ImVec4(255.0f, .0f, 0.0f, 1.f);
 int ColourPalette::selectedIndex = 0;
 int ColourPalette::palette_x_pos = 750;
 #include "Alert Dialogue.h"
@@ -130,23 +131,23 @@ void vRappelSousMenu1(int i)
 	{
 	case 11:
 		// Rouge
-		selectedColour = ColourPalette::colours[0];
+		color = ImVec4(ColourPalette::colours[0].r, ColourPalette::colours[0].g, ColourPalette::colours[0].b,1.0f);
 		break;
 	case 12:
 		// Vert
-		selectedColour = ColourPalette::colours[1];
+		color = ImVec4(ColourPalette::colours[1].r, ColourPalette::colours[1].g, ColourPalette::colours[1].b, 1.0f);
 		break;
 	case 13:
 		// Bleu
-		selectedColour = ColourPalette::colours[2];
+		color = ImVec4(ColourPalette::colours[2].r, ColourPalette::colours[2].g, ColourPalette::colours[2].b, 1.0f);
 		break;
 	case 14:
 		// Noir
-		selectedColour = ColourPalette::colours[3];
+		color = ImVec4(ColourPalette::colours[3].r, ColourPalette::colours[3].g, ColourPalette::colours[3].b, 1.0f);
 		break;
 	case 15:
 		// Blanc
-		selectedColour = ColourPalette::colours[4];
+		color = ImVec4(ColourPalette::colours[4].r, ColourPalette::colours[4].g, ColourPalette::colours[4].b, 1.0f);
 		break;
 	}
 }
@@ -238,13 +239,11 @@ void NewConfirmedCallback() {
 	Tool_Polygone::MultiSommets.clear();
 	Tool_Polygone::firstPick = true;
 	Tool_Selection::firstPickSelect = true;
-	
 	int nbmenuajoute = (Tool_Selection::nbpoly)%20;
 	for (int i = 0; i < nbmenuajoute; ++i)
 	{
 		glutRemoveMenuItem(glutGet(GLUT_MENU_NUM_ITEMS));
 	}
-
 }
 
 void OpenButtonPressed() {
@@ -278,7 +277,6 @@ void SaveAsButtonPressed() {
 }
 
 void ColorPicker() {
-	static ImVec4 color = ImVec4(114.0f / 255.0f, 144.0f / 255.0f, 154.0f / 255.0f, 200.0f / 255.0f);
 	selectedColour = { color.x, color.y, color.z };
 	// Generate a default palette. The palette will persist and can be edited.
 	static bool saved_palette_init = true;
@@ -403,9 +401,6 @@ void my_display_code()
 		if (ImGui::Button("Fill Circle")) {
 			Toolbar::selectedButton = 2;
 		}
-		if (ImGui::Button("LCA")) {
-			Toolbar::selectedButton = 7;
-		}
 		if (ImGui::Button("Line")) { 
 			Toolbar::selectedButton = 3;
 		}
@@ -443,7 +438,6 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	
-
 	glPushMatrix();
 
 	// Rescale to "pixel" scale - position (x, y) is x pixels along, y pixels up
@@ -828,7 +822,6 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Lignes", 1);
 	glutAddMenuEntry("Cercle", 5);
 	nSousmenu3 = glutCreateMenu(vRappelMenuPrincipal);
-	glutAddMenuEntry("LCA", 8);
 	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
@@ -839,7 +832,7 @@ int main(int argc, char* argv[])
 
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
-	glutAddSubMenu("Remplissage", nSousmenu3);
+	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle
