@@ -224,6 +224,7 @@ void NewConfirmedCallback() {
 	Tool_Polygone::MultiSommets.clear();
 	Tool_Polygone::firstPick = true;
 	Tool_Selection::firstPickSelect = true;
+
 }
 
 void OpenButtonPressed() {
@@ -381,9 +382,6 @@ void my_display_code()
 		if (ImGui::Button("Fill Circle")) {
 			Toolbar::selectedButton = 2;
 		}
-		if (ImGui::Button("LCA")) {
-			Toolbar::selectedButton = 7;
-		}
 		if (ImGui::Button("Line")) { 
 			Toolbar::selectedButton = 3;
 		}
@@ -421,7 +419,6 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	
-
 	glPushMatrix();
 
 	// Rescale to "pixel" scale - position (x, y) is x pixels along, y pixels up
@@ -806,7 +803,6 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Lignes", 1);
 	glutAddMenuEntry("Cercle", 5);
 	nSousmenu3 = glutCreateMenu(vRappelMenuPrincipal);
-	glutAddMenuEntry("LCA", 8);
 	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
@@ -817,7 +813,7 @@ int main(int argc, char* argv[])
 
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
-	glutAddSubMenu("Remplissage", nSousmenu3);
+	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle
