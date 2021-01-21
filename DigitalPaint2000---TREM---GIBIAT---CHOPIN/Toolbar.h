@@ -64,7 +64,7 @@ public:
 
 class Tool_Fill {
 public:
-	static void Fill(Colour startColour, int x, int y);
+	static void FillCercle(Colour startColour, int x, int y);
 	static void Fill(Colour startColour);
 	static bool Pressed(int button, int state, int x, int y);
 	static bool PressedLCA(int button, int state, int x, int y);
@@ -96,6 +96,7 @@ public:
 	static bool firstPickSelect;
 	static std::list<Tuple> CotesFenetre;
 	static bool Pressed(int button, int state, int cx, int cy);
+	static bool SelectRectangle(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
 	static void End_Selection();
 };
@@ -116,6 +117,7 @@ public:
 	static int departX;
 	static int departY;
 	static bool firstPick;
+	static Colour bord_color;
 	static std::list<cotes> ListeCotes;
 	static std::list<Tuple> ListeSommets;
 	static std::list<std::list<Tuple>> MultiSommets;
@@ -136,7 +138,8 @@ public:
 	// buttons for each tool in the menu
 	static Button penButton;
 	static Button moveButton;
-	static Button fillButton;
+	static Button fillLCAButton;
+	static Button fillCircleButton;
 	static Button rectButton;
 	static Button selectionButton;
 	static Button LCAButton;
@@ -151,7 +154,7 @@ public:
 		ToolEvents::End();
 		if (button.text == "Pen") { selectedButton = 0; }
 		if (button.text == "Move") { selectedButton = 1; }
-		if (button.text == "Fill") { selectedButton = 2; }
+		if (button.text == "Fill Circle") { selectedButton = 2 ; }
 		if (button.text == "Line") { selectedButton = 3; }
 		if (button.text == "Select") { selectedButton = 4; }
 		if (button.text == "LCA") { selectedButton = 7; }
@@ -168,10 +171,11 @@ public:
 		// create the buttons for the toolbar
 		penButton = Button::Create(0, 100, 95, 40, (char *)"Pen", ToolButtonPressed, true);
 		moveButton = Button::Create(0, 140, 95, 40, (char *)"Move", ToolButtonPressed, true);
-		fillButton = Button::Create(0, 180, 95, 40, (char *)"Fill", ToolButtonPressed, true);
-		rectButton = Button::Create(0, 220, 95, 40, (char *)"Line", ToolButtonPressed, true);
-		selectionButton = Button::Create(0, 260, 95, 40, (char *)"Select", ToolButtonPressed, true);
-		LCAButton = Button::Create(0, 380, 95, 40, (char*)"LCA", ToolButtonPressed, true);
+		fillCircleButton = Button::Create(0, 180, 95, 40, (char *)"Fill Circle", ToolButtonPressed, true);
+		LCAButton = Button::Create(0, 300, 95, 40, (char*)"LCA", ToolButtonPressed, true);
+		rectButton = Button::Create(0, 260, 95, 40, (char *)"Line", ToolButtonPressed, true);
+		selectionButton = Button::Create(0, 220, 95, 40, (char *)"Select", ToolButtonPressed, true);
+		
 
 	}
 
@@ -186,7 +190,7 @@ public:
 		// draw the buttons
 		penButton.Display(window_width, window_height);
 		moveButton.Display(window_width, window_height);
-		fillButton.Display(window_width, window_height);
+		fillCircleButton.Display(window_width, window_height);
 		rectButton.Display(window_width, window_height);
 		selectionButton.Display(window_width, window_height);
 		LCAButton.Display(window_width, window_height);
@@ -218,7 +222,7 @@ public:
 		if ((selectedButton != 1) && (moveButton.Pressed(button, state, x, y))) {
 			return true;
 		}
-		if ((selectedButton != 2) && (fillButton.Pressed(button, state, x, y))) {
+		if ((selectedButton != 2) && (fillCircleButton.Pressed(button, state, x, y))) {
 			return true;
 		}
 		if ((selectedButton != 3) && (rectButton.Pressed(button, state, x, y))) {
@@ -249,7 +253,7 @@ public:
 		if (moveButton.Hover(x, y)) {
 			output = true;
 		}
-		if (fillButton.Hover(x, y)) {
+		if (fillCircleButton.Hover(x, y)) {
 			output = true;
 		}
 		if (rectButton.Hover(x, y)) {
@@ -341,6 +345,7 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		if (Tool_Selection::Pressed(button, state, x, y)) {
 			return true;
 		}
+		Tool_Fill::printTable();
 		break;
 	case 5:
 		if (Tool_Circle::Pressed(button, state, x, y)) {
@@ -355,6 +360,11 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		if (Tool_Fill::PressedLCA(button, state, x, y)){
 			return true;
 		}
+	case 10:
+		if (Tool_Selection::SelectRectangle(button, state, x, y)) {
+			return true;
+		}
+	
 	}
 	return false;
 }

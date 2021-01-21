@@ -77,7 +77,7 @@ void printTuple(EdgeTableTuple* tup)
 
 void Tool_Fill::printTable()
 {
-	int i, j;
+	int i;
 
 	for (i = 0; i < maxHt; i++)
 	{
@@ -331,7 +331,25 @@ void Tool_Fill::Fill(Colour startColour)
 		// 5. For each nonvertical edge remaining in AET, update x for new y 
 		updatexbyslopeinv(&ActiveEdgeTuple);
 	}
+	std::list<Tuple> tmp;
+	std::list<cotes> test = Tool_Polygone::ListeCotes;
+	tmp = Tool_Polygone::MultiSommets.back();
+	int** tab1 = new int* [tmp.size()];
+	int* tabxy = new int[tmp.size() * 2];
+	int size = tmp.size();
+	int iter = 0;
+	for (int i = 0; i < size; i++) {
+		tab1[i] = &tabxy[i * 2];
+		tab1[i][0] = tmp.front().x;
+		tab1[i][1] = tmp.front().y;
+		tmp.pop_front();
+	}
+	for (iter; iter < size - 1; iter++) {
 
+		currentCanvas.DrawALine(tab1[iter][0], tab1[iter][1], tab1[iter + 1][0], tab1[iter + 1][1], Tool_Polygone::bord_color);
+
+	}
+	currentCanvas.DrawALine(tab1[iter][0], tab1[iter][1], tab1[0][0], tab1[0][1], Tool_Polygone::bord_color);
 
 	printf("\nScanline filling complete");
 
@@ -349,18 +367,18 @@ void Tool_Fill::Fill(Colour startColour)
 
 
 //Tuple c = { 0,0 };
-void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
+/*void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 
 
 	std::vector<Tuple> intersection;
 	int nbintersection = intersection.size();
 	int parite = 0;
-	for (size_t y = 0; y < Tool_Selection::posFinY; y++)
+	for (int y = 0; y < Tool_Selection::posFinY; y++)
 	{
 		parite = 0;
-		for (size_t x = 0; x < Tool_Selection::posFinX; x++)
+		for (int x = 0; x < Tool_Selection::posFinX; x++)
 		{
-			for (cotes vertex : Tool_Polygone::ListeCotes)
+			for (const cotes vertex : Tool_Polygone::ListeCotes)
 			{
 				float maxY = std::max(vertex.yA, vertex.yB);
 				float maxX = std::max(vertex.xA, vertex.xB);
@@ -382,7 +400,7 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 		}
 
 	}
-
+	*/
 	/*Tuple LCA[2] = { {0,0},{0,0} };
 	for (int y = Tool_Selection::posDepY+1; y < Tool_Selection::posFinY; y++) {
 		for (int x = Tool_Selection::posDepX+1; x < Tool_Selection::posFinX; x++) {
@@ -408,10 +426,10 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 			LCA[0] = tmp;
 			LCA[1] = tmp;
 		}
-	}*/
+	}
 }
-
-/*void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
+*/
+void Tool_Fill::FillCercle(Colour startColour, int cx, int cy) {
 	// algorithm expands from point filling an area
 	// vec stores outer pixels for the next iteration
 	std::vector<Tuple> vec;
@@ -424,7 +442,7 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 			Colour colourAtPixel = currentCanvas.GetPixelColour(vec[i].x, vec[i].y);
 			if ((colourAtPixel.r == startColour.r) && (colourAtPixel.g == startColour.g) && (colourAtPixel.b == startColour.b)) {
 				currentCanvas.SetPixelColour(vec[i].x, vec[i].y, selectedColour);
-				if (i % 10 == 0) {
+				if (i % 50 == 0) {
 					affichage();
 				}
 				// add neighbours to the outside vector for the next iteration
@@ -453,7 +471,7 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 		newvec = b;
 	}
 } 
-*/
+
 
 /*
 	Handles mouse press events passed onto the Fill tool
@@ -470,7 +488,7 @@ bool Tool_Fill::Pressed(int button, int state, int x, int y) {
 		int canvasCoordY = (y - currentCanvas.yOffset) / currentCanvas.zoom;
 		Colour colourWherePressed = currentCanvas.GetPixelColour(canvasCoordX, canvasCoordY);
 		if ((colourWherePressed.r != selectedColour.r) || (colourWherePressed.g != selectedColour.g) || (colourWherePressed.b != selectedColour.b)) {
-			Tool_Fill::Fill(colourWherePressed, canvasCoordX, canvasCoordY);
+			Tool_Fill::FillCercle(colourWherePressed, canvasCoordX, canvasCoordY);
 			return true;
 		}
 	}

@@ -67,7 +67,8 @@ static int toolSelectedButton = 0;
 int Toolbar::selectedButton = 0;
 Button Toolbar::penButton;
 Button Toolbar::moveButton;
-Button Toolbar::fillButton;
+Button Toolbar::fillLCAButton;
+Button Toolbar::fillCircleButton;
 Button Toolbar::rectButton;
 Button Toolbar::selectionButton;
 Button Toolbar::LCAButton;
@@ -104,6 +105,7 @@ int Tool_Polygone::startMouseY = 0;
 int Tool_Polygone::departX = 0;
 int Tool_Polygone::departY = 0;
 bool Tool_Polygone::firstPick = true;
+Colour Tool_Polygone::bord_color = { 0.0f, 0.0f, 0.0f };
 std::list<Tuple> Tool_Polygone::ListeSommets = {};
 std::list<cotes> Tool_Polygone::ListeCotes = {};
 std::list<std::list<Tuple>> Tool_Polygone::MultiSommets = {};
@@ -153,7 +155,7 @@ void vRappelSousMenu2(int i)
 
 void vRappelMenuPrincipal(int i)
 {
-	switch (i) 
+	switch (i)
 	{
 	case 1:
 		// Bouton Ligne selectionner
@@ -177,7 +179,7 @@ void vRappelMenuPrincipal(int i)
 		break;
 	case 2:
 		// Bouton Trac� fen�tre
-		Toolbar::selectedButton = 3;
+		Toolbar::selectedButton = 10;
 		break;
 	case 7:
 		// Bouton Polygone
@@ -188,7 +190,6 @@ void vRappelMenuPrincipal(int i)
 		// Bouton LCA
 		Toolbar::selectedButton = 7;
 		break;
-	
 	}
 }
 
@@ -203,7 +204,6 @@ void menu(int item)
 		break;
 	}
 }
-
 
 
 void NewConfirmedCallback() {
@@ -384,7 +384,7 @@ void my_display_code()
 
 }
 
-int nSousmenu1, nSousmenu2, nMenuprincipal; // Num�ros (identifiants) des menus
+int nSousmenu1, nSousmenu2, nSousmenu3, nMenuprincipal; // Num�ros (identifiants) des menus
 int nTue = 0;
 /*
 	OpenGL display function
@@ -647,6 +647,7 @@ void keyboard(unsigned char key, int x, int y)
 		if (canvasAssigned) {
 			Tool_Selection::End_Selection();
 		}
+	
 	}
 }
 
@@ -787,17 +788,22 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Pinceau libre", 6);
 	glutAddMenuEntry("Lignes", 1);
 	glutAddMenuEntry("Cercle", 5);
+	nSousmenu3 = glutCreateMenu(vRappelMenuPrincipal);
+	glutAddMenuEntry("LCA", 8);
+	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
 
 	glutAddSubMenu("Couleurs", nSousmenu1);
 	glutAddSubMenu("Formes", nSousmenu2);
+	glutAddMenuEntry("Trac� Polygone", 7);
 
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
 	glutAddMenuEntry("Remplissage", 4);
 	glutAddMenuEntry("LCA", 8);
 	glutAddMenuEntry("Tracé Polygone", 7);
+	glutAddSubMenu("Remplissage", nSousmenu3);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle
