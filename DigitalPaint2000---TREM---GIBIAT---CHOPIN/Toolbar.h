@@ -117,6 +117,7 @@ public:
 	static int departX;
 	static int departY;
 	static bool firstPick;
+	static Colour bord_color;
 	static std::list<cotes> ListeCotes;
 	static std::list<Tuple> ListeSommets;
 	static std::list<std::list<Tuple>> MultiSommets;
