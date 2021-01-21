@@ -61,6 +61,9 @@ bool SaveFileDialogue::showTooLongText = false;
 #include "Top Menu Bar.h"
 std::vector<Button> TopMenuBar::buttons;
 #include "Toolbar.h"
+
+static int toolSelectedButton = 0;
+
 int Toolbar::selectedButton = 0;
 Button Toolbar::penButton;
 Button Toolbar::moveButton;
@@ -68,6 +71,7 @@ Button Toolbar::fillButton;
 Button Toolbar::rectButton;
 Button Toolbar::selectionButton;
 Button Toolbar::LCAButton;
+
 #include "Tool_Pen.h"
 bool Tool_Pen::isMouseDown = false;
 int Tool_Pen::mouseLastX = 0;
@@ -204,36 +208,180 @@ void menu(int item)
 
 void NewConfirmedCallback() {
 	canvasAssigned = true;
-	currentCanvas = NewCanvas(500, 500, 100, 100);
+	currentCanvas = NewCanvas(600, 600, 0,0);
+}
+
+void OpenButtonPressed() {
+	OpenFileDialogue::Show();
+}
+
+void SaveButtonPressed() {
+	// If there is no current canvas, show an error
+	if (!canvasAssigned) {
+		AlertDialogue::Alert("No canvas has been created. Create one before saving.");
+		return;
+	}
+	// If the current canvas is new (without a file path), go to Save File Dialogue (just like Save As)
+	if (currentCanvas.fileName == "") {
+		SaveFileDialogue::Reset();
+		SaveFileDialogue::Show();
+		return;
+	}
+	// If it is new (with a file path) save it to the path
+	FileManagement::WriteFile(currentCanvas.fileName, currentCanvas.Serialize());
+	AlertDialogue::Alert("Saved to " + currentCanvas.fileName + ".dti");
+}
+
+void SaveAsButtonPressed() {
+	if (!canvasAssigned) {
+		AlertDialogue::Alert("No canvas has been created. Create one before saving.");
+		return;
+	}
+	SaveFileDialogue::Reset();
+	SaveFileDialogue::Show();
+}
+
+void ColorPicker() {
+	static ImVec4 color = ImVec4(114.0f / 255.0f, 144.0f / 255.0f, 154.0f / 255.0f, 200.0f / 255.0f);
+	selectedColour = { color.x, color.y, color.z };
+	// Generate a default palette. The palette will persist and can be edited.
+	static bool saved_palette_init = true;
+	static ImVec4 saved_palette[32] = {};
+	if (saved_palette_init)
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(saved_palette); n++)
+		{
+			ImGui::ColorConvertHSVtoRGB(n / 31.0f, 0.8f, 0.8f,
+				saved_palette[n].x, saved_palette[n].y, saved_palette[n].z);
+			saved_palette[n].w = 1.0f; // Alpha
+		}
+		saved_palette_init = false;
+	}
+
+	static ImVec4 backup_color;
+	bool open_popup = ImGui::ColorButton("MyColor##3b", color);
+	ImGui::SameLine(0, ImGui::GetStyle().ItemInnerSpacing.x);
+	open_popup |= ImGui::Button("Palette");
+	if (open_popup)
+	{
+		ImGui::OpenPopup("mypicker");
+		backup_color = color;
+	}
+	if (ImGui::BeginPopup("mypicker"))
+	{
+		ImGui::Text("MY CUSTOM COLOR PICKER WITH AN AMAZING PALETTE!");
+		ImGui::Separator();
+		ImGui::ColorPicker4("##picker", (float*)&color, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_NoSmallPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_PickerHueBar | ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_Uint8);
+		ImGui::SameLine();
+
+		ImGui::BeginGroup(); // Lock X position
+		ImGui::Text("Current");
+		ImGui::ColorButton("##current", color, ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_AlphaPreviewHalf, ImVec2(60, 40));
+		ImGui::Text("Previous");
+		if (ImGui::ColorButton("##previous", backup_color, ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_AlphaPreviewHalf, ImVec2(60, 40)))
+			color = backup_color;
+		ImGui::Separator();
+		ImGui::Text("Palette");
+		for (int n = 0; n < IM_ARRAYSIZE(saved_palette); n++)
+		{
+			ImGui::PushID(n);
+			if ((n % 8) != 0)
+				ImGui::SameLine(0.0f, ImGui::GetStyle().ItemSpacing.y);
+
+			ImGuiColorEditFlags palette_button_flags = ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_NoTooltip;
+			if (ImGui::ColorButton("##palette", saved_palette[n], palette_button_flags, ImVec2(20, 20)))
+				color = ImVec4(saved_palette[n].x, saved_palette[n].y, saved_palette[n].z, color.w); // Preserve alpha!
+
+			// Allow user to drop colors into each palette entry. Note that ColorButton() is already a
+			// drag source by default, unless specifying the ImGuiColorEditFlags_NoDragDrop flag.
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(IMGUI_PAYLOAD_TYPE_COLOR_3F))
+					memcpy((float*)&saved_palette[n], payload->Data, sizeof(float) * 3);
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(IMGUI_PAYLOAD_TYPE_COLOR_4F))
+					memcpy((float*)&saved_palette[n], payload->Data, sizeof(float) * 4);
+				ImGui::EndDragDropTarget();
+			}
+
+			ImGui::PopID();
+		}
+		ImGui::EndGroup();
+		ImGui::EndPopup();
+	}
 }
 
 void my_display_code()
 {
-
+	
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("File"))
+		if (ImGui::BeginMenu("Fichier"))
 		{
-			if (ImGui::MenuItem("Nouveau", "CTRL+Z")) {
+			if (ImGui::MenuItem("Nouveau")) {
 				NewConfirmedCallback();
 			}
+			if (ImGui::MenuItem("Ouvrir")) {
+				OpenButtonPressed();
+			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Enregister", "CTRL+Y", false, false)) {}
-			if (ImGui::MenuItem("Enregister sous ", "CTRL+Z")) {}
+			if (ImGui::MenuItem("Enregister")) {
+				SaveButtonPressed();
+			}
+			if (ImGui::MenuItem("Enregister sous ")) {
+				SaveAsButtonPressed();
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit"))
 		{
-			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+			if (ImGui::MenuItem("Undo")) {}
+			if (ImGui::MenuItem("Redo")) {}  // Disabled item
 			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			if (ImGui::MenuItem("Cut")) {}
+			if (ImGui::MenuItem("Copy")) {}
+			if (ImGui::MenuItem("Paste")) {}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
 	}
+	static bool p_open = false;
+	static int display_lines = 10;
+	static int type = 0;
+
+
+	ImGui::SetNextWindowSize(ImVec2(100, 400));
+	
+	if (ImGui::Begin("Example: Constrained Resize", &p_open))
+	{
+
+		
+
+		ColorPicker();
+		if (ImGui::Button("Pen")) { 
+			Toolbar::selectedButton = 0;
+		}
+
+		if (ImGui::Button("Move")) { 
+			Toolbar::selectedButton = 1;
+		}
+		if (ImGui::Button("Fill")) {
+			Toolbar::selectedButton = 2;
+		}
+		
+		if (ImGui::Button("Line")) { 
+			Toolbar::selectedButton = 3;
+		}
+
+		if (ImGui::Button("Select")) { 
+			Toolbar::selectedButton = 4;
+		}
+
+		if (ImGui::Button("LCA")) { 
+			Toolbar::selectedButton = 7;
+		}
+	}
+	ImGui::End();
+
 }
 
 int nSousmenu1, nSousmenu2, nMenuprincipal; // Num�ros (identifiants) des menus
@@ -261,7 +409,7 @@ void display()
 
 	// Rescale to "pixel" scale - position (x, y) is x pixels along, y pixels up
 	// Allows user to resize window without stretching UI elements
-	glScalef((double)(800) / (double)(glutGet(GLUT_WINDOW_WIDTH)), (double)(600) / (double)(glutGet(GLUT_WINDOW_HEIGHT)), 1.0f);
+	glScalef((double)(1600) / (double)(glutGet(GLUT_WINDOW_WIDTH)), (double)(900) / (double)(glutGet(GLUT_WINDOW_HEIGHT)), 1.0f);
 
 	// Draw the canvas and any overlays from tools in use
 	if (canvasAssigned) {
@@ -270,13 +418,13 @@ void display()
 	}
 
 	// Draw the colour palette
-	ColourPalette::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	//ColourPalette::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 
 	// Draw the toolbar on left hand side
-	Toolbar::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	//Toolbar::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 
 	// Draw the top menu bar buttons (new, open, save, etc)
-	TopMenuBar::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	//TopMenuBar::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 
 	// Draw the dark semi-transparent cover if necessary
 	Cover::Display(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
@@ -377,12 +525,12 @@ void mouse_click(int button, int state, int x, int y)
 				return;
 			}
 			// If not handled pass it onto buttons/toolbars
-			if (TopMenuBar::Pressed(button, state, x, y)) {
+			/*if (TopMenuBar::Pressed(button, state, x, y)) {
 				return;
-			}
-			if (Toolbar::Pressed(button, state, x, y)) {
+			}*/
+			/*if (Toolbar::Pressed(button, state, x, y)) {
 				return;
-			}
+			}*/
 			if (ColourPalette::Pressed(button, state, x, y)) {
 				return;
 			}
@@ -581,7 +729,7 @@ int main(int argc, char* argv[])
 	// create window with title and fixed start size
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
-	glutInitWindowSize(800, 600);
+	glutInitWindowSize(1600, 900);
 	glutCreateWindow("DigitalPaint");
 
 	// define the display function
@@ -598,6 +746,7 @@ int main(int argc, char* argv[])
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 10));
 	//ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer backends
