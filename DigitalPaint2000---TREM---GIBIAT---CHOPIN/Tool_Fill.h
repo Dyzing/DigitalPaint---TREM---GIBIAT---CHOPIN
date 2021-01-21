@@ -208,6 +208,31 @@ void updatexbyslopeinv(EdgeTableTuple* Tup)
 
 void Tool_Fill::Fill(Colour startColour)
 {
+	Tool_Fill::initEdgeTable();
+	std::list<Tuple> tmp;
+
+	std::list<std::list<Tuple>>::iterator it = Tool_Polygone::MultiSommets.begin();
+	std::advance(it, Tool_Selection::polygone_index % 21);
+	tmp = *it;
+
+	//tmp = Tool_Polygone::MultiSommets.back();
+	int** tab1 = new int* [tmp.size()];
+	int* tabxy = new int[tmp.size() * 2];
+	int size = tmp.size();
+	int iter = 0;
+	for (int i = 0; i < size; i++) {
+		tab1[i] = &tabxy[i * 2];
+		tab1[i][0] = tmp.front().x;
+		tab1[i][1] = tmp.front().y;
+		tmp.pop_front();
+	}
+	for (iter; iter < size - 1; iter++) {
+
+		storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[iter + 1][0], tab1[iter + 1][1]);
+
+	}
+	storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[0][0], tab1[0][1]);
+
 	/* Follow the following rules:
 	1. Horizontal edges: Do not include in edge table
 	2. Horizontal edges: Drawn either on the bottom or on the top.
@@ -331,25 +356,24 @@ void Tool_Fill::Fill(Colour startColour)
 		// 5. For each nonvertical edge remaining in AET, update x for new y 
 		updatexbyslopeinv(&ActiveEdgeTuple);
 	}
-	std::list<Tuple> tmp;
-	std::list<cotes> test = Tool_Polygone::ListeCotes;
-	tmp = Tool_Polygone::MultiSommets.back();
-	int** tab1 = new int* [tmp.size()];
-	int* tabxy = new int[tmp.size() * 2];
-	int size = tmp.size();
-	int iter = 0;
-	for (int i = 0; i < size; i++) {
-		tab1[i] = &tabxy[i * 2];
-		tab1[i][0] = tmp.front().x;
-		tab1[i][1] = tmp.front().y;
-		tmp.pop_front();
+	std::list<Tuple> tmpfin;
+	tmpfin = Tool_Polygone::MultiSommets.back();
+	int** tabfin = new int* [tmpfin.size()];
+	int* tabxfinxy = new int[tmpfin.size() * 2];
+	int sizefin = tmpfin.size();
+	int iterfin = 0;
+	for (int i = 0; i < sizefin; i++) {
+		tabfin[i] = &tabxfinxy[i * 2];
+		tabfin[i][0] = tmpfin.front().x;
+		tabfin[i][1] = tmpfin.front().y;
+		tmpfin.pop_front();
 	}
-	for (iter; iter < size - 1; iter++) {
+	for (iterfin; iterfin < sizefin - 1; iterfin++) {
 
-		currentCanvas.DrawALine(tab1[iter][0], tab1[iter][1], tab1[iter + 1][0], tab1[iter + 1][1], Tool_Polygone::bord_color);
+		currentCanvas.DrawALine(tabfin[iterfin][0], tabfin[iterfin][1], tabfin[iterfin + 1][0], tabfin[iterfin + 1][1], Tool_Polygone::bord_color);
 
 	}
-	currentCanvas.DrawALine(tab1[iter][0], tab1[iter][1], tab1[0][0], tab1[0][1], Tool_Polygone::bord_color);
+	currentCanvas.DrawALine(tabfin[iterfin][0], tabfin[iterfin][1], tabfin[0][0], tabfin[0][1], Tool_Polygone::bord_color);
 
 	printf("\nScanline filling complete");
 

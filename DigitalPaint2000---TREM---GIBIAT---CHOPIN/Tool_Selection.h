@@ -326,32 +326,24 @@ void Tool_Selection::End_Selection() {
 
 	Tool_Polygone::MultiSommets.clear();
 	std::list<Tuple> tmp;
-	for (newSommets som : ListeNewPolygone) {
+	int nbpoly = 20;
+
+
+
+	for (newSommets som : ListeNewPolygone) { 
 		for (int b = 0; b < som.size; b++) {
 			tmp.push_back({ som.tabSommets[b][0], som.tabSommets[b][1] });
 		}
 		Tool_Polygone::MultiSommets.push_back(tmp);
+		++nbpoly;
+		char charpolygone[15] = "Polygone ";
+		char EntierConvertit[3]; //Ton entier une fois convertit en chaine
+		sprintf_s(EntierConvertit, "%d", nbpoly%20); //Convertion...
+		strcat_s(charpolygone, EntierConvertit);
+ 		glutAddMenuEntry(charpolygone, nbpoly);
 		tmp.clear();
 	}
 
-	Tool_Fill::initEdgeTable();
-	std::list<cotes> test = Tool_Polygone::ListeCotes;
-	tmp = Tool_Polygone::MultiSommets.back();
-	int** tab1 = new int* [tmp.size()];
-	int* tabxy = new int[tmp.size() * 2];
-	int size = tmp.size();
-	int iter = 0;
-	for (int i = 0; i < size; i++) {
-		tab1[i] = &tabxy[i * 2];
-		tab1[i][0] = tmp.front().x;
-		tab1[i][1] = tmp.front().y;
-		tmp.pop_front();
-	}
-	for (iter; iter < size - 1; iter++) {
-
-		storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[iter + 1][0], tab1[iter + 1][1]);
-
-	}
-	storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[0][0], tab1[0][1]);
+	
 	firstPickSelect = true;
 }

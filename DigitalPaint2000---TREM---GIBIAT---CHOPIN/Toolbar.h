@@ -94,6 +94,7 @@ public:
 	static int departX;
 	static int departY;
 	static bool firstPickSelect;
+	static int polygone_index;
 	static std::list<Tuple> CotesFenetre;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool BlockMousePress(int button, int state, int x, int y);
@@ -231,6 +232,12 @@ public:
 		if ((selectedButton != 7) && (LCAButton.Pressed(button, state, x, y))) {
 			return true;
 		}
+		if ((selectedButton != 21) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
+		if ((selectedButton != 22) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
 		return false;
 	}
 
@@ -357,6 +364,17 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		if (Tool_Fill::PressedLCA(button, state, x, y)){
 			return true;
 		}
+	case 21:
+		Tool_Selection::polygone_index = 21;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+	case 22:
+		Tool_Selection::polygone_index = 22;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+
 	}
 	return false;
 }

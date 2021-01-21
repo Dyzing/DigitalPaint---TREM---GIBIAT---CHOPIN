@@ -85,6 +85,7 @@ int Tool_Selection::departX = 0;
 int Tool_Selection::departY = 0;
 bool Tool_Selection::firstPickSelect = true;
 std::list<Tuple> Tool_Selection::CotesFenetre = {};
+int Tool_Selection::polygone_index = 20;
 #include "Tool_Circle.h"
 bool Tool_Circle::isMouseDown = false;
 int Tool_Circle::startMouseX = 0;
@@ -145,7 +146,7 @@ void vRappelSousMenu2(int i)
 
 void vRappelMenuPrincipal(int i)
 {
-	switch (i) 
+	switch (i)
 	{
 	case 1:
 		// Bouton Ligne selectionner
@@ -175,13 +176,20 @@ void vRappelMenuPrincipal(int i)
 		// Bouton Polygone
 		Toolbar::selectedButton = 6;
 		break;
-
 	case 8:
 		// Bouton LCA
 		Toolbar::selectedButton = 7;
 		break;
-	
+	case 21:
+		// Bouton Polygone 1
+		Toolbar::selectedButton = 21;
+		break;
+	case 22:
+		// Bouton Polygone 2
+		Toolbar::selectedButton = 22;
+		break;
 	}
+
 }
 
 void menu(int item)
