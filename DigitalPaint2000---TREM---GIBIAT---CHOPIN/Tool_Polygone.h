@@ -59,7 +59,7 @@ bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 			isMouseDown = false;
 			return true;
 		}
-
+	return false;
 }
 
 

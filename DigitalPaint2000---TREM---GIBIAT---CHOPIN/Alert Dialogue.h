@@ -54,8 +54,8 @@ public:
 	*/
 	static void Init() {
 		// Creat the Ok button and open the dialogue for a welcome screen
-		okButton = Button::Create(0, 140, 100, 40, (char *)"Ok", OkPressed, true);
-		Alert("Welcome to this 2D Drawing Tool. Press \"New\" to get started.");
+		//okButton = Button::Create(0, 140, 100, 40, (char *)"Ok", OkPressed, true);
+		//Alert("Welcome to this 2D Drawing Tool. Press \"New\" to get started.");
 	}
 
 

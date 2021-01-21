@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 	Tool_Selection.h
 	Implements the Circle drawing tool
 */
@@ -41,14 +41,7 @@ bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 		}
 		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
 
-			// get the rect coordinates
-			float minX = startMouseX;
-			float maxX = cx;
-			float minY = startMouseY;
-			float maxY = cy;
 			currentCanvas.DrawALine(startMouseX, startMouseY, cx, cy, selection);
-
-
 			CotesFenetre.push_back({ startMouseX,startMouseY });
 		}
 
@@ -61,8 +54,8 @@ bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 }
 
 
-
-/*bool Tool_Selection::Pressed(int button, int state, int x, int y) {
+Colour blanc = { 1.0f,1.0f,1.0f };
+bool Tool_Selection::SelectRectangle(int button, int state, int x, int y) {
 	if (currentCanvas.checkInside(x, y)) {
 		// convert mouse position into canvas coordinates
 		int cx = (x - currentCanvas.xOffset) / currentCanvas.zoom;
@@ -118,7 +111,7 @@ bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 		}
 	}
 	return false;
-}*/
+}
 
 
 /*
@@ -245,7 +238,7 @@ void clip(int** poly_points, int& poly_size,
 		}
 }
 
-// Implements Sutherland–Hodgman algorithm 
+// Implements Sutherlandï¿½Hodgman algorithm 
 int suthHodgClip(int** poly_points, int poly_size,
     int** clipper_points, int clipper_size)
 {
@@ -270,7 +263,6 @@ int suthHodgClip(int** poly_points, int poly_size,
 	}
 	currentCanvas.DrawALine(poly_points[j][0], poly_points[j][1], poly_points[0][0], poly_points[0][1], selectedColour);
 
-
 	return poly_size;
 }
 
@@ -281,8 +273,6 @@ void Tool_Selection::End_Selection() {
 	float minY = departY;
 	float maxY = startMouseY;
 
-	float y;
-	float x;
 	int i = 0;
 	currentCanvas.DrawALine(departX, departY, startMouseX, startMouseY, selection);
 	CotesFenetre.push_back({ startMouseX,startMouseY });

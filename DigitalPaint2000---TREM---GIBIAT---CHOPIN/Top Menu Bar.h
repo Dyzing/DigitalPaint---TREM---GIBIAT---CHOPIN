@@ -20,10 +20,10 @@ public:
 	*/
 	static void Init() {
 		// Create instances of the button classes and add them to the vector
-		buttons.push_back(Button::Create(0, 0, 70, 40, (char *)"New", NewButtonPressed, true));
-		buttons.push_back(Button::Create(70, 0, 80, 40, (char *)"Open", OpenButtonPressed, true));
-		buttons.push_back(Button::Create(150, 0, 80, 40, (char *)"Save", SaveButtonPressed, true));
-		buttons.push_back(Button::Create(230, 0, 110, 40, (char *)"SaveAs", SaveAsButtonPressed, true));
+		//buttons.push_back(Button::Create(0, 0, 70, 40, (char *)"New", NewButtonPressed, true));
+		//buttons.push_back(Button::Create(70, 0, 80, 40, (char *)"Open", OpenButtonPressed, true));
+		//buttons.push_back(Button::Create(150, 0, 80, 40, (char *)"Save", SaveButtonPressed, true));
+		//buttons.push_back(Button::Create(230, 0, 110, 40, (char *)"SaveAs", SaveAsButtonPressed, true));
 	}
 
 

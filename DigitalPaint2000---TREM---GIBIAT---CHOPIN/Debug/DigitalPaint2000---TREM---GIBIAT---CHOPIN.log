@@ -1,16 +1,18 @@
 ﻿  DigitalPaint2000---TREM---GIBIAT---CHOPIN.cpp
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\File Management.h(57,21): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\File Management.h(106,22): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\File Management.h(138,22): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Canvas.h(196,22): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(34,21): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(35,10): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(61,21): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(95,21): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(150,22): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(175,22): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(202,22): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Top Menu Bar.h(37,21): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Fill.h(32,21): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Fill.h(57,12): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
-  DigitalPaint2000---TREM---GIBIAT---CHOPIN.vcxproj -> C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Debug\DigitalPaint2000---TREM---GIBIAT---CHOPIN.exe
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\File Management.h(57,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\File Management.h(106,22): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\File Management.h(138,22): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Canvas.h(196,22): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(34,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(35,10): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(61,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(95,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(150,22): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(175,22): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Open File Dialogue.h(202,22): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Top Menu Bar.h(37,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Fill.h(440,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Fill.h(468,12): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN.cpp(799,19): warning C4566: le caractère représenté par le nom de caractère universel '\uFFFD' ne peut pas être représenté dans la page de codes actuelle (1252)
+  LINK : C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Debug\DigitalPaint2000---TREM---GIBIAT---CHOPIN.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
+  DigitalPaint2000---TREM---GIBIAT---CHOPIN.vcxproj -> C:\Users\tasha\Desktop\cour\Math\projet Paint\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Debug\DigitalPaint2000---TREM---GIBIAT---CHOPIN.exe
