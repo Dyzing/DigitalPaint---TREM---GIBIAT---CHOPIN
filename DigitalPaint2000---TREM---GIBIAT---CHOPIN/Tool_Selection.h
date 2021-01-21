@@ -12,7 +12,7 @@ struct newSommets {
 	int** tabSommets;
 	int size;
 };
-Colour selection = { 0.4f, 0.0f, 0.80f };
+static Colour selection = {0.0f,0.0f,0.0f};
 /*
 	Handles mouse press events passed onto the Circ tool
 
@@ -37,6 +37,7 @@ bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 			departX = cx;
 			departY = cy;
 			firstPickSelect = false;
+			selection = { 1.f - selectedColour.r, 1.f - selectedColour.g, 1.f - selectedColour.b };
 			return true;
 		}
 		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
@@ -287,7 +288,7 @@ void Tool_Selection::End_Selection() {
 		tab[i][1] = CotesFenetre.front().y;
 		CotesFenetre.pop_front();
 	}
-	currentCanvas = NewCanvas(500, 500, 100, 100);
+	currentCanvas = NewCanvas(600, 600, 0, 0);
 	std::list<newSommets> ListeNewPolygone;
 	for (std::list<Tuple> sommets : Tool_Polygone::MultiSommets) {
 		int sizePolygon = sommets.size();
@@ -334,6 +335,25 @@ void Tool_Selection::End_Selection() {
 		tmp.clear();
 	}
 
-	
+	Tool_Fill::initEdgeTable();
+	if (Tool_Polygone::MultiSommets.size() > 0) {
+		tmp = Tool_Polygone::MultiSommets.back();
+		int** tab1 = new int* [tmp.size()];
+		int* tabxy = new int[tmp.size() * 2];
+		int size = tmp.size();
+		int iter = 0;
+		for (int i = 0; i < size; i++) {
+			tab1[i] = &tabxy[i * 2];
+			tab1[i][0] = tmp.front().x;
+			tab1[i][1] = tmp.front().y;
+			tmp.pop_front();
+		}
+		for (iter; iter < size - 1; iter++) {
+
+			storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[iter + 1][0], tab1[iter + 1][1]);
+
+		}
+		storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[0][0], tab1[0][1]);
+	}
 	firstPickSelect = true;
 }
