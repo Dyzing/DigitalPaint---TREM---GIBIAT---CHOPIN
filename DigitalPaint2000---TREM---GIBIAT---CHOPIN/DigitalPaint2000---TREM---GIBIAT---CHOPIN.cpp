@@ -3,6 +3,8 @@
 	Entry point for 2D Drawing Tool
 */
 
+//CREATED BY GEC
+
 #include "imgui/imgui.h"
 #include "backends/imgui_impl_glut.h"
 #include "backends/imgui_impl_opengl2.h"
@@ -33,6 +35,7 @@ const Colour ColourPalette::colours[] = {
 	{ 0.0f, 0.0f, 0.0f },		// black
 	{ 1.0f, 1.0f, 1.0f }		// white
 };
+static ImVec4 color = ImVec4(255.0f, .0f, 0.0f, 1.f);
 int ColourPalette::selectedIndex = 0;
 int ColourPalette::palette_x_pos = 750;
 #include "Alert Dialogue.h"
@@ -94,6 +97,9 @@ int Tool_Selection::departX = 0;
 int Tool_Selection::departY = 0;
 bool Tool_Selection::firstPickSelect = true;
 std::list<Tuple> Tool_Selection::CotesFenetre = {};
+int Tool_Selection::polygone_index = 20;
+int Tool_Selection::nbpoly = 20;
+
 #include "Tool_Circle.h"
 bool Tool_Circle::isMouseDown = false;
 int Tool_Circle::startMouseX = 0;
@@ -127,23 +133,23 @@ void vRappelSousMenu1(int i)
 	{
 	case 11:
 		// Rouge
-		selectedColour = ColourPalette::colours[0];
+		color = ImVec4(ColourPalette::colours[0].r, ColourPalette::colours[0].g, ColourPalette::colours[0].b,1.0f);
 		break;
 	case 12:
 		// Vert
-		selectedColour = ColourPalette::colours[1];
+		color = ImVec4(ColourPalette::colours[1].r, ColourPalette::colours[1].g, ColourPalette::colours[1].b, 1.0f);
 		break;
 	case 13:
 		// Bleu
-		selectedColour = ColourPalette::colours[2];
+		color = ImVec4(ColourPalette::colours[2].r, ColourPalette::colours[2].g, ColourPalette::colours[2].b, 1.0f);
 		break;
 	case 14:
 		// Noir
-		selectedColour = ColourPalette::colours[3];
+		color = ImVec4(ColourPalette::colours[3].r, ColourPalette::colours[3].g, ColourPalette::colours[3].b, 1.0f);
 		break;
 	case 15:
 		// Blanc
-		selectedColour = ColourPalette::colours[4];
+		color = ImVec4(ColourPalette::colours[4].r, ColourPalette::colours[4].g, ColourPalette::colours[4].b, 1.0f);
 		break;
 	}
 }
@@ -178,19 +184,40 @@ void vRappelMenuPrincipal(int i)
 		Toolbar::selectedButton = 0;
 		break;
 	case 2:
-		// Bouton Trac� fen�tre
+		// Bouton Trace fenetre
 		Toolbar::selectedButton = 10;
 		break;
 	case 7:
 		// Bouton Polygone
 		Toolbar::selectedButton = 6;
 		break;
-
 	case 8:
 		// Bouton LCA
 		Toolbar::selectedButton = 7;
 		break;
+	case 21:
+		// Bouton Polygone 1
+		Toolbar::selectedButton = 21;
+		break;
+	case 22:
+		// Bouton Polygone 2
+		Toolbar::selectedButton = 22;
+		break;
+	case 23:
+		// Bouton Polygone 1
+		Toolbar::selectedButton = 23;
+		break;
+	case 24:
+		// Bouton Polygone 2
+		Toolbar::selectedButton = 24;
+		break;
+	case 25:
+		// Bouton Polygone 1
+		Toolbar::selectedButton = 25;
+		break;
+
 	}
+
 }
 
 void menu(int item)
@@ -210,6 +237,17 @@ static bool showToolBar = true;
 void NewConfirmedCallback() {
 	canvasAssigned = true;
 	currentCanvas = NewCanvas(600, 600, 0,0);
+	Tool_Polygone::ListeCotes.clear();
+	Tool_Polygone::ListeSommets.clear();
+	Tool_Polygone::MultiSommets.clear();
+	Tool_Polygone::firstPick = true;
+	Tool_Selection::firstPickSelect = true;
+	int nbmenuajoute = (Tool_Selection::nbpoly)%20;
+	for (int i = 0; i < nbmenuajoute; ++i)
+	{
+		glutRemoveMenuItem(glutGet(GLUT_MENU_NUM_ITEMS));
+	}
+	Tool_Selection::nbpoly = 20;
 }
 
 void OpenButtonPressed() {
@@ -243,7 +281,6 @@ void SaveAsButtonPressed() {
 }
 
 void ColorPicker() {
-	static ImVec4 color = ImVec4(114.0f / 255.0f, 144.0f / 255.0f, 154.0f / 255.0f, 200.0f / 255.0f);
 	selectedColour = { color.x, color.y, color.z };
 	// Generate a default palette. The palette will persist and can be edited.
 	static bool saved_palette_init = true;
@@ -311,6 +348,46 @@ void ColorPicker() {
 	}
 }
 
+static ImVec4 activeButtonColor = ImVec4(25.0f/255, 118.0f/255, 210.0f/255, 1.f);
+static ImVec4 notActiveButtonColor = ImVec4(0.0f, 75.0f/255, 160.0f/255, 1.f);
+static ImVec4 hoveredButtonColor = ImVec4(99.0f/255, 164.0f/255, 255.0f/255, 1.f);
+void activeToolBtn(int id, const char *label) {
+	ImGui::PushID(1);
+	if (Toolbar::selectedButton == id)
+		ImGui::PushStyleColor(ImGuiCol_Button, hoveredButtonColor);
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, notActiveButtonColor);
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, hoveredButtonColor);
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, activeButtonColor);
+	if (ImGui::Button(label)) {
+		Toolbar::selectedButton = id;
+	}
+	ImGui::PopStyleColor(3);
+	ImGui::PopID();
+
+}
+
+void overlay(const char *titre, const char *text) {
+	bool open = true;
+	ImGuiIO& io = ImGui::GetIO();
+	const float DISTANCE = 10.0f;
+	static int corner = 3;
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove;
+	ImVec2 window_pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
+	ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+	ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+	ImGui::SetNextWindowBgAlpha(0.35f);
+
+	if(ImGui::Begin("overlay", &open, window_flags))
+	{
+		ImGui::Text(titre);
+		ImGui::Separator();
+		ImGui::Text(text);
+	}
+	ImGui::End();
+
+}
+
 void my_display_code()
 {
 	
@@ -333,13 +410,6 @@ void my_display_code()
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Affichage"))
-		{
-			if (ImGui::MenuItem("Tools")) {
-				showToolBar -= showToolBar;
-			}
-			ImGui::EndMenu();
-		}
 		ImGui::EndMainMenuBar();
 	}
 	static bool p_open = true;
@@ -352,31 +422,56 @@ void my_display_code()
 	if (ImGui::Begin("Outils", &showToolBar))
 	{
 		
-		if (ImGui::Button("Pen")) { 
+		ColorPicker();
+
+		activeToolBtn(0, "Pen");
+		activeToolBtn(1, "Move");
+		activeToolBtn(2, "Fill Circle");
+		activeToolBtn(3, "Line");
+		activeToolBtn(6, "Polygone");
+		activeToolBtn(4, "Fenetrage");
+		activeToolBtn(10, "Fen Rect");
+		
+		//activeToolBtn(7, "LCA");
+		/*if (ImGui::Button("Pen")) {
 			Toolbar::selectedButton = 0;
 		}
+		
+
+		
+
 
 		if (ImGui::Button("Move")) { 
 			Toolbar::selectedButton = 1;
 		}
-		if (ImGui::Button("Fill")) {
+		if (ImGui::Button("Fill Circle")) {
 			Toolbar::selectedButton = 2;
 		}
-		
 		if (ImGui::Button("Line")) { 
 			Toolbar::selectedButton = 3;
 		}
-
-		if (ImGui::Button("Select")) { 
+		if (ImGui::Button("Polygone")) {
+			Toolbar::selectedButton = 6;
+		}
+		if (ImGui::Button("Fenetrage")) { 
 			Toolbar::selectedButton = 4;
 		}
+		if (ImGui::Button("Fen Rect")) {
+			Toolbar::selectedButton = 10;
+		}*/
 
-		if (ImGui::Button("LCA")) { 
-			Toolbar::selectedButton = 7;
-		}
+
+		
 	}
 	ImGui::End();
-
+	if (Toolbar::selectedButton == 1)
+		overlay("Commandes", "Utiliser les fleches pour bouger");
+	if (Toolbar::selectedButton == 6)
+		overlay("Consignes", "Cliquer pour definir les point puis appuyez sur \"a\" pour terminer le polygone");
+	if (Toolbar::selectedButton == 4)
+		overlay("Consignes", "appuyer une premiere fois sur le clic gauche puis deplacez la souri et relachez pour dessiner la fenetre");
+	if (Toolbar::selectedButton == 10)
+		overlay("Consignes", "Cliquer pour definir les point puis appuyez sur \"z\" pour terminer la fenetre");
 }
 
 int nSousmenu1, nSousmenu2, nSousmenu3, nMenuprincipal; // Num�ros (identifiants) des menus
@@ -399,7 +494,6 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	
-
 	glPushMatrix();
 
 	// Rescale to "pixel" scale - position (x, y) is x pixels along, y pixels up
@@ -666,13 +760,13 @@ void special(int key, int x, int y)
 		}
 
 		// If not handled check arrow keys for panning camera
-		switch (key)
+		/*switch (key)
 		{
 		case GLUT_KEY_LEFT: if (canvasAssigned) { currentCanvas.xOffset -= 6; } break;
 		case GLUT_KEY_RIGHT: if (canvasAssigned) { currentCanvas.xOffset += 6; } break;
 		case GLUT_KEY_UP: if (canvasAssigned) { currentCanvas.yOffset -= 6; } break;
 		case GLUT_KEY_DOWN: if (canvasAssigned) { currentCanvas.yOffset += 6; } break;
-		}
+		}*/
 	}
 }
 
@@ -725,8 +819,8 @@ int main(int argc, char* argv[])
 	// create window with title and fixed start size
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
-	glutInitWindowSize(1600, 900);
-	glutCreateWindow("DigitalPaint");
+	glutInitWindowSize(1600,900);
+	glutCreateWindow("DigitalPaint2000");
 
 	// define the display function
 	glutDisplayFunc(display);
@@ -783,22 +877,16 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Pinceau libre", 6);
 	glutAddMenuEntry("Lignes", 1);
 	glutAddMenuEntry("Cercle", 5);
-	nSousmenu3 = glutCreateMenu(vRappelMenuPrincipal);
-	glutAddMenuEntry("LCA", 8);
-	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
 
 	glutAddSubMenu("Couleurs", nSousmenu1);
 	glutAddSubMenu("Formes", nSousmenu2);
-	glutAddMenuEntry("Trac� Polygone", 7);
+	glutAddMenuEntry("Tracé Polygone", 7);
 
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
-	glutAddMenuEntry("Remplissage", 4);
-	glutAddMenuEntry("LCA", 8);
-	glutAddMenuEntry("Tracé Polygone", 7);
-	glutAddSubMenu("Remplissage", nSousmenu3);
+	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle

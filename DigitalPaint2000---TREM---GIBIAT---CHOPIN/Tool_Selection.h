@@ -12,7 +12,7 @@ struct newSommets {
 	int** tabSommets;
 	int size;
 };
-Colour selection = { 0.4f, 0.0f, 0.80f };
+static Colour selection = {0.0f,0.0f,0.0f};
 /*
 	Handles mouse press events passed onto the Circ tool
 
@@ -37,6 +37,7 @@ bool Tool_Selection::Pressed(int button, int state, int x, int y) {
 			departX = cx;
 			departY = cy;
 			firstPickSelect = false;
+			selection = { 1.f - selectedColour.r, 1.f - selectedColour.g, 1.f - selectedColour.b };
 			return true;
 		}
 		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
@@ -287,7 +288,7 @@ void Tool_Selection::End_Selection() {
 		tab[i][1] = CotesFenetre.front().y;
 		CotesFenetre.pop_front();
 	}
-	currentCanvas = NewCanvas(500, 500, 100, 100);
+	currentCanvas = NewCanvas(600, 600, 0, 0);
 	std::list<newSommets> ListeNewPolygone;
 	for (std::list<Tuple> sommets : Tool_Polygone::MultiSommets) {
 		int sizePolygon = sommets.size();
@@ -316,32 +317,47 @@ void Tool_Selection::End_Selection() {
 
 	Tool_Polygone::MultiSommets.clear();
 	std::list<Tuple> tmp;
-	for (newSommets som : ListeNewPolygone) {
+
+	int nbmenuajoute = (Tool_Selection::nbpoly) % 20;
+	for (int i = 0; i < nbmenuajoute; ++i)
+	{
+		glutRemoveMenuItem(glutGet(GLUT_MENU_NUM_ITEMS));
+	}
+	Tool_Selection::nbpoly = 20;
+
+	for (newSommets som : ListeNewPolygone) { 
 		for (int b = 0; b < som.size; b++) {
 			tmp.push_back({ som.tabSommets[b][0], som.tabSommets[b][1] });
 		}
 		Tool_Polygone::MultiSommets.push_back(tmp);
+		++nbpoly;
+		char charpolygone[19] = "LCA Polygone ";
+		char EntierConvertit[3]; //Ton entier une fois convertit en chaine
+		sprintf_s(EntierConvertit, "%d", nbpoly%20); //Convertion...
+		strcat_s(charpolygone, EntierConvertit);
+ 		glutAddMenuEntry(charpolygone, nbpoly);
 		tmp.clear();
 	}
 
 	Tool_Fill::initEdgeTable();
-	std::list<cotes> test = Tool_Polygone::ListeCotes;
-	tmp = Tool_Polygone::MultiSommets.back();
-	int** tab1 = new int* [tmp.size()];
-	int* tabxy = new int[tmp.size() * 2];
-	int size = tmp.size();
-	int iter = 0;
-	for (int i = 0; i < size; i++) {
-		tab1[i] = &tabxy[i * 2];
-		tab1[i][0] = tmp.front().x;
-		tab1[i][1] = tmp.front().y;
-		tmp.pop_front();
-	}
-	for (iter; iter < size - 1; iter++) {
+	if (Tool_Polygone::MultiSommets.size() > 0) {
+		tmp = Tool_Polygone::MultiSommets.back();
+		int** tab1 = new int* [tmp.size()];
+		int* tabxy = new int[tmp.size() * 2];
+		int size = tmp.size();
+		int iter = 0;
+		for (int i = 0; i < size; i++) {
+			tab1[i] = &tabxy[i * 2];
+			tab1[i][0] = tmp.front().x;
+			tab1[i][1] = tmp.front().y;
+			tmp.pop_front();
+		}
+		for (iter; iter < size - 1; iter++) {
 
-		storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[iter + 1][0], tab1[iter + 1][1]);
+			storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[iter + 1][0], tab1[iter + 1][1]);
 
+		}
+		storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[0][0], tab1[0][1]);
 	}
-	storeEdgeInTable(tab1[iter][0], tab1[iter][1], tab1[0][0], tab1[0][1]);
 	firstPickSelect = true;
 }

@@ -94,6 +94,8 @@ public:
 	static int departX;
 	static int departY;
 	static bool firstPickSelect;
+	static int polygone_index;
+	static int nbpoly;
 	static std::list<Tuple> CotesFenetre;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool SelectRectangle(int button, int state, int cx, int cy);
@@ -172,9 +174,9 @@ public:
 		penButton = Button::Create(0, 100, 95, 40, (char *)"Pen", ToolButtonPressed, true);
 		moveButton = Button::Create(0, 140, 95, 40, (char *)"Move", ToolButtonPressed, true);
 		fillCircleButton = Button::Create(0, 180, 95, 40, (char *)"Fill Circle", ToolButtonPressed, true);
-		LCAButton = Button::Create(0, 300, 95, 40, (char*)"LCA", ToolButtonPressed, true);
+		LCAButton = Button::Create(0, 220, 95, 40, (char*)"LCA", ToolButtonPressed, true);
 		rectButton = Button::Create(0, 260, 95, 40, (char *)"Line", ToolButtonPressed, true);
-		selectionButton = Button::Create(0, 220, 95, 40, (char *)"Select", ToolButtonPressed, true);
+		selectionButton = Button::Create(0, 300, 95, 40, (char *)"Select", ToolButtonPressed, true);
 		
 
 	}
@@ -232,6 +234,21 @@ public:
 			return true;
 		}
 		if ((selectedButton != 7) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
+		if ((selectedButton != 21) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
+		if ((selectedButton != 22) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
+		if ((selectedButton != 23) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
+		if ((selectedButton != 24) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
+		if ((selectedButton != 25) && (LCAButton.Pressed(button, state, x, y))) {
 			return true;
 		}
 		return false;
@@ -364,7 +381,31 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		if (Tool_Selection::SelectRectangle(button, state, x, y)) {
 			return true;
 		}
-	
+	case 21:
+		Tool_Selection::polygone_index = 21;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+	case 22:
+		Tool_Selection::polygone_index = 22;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+	case 23:
+		Tool_Selection::polygone_index = 23;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+	case 24:
+		Tool_Selection::polygone_index = 24;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+	case 25:
+		Tool_Selection::polygone_index = 25;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
 	}
 	return false;
 }
