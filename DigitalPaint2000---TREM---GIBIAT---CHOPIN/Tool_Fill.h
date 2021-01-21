@@ -77,7 +77,7 @@ void printTuple(EdgeTableTuple* tup)
 
 void Tool_Fill::printTable()
 {
-	int i, j;
+	int i;
 
 	for (i = 0; i < maxHt; i++)
 	{
@@ -355,12 +355,12 @@ void Tool_Fill::Fill(Colour startColour)
 	std::vector<Tuple> intersection;
 	int nbintersection = intersection.size();
 	int parite = 0;
-	for (size_t y = 0; y < Tool_Selection::posFinY; y++)
+	for (int y = 0; y < Tool_Selection::posFinY; y++)
 	{
 		parite = 0;
-		for (size_t x = 0; x < Tool_Selection::posFinX; x++)
+		for (int x = 0; x < Tool_Selection::posFinX; x++)
 		{
-			for (cotes vertex : Tool_Polygone::ListeCotes)
+			for (const cotes vertex : Tool_Polygone::ListeCotes)
 			{
 				float maxY = std::max(vertex.yA, vertex.yB);
 				float maxX = std::max(vertex.xA, vertex.xB);
@@ -411,7 +411,7 @@ void Tool_Fill::Fill(Colour startColour)
 	}
 }
 */
-void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
+void Tool_Fill::FillCercle(Colour startColour, int cx, int cy) {
 	// algorithm expands from point filling an area
 	// vec stores outer pixels for the next iteration
 	std::vector<Tuple> vec;
@@ -424,7 +424,7 @@ void Tool_Fill::Fill(Colour startColour, int cx, int cy) {
 			Colour colourAtPixel = currentCanvas.GetPixelColour(vec[i].x, vec[i].y);
 			if ((colourAtPixel.r == startColour.r) && (colourAtPixel.g == startColour.g) && (colourAtPixel.b == startColour.b)) {
 				currentCanvas.SetPixelColour(vec[i].x, vec[i].y, selectedColour);
-				if (i % 15 == 0) {
+				if (i % 50 == 0) {
 					affichage();
 				}
 				// add neighbours to the outside vector for the next iteration
@@ -470,7 +470,7 @@ bool Tool_Fill::Pressed(int button, int state, int x, int y) {
 		int canvasCoordY = (y - currentCanvas.yOffset) / currentCanvas.zoom;
 		Colour colourWherePressed = currentCanvas.GetPixelColour(canvasCoordX, canvasCoordY);
 		if ((colourWherePressed.r != selectedColour.r) || (colourWherePressed.g != selectedColour.g) || (colourWherePressed.b != selectedColour.b)) {
-			Tool_Fill::Fill(colourWherePressed, canvasCoordX, canvasCoordY);
+			Tool_Fill::FillCercle(colourWherePressed, canvasCoordX, canvasCoordY);
 			return true;
 		}
 	}

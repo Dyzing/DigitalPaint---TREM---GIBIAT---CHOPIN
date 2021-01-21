@@ -60,7 +60,8 @@ std::vector<Button> TopMenuBar::buttons;
 int Toolbar::selectedButton = 0;
 Button Toolbar::penButton;
 Button Toolbar::moveButton;
-Button Toolbar::fillButton;
+Button Toolbar::fillLCAButton;
+Button Toolbar::fillCircleButton;
 Button Toolbar::rectButton;
 Button Toolbar::selectionButton;
 Button Toolbar::LCAButton;
@@ -144,7 +145,7 @@ void vRappelSousMenu2(int i)
 
 void vRappelMenuPrincipal(int i)
 {
-	switch (i) 
+	switch (i)
 	{
 	case 1:
 		// Bouton Ligne selectionner
@@ -168,7 +169,7 @@ void vRappelMenuPrincipal(int i)
 		break;
 	case 2:
 		// Bouton Tracé fenêtre
-		Toolbar::selectedButton = 3;
+		Toolbar::selectedButton = 10;
 		break;
 	case 7:
 		// Bouton Polygone
@@ -179,7 +180,6 @@ void vRappelMenuPrincipal(int i)
 		// Bouton LCA
 		Toolbar::selectedButton = 7;
 		break;
-	
 	}
 }
 
@@ -195,7 +195,7 @@ void menu(int item)
 	}
 }
 
-int nSousmenu1, nSousmenu2, nMenuprincipal; // Numéros (identifiants) des menus
+int nSousmenu1, nSousmenu2, nSousmenu3, nMenuprincipal; // Numéros (identifiants) des menus
 int nTue = 0;
 
 
@@ -396,6 +396,7 @@ void keyboard(unsigned char key, int x, int y)
 		if (canvasAssigned) {
 			Tool_Selection::End_Selection();
 		}
+	
 	}
 }
 
@@ -511,17 +512,20 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Pinceau libre", 6);
 	glutAddMenuEntry("Lignes", 1);
 	glutAddMenuEntry("Cercle", 5);
+	nSousmenu3 = glutCreateMenu(vRappelMenuPrincipal);
+	glutAddMenuEntry("LCA", 8);
+	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
 
 	glutAddSubMenu("Couleurs", nSousmenu1);
 	glutAddSubMenu("Formes", nSousmenu2);
+	glutAddMenuEntry("Tracé Polygone", 7);
 
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
-	glutAddMenuEntry("Remplissage", 4);
-	glutAddMenuEntry("LCA", 8);
-	glutAddMenuEntry("Tracé Polygone", 7);
+	glutAddSubMenu("Remplissage", nSousmenu3);
+	
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle
