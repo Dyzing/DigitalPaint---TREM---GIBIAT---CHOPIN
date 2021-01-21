@@ -205,6 +205,7 @@ void menu(int item)
 	}
 }
 
+static bool showToolBar = true;
 
 void NewConfirmedCallback() {
 	canvasAssigned = true;
@@ -261,7 +262,7 @@ void ColorPicker() {
 	static ImVec4 backup_color;
 	bool open_popup = ImGui::ColorButton("MyColor##3b", color);
 	ImGui::SameLine(0, ImGui::GetStyle().ItemInnerSpacing.x);
-	open_popup |= ImGui::Button("Palette");
+	open_popup |= ImGui::Button("Couleur");
 	if (open_popup)
 	{
 		ImGui::OpenPopup("mypicker");
@@ -269,7 +270,7 @@ void ColorPicker() {
 	}
 	if (ImGui::BeginPopup("mypicker"))
 	{
-		ImGui::Text("MY CUSTOM COLOR PICKER WITH AN AMAZING PALETTE!");
+		ImGui::Text("Couleur");
 		ImGui::Separator();
 		ImGui::ColorPicker4("##picker", (float*)&color, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_NoSmallPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_PickerHueBar | ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_Uint8);
 		ImGui::SameLine();
@@ -332,31 +333,25 @@ void my_display_code()
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Edit"))
+		if (ImGui::BeginMenu("Affichage"))
 		{
-			if (ImGui::MenuItem("Undo")) {}
-			if (ImGui::MenuItem("Redo")) {}  // Disabled item
-			ImGui::Separator();
-			if (ImGui::MenuItem("Cut")) {}
-			if (ImGui::MenuItem("Copy")) {}
-			if (ImGui::MenuItem("Paste")) {}
+			if (ImGui::MenuItem("Tools")) {
+				showToolBar -= showToolBar;
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
 	}
-	static bool p_open = false;
+	static bool p_open = true;
 	static int display_lines = 10;
 	static int type = 0;
 
 
-	ImGui::SetNextWindowSize(ImVec2(100, 400));
+	ImGui::SetNextWindowSize(ImVec2(150, 350));
 	
-	if (ImGui::Begin("Example: Constrained Resize", &p_open))
+	if (ImGui::Begin("Outils", &showToolBar))
 	{
-
 		
-
-		ColorPicker();
 		if (ImGui::Button("Pen")) { 
 			Toolbar::selectedButton = 0;
 		}
@@ -409,7 +404,7 @@ void display()
 
 	// Rescale to "pixel" scale - position (x, y) is x pixels along, y pixels up
 	// Allows user to resize window without stretching UI elements
-	glScalef((double)(1600) / (double)(glutGet(GLUT_WINDOW_WIDTH)), (double)(900) / (double)(glutGet(GLUT_WINDOW_HEIGHT)), 1.0f);
+	//glScalef((double)(1600) / (double)(glutGet(GLUT_WINDOW_WIDTH)), (double)(900) / (double)(glutGet(GLUT_WINDOW_HEIGHT)), 1.0f);
 
 	// Draw the canvas and any overlays from tools in use
 	if (canvasAssigned) {
