@@ -95,6 +95,7 @@ public:
 	static int departY;
 	static bool firstPickSelect;
 	static int polygone_index;
+	static int nbpoly;
 	static std::list<Tuple> CotesFenetre;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static bool SelectRectangle(int button, int state, int cx, int cy);
@@ -241,6 +242,15 @@ public:
 		if ((selectedButton != 22) && (LCAButton.Pressed(button, state, x, y))) {
 			return true;
 		}
+		if ((selectedButton != 23) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
+		if ((selectedButton != 24) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
+		if ((selectedButton != 25) && (LCAButton.Pressed(button, state, x, y))) {
+			return true;
+		}
 		return false;
 	}
 
@@ -378,6 +388,21 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		}
 	case 22:
 		Tool_Selection::polygone_index = 22;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+	case 23:
+		Tool_Selection::polygone_index = 23;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+	case 24:
+		Tool_Selection::polygone_index = 24;
+		if (Tool_Fill::PressedLCA(button, state, x, y)) {
+			return true;
+		}
+	case 25:
+		Tool_Selection::polygone_index = 25;
 		if (Tool_Fill::PressedLCA(button, state, x, y)) {
 			return true;
 		}

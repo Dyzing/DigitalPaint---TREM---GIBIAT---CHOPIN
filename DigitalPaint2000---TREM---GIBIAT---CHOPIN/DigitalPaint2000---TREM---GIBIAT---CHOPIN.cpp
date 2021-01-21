@@ -95,6 +95,8 @@ int Tool_Selection::departY = 0;
 bool Tool_Selection::firstPickSelect = true;
 std::list<Tuple> Tool_Selection::CotesFenetre = {};
 int Tool_Selection::polygone_index = 20;
+int Tool_Selection::nbpoly = 20;
+
 #include "Tool_Circle.h"
 bool Tool_Circle::isMouseDown = false;
 int Tool_Circle::startMouseX = 0;
@@ -198,6 +200,19 @@ void vRappelMenuPrincipal(int i)
 		// Bouton Polygone 2
 		Toolbar::selectedButton = 22;
 		break;
+	case 23:
+		// Bouton Polygone 1
+		Toolbar::selectedButton = 23;
+		break;
+	case 24:
+		// Bouton Polygone 2
+		Toolbar::selectedButton = 24;
+		break;
+	case 25:
+		// Bouton Polygone 1
+		Toolbar::selectedButton = 25;
+		break;
+
 	}
 
 }
@@ -223,6 +238,13 @@ void NewConfirmedCallback() {
 	Tool_Polygone::MultiSommets.clear();
 	Tool_Polygone::firstPick = true;
 	Tool_Selection::firstPickSelect = true;
+	
+	int nbmenuajoute = (Tool_Selection::nbpoly)%20;
+	for (int i = 0; i < nbmenuajoute; ++i)
+	{
+		glutRemoveMenuItem(glutGet(GLUT_MENU_NUM_ITEMS));
+	}
+
 }
 
 void OpenButtonPressed() {

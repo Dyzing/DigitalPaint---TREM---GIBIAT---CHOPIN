@@ -317,7 +317,6 @@ void Tool_Selection::End_Selection() {
 
 	Tool_Polygone::MultiSommets.clear();
 	std::list<Tuple> tmp;
-	int nbpoly = 20;
 
 
 
@@ -327,7 +326,7 @@ void Tool_Selection::End_Selection() {
 		}
 		Tool_Polygone::MultiSommets.push_back(tmp);
 		++nbpoly;
-		char charpolygone[15] = "Polygone ";
+		char charpolygone[19] = "LCA Polygone ";
 		char EntierConvertit[3]; //Ton entier une fois convertit en chaine
 		sprintf_s(EntierConvertit, "%d", nbpoly%20); //Convertion...
 		strcat_s(charpolygone, EntierConvertit);
