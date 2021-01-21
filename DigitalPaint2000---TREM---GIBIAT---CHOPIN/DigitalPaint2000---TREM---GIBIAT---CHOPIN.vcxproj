@@ -144,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="backends\imgui_impl_glut.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\cedri\Documents\Proj\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="backends\imgui_impl_opengl2.cpp" />
     <ClCompile Include="DigitalPaint2000---TREM---GIBIAT---CHOPIN.cpp">

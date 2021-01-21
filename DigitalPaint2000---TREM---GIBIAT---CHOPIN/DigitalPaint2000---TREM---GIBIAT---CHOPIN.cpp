@@ -3,6 +3,8 @@
 	Entry point for 2D Drawing Tool
 */
 
+//CREATED BY GEC
+
 #include "imgui/imgui.h"
 #include "backends/imgui_impl_glut.h"
 #include "backends/imgui_impl_opengl2.h"
@@ -244,6 +246,7 @@ void NewConfirmedCallback() {
 	{
 		glutRemoveMenuItem(glutGet(GLUT_MENU_NUM_ITEMS));
 	}
+	Tool_Selection::nbpoly = 20;
 }
 
 void OpenButtonPressed() {
@@ -383,7 +386,7 @@ void my_display_code()
 	static int type = 0;
 
 
-	ImGui::SetNextWindowSize(ImVec2(100, 400));
+	ImGui::SetNextWindowSize(ImVec2(120, 400));
 	
 	if (ImGui::Begin("Example: Constrained Resize", &p_open))
 	{
@@ -404,13 +407,16 @@ void my_display_code()
 		if (ImGui::Button("Line")) { 
 			Toolbar::selectedButton = 3;
 		}
-
+		if (ImGui::Button("Polygone")) {
+			Toolbar::selectedButton = 6;
+		}
 		if (ImGui::Button("Fenetrage")) { 
 			Toolbar::selectedButton = 4;
 		}
 		if (ImGui::Button("Fen Rect")) {
 			Toolbar::selectedButton = 10;
 		}
+
 
 		
 	}
@@ -764,7 +770,7 @@ int main(int argc, char* argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 	glutInitWindowSize(1600,900);
-	glutCreateWindow("DigitalPaint");
+	glutCreateWindow("DigitalPaint2000");
 
 	// define the display function
 	glutDisplayFunc(display);
@@ -821,8 +827,6 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Pinceau libre", 6);
 	glutAddMenuEntry("Lignes", 1);
 	glutAddMenuEntry("Cercle", 5);
-	nSousmenu3 = glutCreateMenu(vRappelMenuPrincipal);
-	glutAddMenuEntry("Remplissage Cercle", 4);
 
 	nMenuprincipal = glutCreateMenu(vRappelMenuPrincipal);
 

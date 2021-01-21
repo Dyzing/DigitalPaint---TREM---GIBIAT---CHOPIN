@@ -318,7 +318,12 @@ void Tool_Selection::End_Selection() {
 	Tool_Polygone::MultiSommets.clear();
 	std::list<Tuple> tmp;
 
-
+	int nbmenuajoute = (Tool_Selection::nbpoly) % 20;
+	for (int i = 0; i < nbmenuajoute; ++i)
+	{
+		glutRemoveMenuItem(glutGet(GLUT_MENU_NUM_ITEMS));
+	}
+	Tool_Selection::nbpoly = 20;
 
 	for (newSommets som : ListeNewPolygone) { 
 		for (int b = 0; b < som.size; b++) {

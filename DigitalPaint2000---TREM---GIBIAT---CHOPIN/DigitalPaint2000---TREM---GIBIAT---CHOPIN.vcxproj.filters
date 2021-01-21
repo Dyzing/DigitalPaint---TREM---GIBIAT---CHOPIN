@@ -1,129 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Fichiers sources">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Fichiers de ressources">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="imgui">
-      <UniqueIdentifier>{84da2b94-f40f-411c-8185-ed849a490678}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="backends\imgui_impl_glut.cpp" />
+    <ClCompile Include="backends\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="DigitalPaint2000---TREM---GIBIAT---CHOPIN.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DigitalPaint2000---TREM---GIBIAT---CHOPIN.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_glut.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="backends\imgui_impl_opengl2.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_tables.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Alert Dialogue.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Canvas.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Colour Palette.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Colour.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Cover.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="File Management.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Fonts.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="glut.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Open File Dialogue.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Pointer.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Save File Dialogue.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool_Fill.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool_Move.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool_Pen.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool_Rect.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Toolbar.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Top Menu Bar Callbacks.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Top Menu Bar.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Yes No Dialogue.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool_Selection.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Tool_Circle.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="backends\imgui_impl_glut.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="backends\imgui_impl_opengl2.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_internal.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-=======
-    <ClInclude Include="Tool_Polygone.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
->>>>>>> 8834d353ecd79dc12847e0bbff003ff15a50f8c9
+    <ClInclude Include="Alert Dialogue.h" />
+    <ClInclude Include="backends\imgui_impl_glut.h" />
+    <ClInclude Include="backends\imgui_impl_opengl2.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Canvas.h" />
+    <ClInclude Include="Colour Palette.h" />
+    <ClInclude Include="Colour.h" />
+    <ClInclude Include="Cover.h" />
+    <ClInclude Include="File Management.h" />
+    <ClInclude Include="Fonts.h" />
+    <ClInclude Include="glut.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="Open File Dialogue.h" />
+    <ClInclude Include="Pointer.h" />
+    <ClInclude Include="Save File Dialogue.h" />
+    <ClInclude Include="Toolbar.h" />
+    <ClInclude Include="Tool_Circle.h" />
+    <ClInclude Include="Tool_Fill.h" />
+    <ClInclude Include="Tool_Move.h" />
+    <ClInclude Include="Tool_Pen.h" />
+    <ClInclude Include="Tool_Polygone.h" />
+    <ClInclude Include="Tool_Rect.h" />
+    <ClInclude Include="Tool_Selection.h" />
+    <ClInclude Include="Top Menu Bar Callbacks.h" />
+    <ClInclude Include="Top Menu Bar.h" />
+    <ClInclude Include="Yes No Dialogue.h" />
   </ItemGroup>
 </Project>
