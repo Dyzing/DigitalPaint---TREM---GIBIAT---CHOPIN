@@ -178,7 +178,7 @@ void vRappelMenuPrincipal(int i)
 		Toolbar::selectedButton = 0;
 		break;
 	case 2:
-		// Bouton Trac� fen�tre
+		// Bouton Trace fenetre
 		Toolbar::selectedButton = 10;
 		break;
 	case 7:
@@ -209,6 +209,11 @@ void menu(int item)
 void NewConfirmedCallback() {
 	canvasAssigned = true;
 	currentCanvas = NewCanvas(600, 600, 0,0);
+	Tool_Polygone::ListeCotes.clear();
+	Tool_Polygone::ListeSommets.clear();
+	Tool_Polygone::MultiSommets.clear();
+	Tool_Polygone::firstPick = true;
+	Tool_Selection::firstPickSelect = true;
 }
 
 void OpenButtonPressed() {
@@ -364,21 +369,24 @@ void my_display_code()
 		if (ImGui::Button("Move")) { 
 			Toolbar::selectedButton = 1;
 		}
-		if (ImGui::Button("Fill")) {
+		if (ImGui::Button("Fill Circle")) {
 			Toolbar::selectedButton = 2;
 		}
-		
+		if (ImGui::Button("LCA")) {
+			Toolbar::selectedButton = 7;
+		}
 		if (ImGui::Button("Line")) { 
 			Toolbar::selectedButton = 3;
 		}
 
-		if (ImGui::Button("Select")) { 
+		if (ImGui::Button("Fenetrage")) { 
 			Toolbar::selectedButton = 4;
 		}
-
-		if (ImGui::Button("LCA")) { 
-			Toolbar::selectedButton = 7;
+		if (ImGui::Button("Fen Rect")) {
+			Toolbar::selectedButton = 10;
 		}
+
+		
 	}
 	ImGui::End();
 
@@ -409,7 +417,7 @@ void display()
 
 	// Rescale to "pixel" scale - position (x, y) is x pixels along, y pixels up
 	// Allows user to resize window without stretching UI elements
-	glScalef((double)(1600) / (double)(glutGet(GLUT_WINDOW_WIDTH)), (double)(900) / (double)(glutGet(GLUT_WINDOW_HEIGHT)), 1.0f);
+	//glScalef((double)(800) / (double)(glutGet(GLUT_WINDOW_WIDTH)), (double)(600) / (double)(glutGet(GLUT_WINDOW_HEIGHT)), 1.0f);
 
 	// Draw the canvas and any overlays from tools in use
 	if (canvasAssigned) {
@@ -730,7 +738,7 @@ int main(int argc, char* argv[])
 	// create window with title and fixed start size
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
-	glutInitWindowSize(1600, 900);
+	glutInitWindowSize(1600,900);
 	glutCreateWindow("DigitalPaint");
 
 	// define the display function
@@ -796,13 +804,10 @@ int main(int argc, char* argv[])
 
 	glutAddSubMenu("Couleurs", nSousmenu1);
 	glutAddSubMenu("Formes", nSousmenu2);
-	glutAddMenuEntry("Trac� Polygone", 7);
+	glutAddMenuEntry("Tracé Polygone", 7);
 
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
-	glutAddMenuEntry("Remplissage", 4);
-	glutAddMenuEntry("LCA", 8);
-	glutAddMenuEntry("Tracé Polygone", 7);
 	glutAddSubMenu("Remplissage", nSousmenu3);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);

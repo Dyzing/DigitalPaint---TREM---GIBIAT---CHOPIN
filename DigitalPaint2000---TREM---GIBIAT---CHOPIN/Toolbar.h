@@ -172,9 +172,9 @@ public:
 		penButton = Button::Create(0, 100, 95, 40, (char *)"Pen", ToolButtonPressed, true);
 		moveButton = Button::Create(0, 140, 95, 40, (char *)"Move", ToolButtonPressed, true);
 		fillCircleButton = Button::Create(0, 180, 95, 40, (char *)"Fill Circle", ToolButtonPressed, true);
-		LCAButton = Button::Create(0, 300, 95, 40, (char*)"LCA", ToolButtonPressed, true);
+		LCAButton = Button::Create(0, 220, 95, 40, (char*)"LCA", ToolButtonPressed, true);
 		rectButton = Button::Create(0, 260, 95, 40, (char *)"Line", ToolButtonPressed, true);
-		selectionButton = Button::Create(0, 220, 95, 40, (char *)"Select", ToolButtonPressed, true);
+		selectionButton = Button::Create(0, 300, 95, 40, (char *)"Select", ToolButtonPressed, true);
 		
 
 	}
