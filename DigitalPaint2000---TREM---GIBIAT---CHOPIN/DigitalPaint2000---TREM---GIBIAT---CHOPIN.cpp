@@ -96,6 +96,7 @@ int Tool_Polygone::startMouseY = 0;
 int Tool_Polygone::departX = 0;
 int Tool_Polygone::departY = 0;
 bool Tool_Polygone::firstPick = true;
+Colour Tool_Polygone::bord_color = { 0.0f, 0.0f, 0.0f };
 std::list<Tuple> Tool_Polygone::ListeSommets = {};
 std::list<cotes> Tool_Polygone::ListeCotes = {};
 std::list<std::list<Tuple>> Tool_Polygone::MultiSommets = {};

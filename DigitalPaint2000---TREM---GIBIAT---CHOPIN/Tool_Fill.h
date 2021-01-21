@@ -331,7 +331,25 @@ void Tool_Fill::Fill(Colour startColour)
 		// 5. For each nonvertical edge remaining in AET, update x for new y 
 		updatexbyslopeinv(&ActiveEdgeTuple);
 	}
+	std::list<Tuple> tmp;
+	std::list<cotes> test = Tool_Polygone::ListeCotes;
+	tmp = Tool_Polygone::MultiSommets.back();
+	int** tab1 = new int* [tmp.size()];
+	int* tabxy = new int[tmp.size() * 2];
+	int size = tmp.size();
+	int iter = 0;
+	for (int i = 0; i < size; i++) {
+		tab1[i] = &tabxy[i * 2];
+		tab1[i][0] = tmp.front().x;
+		tab1[i][1] = tmp.front().y;
+		tmp.pop_front();
+	}
+	for (iter; iter < size - 1; iter++) {
 
+		currentCanvas.DrawALine(tab1[iter][0], tab1[iter][1], tab1[iter + 1][0], tab1[iter + 1][1], Tool_Polygone::bord_color);
+
+	}
+	currentCanvas.DrawALine(tab1[iter][0], tab1[iter][1], tab1[0][0], tab1[0][1], Tool_Polygone::bord_color);
 
 	printf("\nScanline filling complete");
 

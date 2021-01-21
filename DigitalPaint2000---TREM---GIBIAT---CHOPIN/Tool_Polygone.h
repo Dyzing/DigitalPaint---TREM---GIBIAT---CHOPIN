@@ -14,6 +14,7 @@
 	@param y - The y coordinate of the mouse when pressed
 	@return Has the tool handled the event?
 */
+
 bool isEnded = false;
 bool Tool_Polygone::Pressed(int button, int state, int x, int y) {
 	if (currentCanvas.checkInside(x, y)) {
@@ -83,6 +84,7 @@ bool Tool_Polygone::BlockMousePress(int button, int state, int x, int y) {
 }
 
 void Tool_Polygone::EndPolygon() {
+	bord_color = selectedColour;
 	float minX = departX;
 	float maxX = startMouseX;
 	float minY = departY;
