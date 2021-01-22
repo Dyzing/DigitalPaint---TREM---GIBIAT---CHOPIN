@@ -417,51 +417,21 @@ void my_display_code()
 	static int type = 0;
 
 
-	ImGui::SetNextWindowSize(ImVec2(150, 350));
+	ImGui::SetNextWindowSize(ImVec2(160, 350));
 	
 	if (ImGui::Begin("Outils", &showToolBar))
 	{
 		
 		ColorPicker();
 
-		activeToolBtn(0, "Pen");
-		activeToolBtn(1, "Move");
-		activeToolBtn(2, "Fill Circle");
-		activeToolBtn(3, "Line");
+		activeToolBtn(0, "Stylo");
+		activeToolBtn(1, "Deplacer");
+		activeToolBtn(2, "Remplisage cercle");
+		activeToolBtn(3, "Ligne");
 		activeToolBtn(6, "Polygone");
 		activeToolBtn(4, "Fenetrage");
-		activeToolBtn(10, "Fen Rect");
-		
-		//activeToolBtn(7, "LCA");
-		/*if (ImGui::Button("Pen")) {
-			Toolbar::selectedButton = 0;
-		}
-		
-
-		
-
-
-		if (ImGui::Button("Move")) { 
-			Toolbar::selectedButton = 1;
-		}
-		if (ImGui::Button("Fill Circle")) {
-			Toolbar::selectedButton = 2;
-		}
-		if (ImGui::Button("Line")) { 
-			Toolbar::selectedButton = 3;
-		}
-		if (ImGui::Button("Polygone")) {
-			Toolbar::selectedButton = 6;
-		}
-		if (ImGui::Button("Fenetrage")) { 
-			Toolbar::selectedButton = 4;
-		}
-		if (ImGui::Button("Fen Rect")) {
-			Toolbar::selectedButton = 10;
-		}*/
-
-
-		
+		activeToolBtn(10, "Fenetrage Rectangle");
+	
 	}
 	ImGui::End();
 	if (Toolbar::selectedButton == 1)
@@ -469,9 +439,9 @@ void my_display_code()
 	if (Toolbar::selectedButton == 6)
 		overlay("Consignes", "Cliquer pour definir les point puis appuyez sur \"a\" pour terminer le polygone");
 	if (Toolbar::selectedButton == 10)
-		overlay("Consignes", "appuyer une premiere fois sur le clic gauche puis deplacez la souri et relachez pour dessiner la fenetre");
+		overlay("Consignes", "appuyer une premiere fois sur le clic gauche puis deplacez la souris et relachez pour dessiner la fenetre");
 	if (Toolbar::selectedButton == 4)
-		overlay("Consignes", "Cliquer pour definir les point puis appuyez sur \"z\" pour terminer la fenetre");
+		overlay("Consignes", "Cliquer pour definir les point (dans le sens trigonometrique) puis appuyez sur \"z\" pour terminer la fenetre");
 }
 
 int nSousmenu1, nSousmenu2, nSousmenu3, nMenuprincipal; // Num�ros (identifiants) des menus
