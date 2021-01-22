@@ -468,9 +468,9 @@ void my_display_code()
 		overlay("Commandes", "Utiliser les fleches pour bouger");
 	if (Toolbar::selectedButton == 6)
 		overlay("Consignes", "Cliquer pour definir les point puis appuyez sur \"a\" pour terminer le polygone");
-	if (Toolbar::selectedButton == 4)
-		overlay("Consignes", "appuyer une premiere fois sur le clic gauche puis deplacez la souri et relachez pour dessiner la fenetre");
 	if (Toolbar::selectedButton == 10)
+		overlay("Consignes", "appuyer une premiere fois sur le clic gauche puis deplacez la souri et relachez pour dessiner la fenetre");
+	if (Toolbar::selectedButton == 4)
 		overlay("Consignes", "Cliquer pour definir les point puis appuyez sur \"z\" pour terminer la fenetre");
 }
 
