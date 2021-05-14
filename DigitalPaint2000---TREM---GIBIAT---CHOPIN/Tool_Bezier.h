@@ -130,16 +130,18 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 			else {
 
 				if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
-					polygonControl[storedPoint] = { cx,cy };
-					currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
-					Bezier();
+					if (storedPoint < polygonControl.size()) {
+						polygonControl[storedPoint] = { cx,cy };
+						currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
+						Bezier();
 
-					int ind = 0;
-					for (ind; ind < polygonControl.size() - 1; ind++) {
+						int ind = 0;
+						for (ind; ind < polygonControl.size() - 1; ind++) {
+							DrawCircleAroundControlPoint(ind, selection);
+							currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
+						}
 						DrawCircleAroundControlPoint(ind, selection);
-						currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
 					}
-					DrawCircleAroundControlPoint(ind, selection);
 				}
 				return true;
 			}
@@ -150,7 +152,6 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 }
 
 void Tool_Bezier::Bezier() {
-	currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
 	/*ListeSommetsCurve = {};
 
 	step = 10;
@@ -327,8 +328,19 @@ Tuple Tool_Bezier::Bary(int iStep, int step,  Tuple a, Tuple b) {
 
 void Tool_Bezier::SuppressionControle() {
 	if (polygonControl.size() > 4) {
-		auto iter = polygonControl.begin() + storedPoint;
-		polygonControl.erase(iter);
+
+		if ((storedPoint + 1) % 3 == 0) {
+			auto iter = polygonControl.begin() + storedPoint - 1;
+			polygonControl.erase(iter, iter + 3);
+		}
+		if ((storedPoint + 1) % 3 == 1) {
+			auto iter = polygonControl.begin() + storedPoint - 2;
+			polygonControl.erase(iter, iter + 3);
+		}
+		if ((storedPoint + 1) % 3 == 2) {
+			auto iter = polygonControl.begin() + storedPoint;
+			polygonControl.erase(iter, iter + 3);
+		}
 		currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
 		int ind = 0;
 		for (ind; ind < polygonControl.size() - 1; ind++) {
