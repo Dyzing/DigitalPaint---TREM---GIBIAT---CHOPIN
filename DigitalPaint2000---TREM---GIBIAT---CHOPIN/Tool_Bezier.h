@@ -10,72 +10,147 @@
 	@param y - The y coordinate of the mouse when pressed
 	@return Has the tool handled the event?
 */
+int nbPoints;
+std::vector<Tuple> polygonControl = {};
+int storedPoint;
+int TMax = 5000;
+int rayon = 10;
+Colour SelectionControle = {0,1, 0.97}; //Cyan
 
+void DrawCircleAroundControlPoint(int index,Colour c) {
+	int x, y;
+	for (int t = 0; t < TMax; t++)
+	{
+		y = polygonControl[index].y + rayon * sin(t * 2 * M_PI / TMax);
+		x = polygonControl[index].x + rayon * cos(t * 2 * M_PI / TMax);
+		currentCanvas.SetPixelColour(x, y, c);
+	}
+}
 bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
-	if (currentCanvas.checkInside(x, y)) {
-		// convert mouse position into canvas coordinates
-		int cx = (x - currentCanvas.xOffset) / currentCanvas.zoom;
-		int cy = (y - currentCanvas.yOffset) / currentCanvas.zoom;
-		// remember the start mouse position if this is start of a drag
+	if (!Select) {
+		if (currentCanvas.checkInside(x, y)) {
+			// convert mouse position into canvas coordinates
+			int cx = (x - currentCanvas.xOffset) / currentCanvas.zoom;
+			int cy = (y - currentCanvas.yOffset) / currentCanvas.zoom;
+			// remember the start mouse position if this is start of a drag
+			if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown && firstPick) {
+				isMouseDown = true;
+				startMouseX = cx;
+				startMouseY = cy;
+				departX = cx;
+				departY = cy;
+				ListeSommets.clear();
+				ListeSommets.push_back({ startMouseX, startMouseY });
+				polygonControl.push_back({ startMouseX,startMouseY });
+				for (int t = 0; t < TMax; t++)
+				{
+					y = cy + rayon * sin(t * 2 * M_PI / TMax);
+					x = cx + rayon * cos(t * 2 * M_PI / TMax);
+					currentCanvas.SetPixelColour(x, y, selection);
+				}
+				firstPick = false;
+				nbPoints = 0;
+				return true;
+			}
+			if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
 
-		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown && firstPick) {
-			Tool_Fill::initEdgeTable();
-			isMouseDown = true;
+				// get the rect coordinates
+				float minX = startMouseX;
+				float maxX = cx;
+				float minY = startMouseY;
+				float maxY = cy;
+				float difX = abs(minX - maxX);
+				float difY = abs(minY - maxY);
+				float CoefD = ((maxY - minY) / (maxX - minX));
+				float b = minY - CoefD * minX;
+				currentCanvas.DrawALine(startMouseX, startMouseY, cx, cy, selectedColour);
+				//currentCanvas.SetPixelColour(cx, cy, selectedColour);
+
+
+				ListeCotes.push_back({ startMouseX,startMouseY,cx,cy,CoefD, b });
+				ListeSommets.push_back({ cx, cy });
+				if (Tool_Bezier::duplicate) {
+					polygonControl.push_back({ cx,cy });
+					Tool_Bezier::duplicate = false;
+					nbPoints++;
+				}
+				polygonControl.push_back({ cx,cy });
+				for (int t = 0; t < TMax; t++)
+				{
+					y = cy + rayon * sin(t * 2 * M_PI / TMax);
+					x = cx + rayon * cos(t * 2 * M_PI / TMax);
+					currentCanvas.SetPixelColour(x, y, selection);
+				}
+				nbPoints++;
+				/*if (nbPoints >= 3 && BezierEnded) {
+					EndBezier();
+				}*/
+				if (ListeSommets.size() == 4) {
+					Bezier();
+					firstBezier = false;
+				}
+				if (!firstBezier && (ListeSommets.size() - 4) % 3 == 0) {
+					Bezier();
+				}
+
+			}
 			startMouseX = cx;
 			startMouseY = cy;
-			departX = cx;
-			departY = cy;
-			ListeSommets.clear();
-			ListeSommets.push_back({ startMouseX, startMouseY });
-			currentCanvas.SetPixelColour(cx, cy, selectedColour);
-			firstPick = false;
+			isMouseDown = false;
 			return true;
 		}
-
-		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
-
-			// get the rect coordinates
-			float minX = startMouseX;
-			float maxX = cx;
-			float minY = startMouseY;
-			float maxY = cy;
-			float difX = abs(minX - maxX);
-			float difY = abs(minY - maxY);
-			float CoefD = ((maxY - minY) / (maxX - minX));
-			float b = minY - CoefD * minX;
-			/*currentCanvas.DrawALine(startMouseX, startMouseY, cx, cy, selectedColour);*/
-			currentCanvas.SetPixelColour(cx, cy, selectedColour);
-
-
-			ListeCotes.push_back({ startMouseX,startMouseY,cx,cy,CoefD, b });
-			ListeSommets.push_back({ cx, cy });
-
-
-		}
-
-
-		startMouseX = cx;
-		startMouseY = cy;
-		isMouseDown = false;
-
-
-		
-
-		if (firstBezier && ListeSommets.size() == 4) {
-			Bezier();
-			firstBezier = false;
-		}else if (!firstBezier && (ListeSommets.size() - 4) % 3 == 0) {
-			Bezier();
-		}
-
-		return true;
+		return false;
 	}
-	return false;
+	else {
+		if (currentCanvas.checkInside(x, y)) {
+			int cx = (x - currentCanvas.xOffset) / currentCanvas.zoom;
+			int cy = (y - currentCanvas.yOffset) / currentCanvas.zoom;
+			int i = 0;
+			if (!drop) {
+				if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
+					int size = polygonControl.size();
+					for (int i = 0; i < size; i++) {
+						if (abs(polygonControl[i].x - cx) < 10 && abs(polygonControl[i].y - cy) < 10) {
+							storedPoint = i;
+							DrawCircleAroundControlPoint(i, SelectionControle);
+							if (duplicate) {
+								DuplicateControle();
+								duplicate = false;
+
+							}
+							break;
+						}
+					}
+
+				}
+
+
+				return true;
+			}
+			else {
+
+				if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
+					polygonControl[storedPoint] = { cx,cy };
+					currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
+					Bezier();
+
+					int ind = 0;
+					for (ind; ind < polygonControl.size() - 1; ind++) {
+						DrawCircleAroundControlPoint(ind, selection);
+						currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
+					}
+					DrawCircleAroundControlPoint(ind, selection);
+				}
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
 
-
 void Tool_Bezier::Bezier() {
-
+	currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
 	/*ListeSommetsCurve = {};
 
 	step = 10;
@@ -124,7 +199,7 @@ void Tool_Bezier::Bezier() {
 	int i = 0;
 	 
 	std::array<Tuple, 4> SommetsBezier{};
-	for (auto const& it : ListeSommets) {
+	for (auto const& it : polygonControl) {
 		
 
 		SommetsBezier[i] = it;
@@ -177,7 +252,7 @@ void Tool_Bezier::BezierEtienne() {
 
 	std::array<Tuple, 4> SommetsBezier{};
 	int i = 0;
-	for (auto const& it : ListeSommets) {
+	for (auto const& it : polygonControl) {
 		
 		SommetsBezier[i] = it;
 		i++;
@@ -219,7 +294,7 @@ void Tool_Bezier::BezierEtienne() {
 }
 
 void Tool_Bezier::drawCurve() {
-
+	
 	Tuple temp;
 	int i = 0;
 	for (auto const& it : ListeSommetsCurve) {
@@ -248,3 +323,26 @@ Tuple Tool_Bezier::Bary(int iStep, int step,  Tuple a, Tuple b) {
 
 	return { (a.x + static_cast<int>(((iStepf / stepf) * (b.x - a.x)))), (a.y + static_cast<int>(((iStepf / stepf) * (b.y - a.y))))};
 }
+
+
+void Tool_Bezier::SuppressionControle() {
+	if (polygonControl.size() > 4) {
+		auto iter = polygonControl.begin() + storedPoint;
+		polygonControl.erase(iter);
+		currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
+		int ind = 0;
+		for (ind; ind < polygonControl.size() - 1; ind++) {
+			DrawCircleAroundControlPoint(ind, selection);
+			currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
+		}
+		DrawCircleAroundControlPoint(ind, selection);
+		Bezier();
+	}
+}
+
+void Tool_Bezier::DuplicateControle() {
+	polygonControl.insert(polygonControl.begin() + storedPoint + 1,polygonControl[storedPoint]);
+	nbPoints++;
+}
+
+
