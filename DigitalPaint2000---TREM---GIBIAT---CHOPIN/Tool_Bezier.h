@@ -64,7 +64,7 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 		if (firstBezier && ListeSommets.size() == 4) {
 			Bezier();
 			firstBezier = false;
-		}else if (!firstBezier && (ListeSommets.size() - 4) % 3 == 0) {
+		}else if (!firstBezier) {
 			Bezier();
 		}
 
@@ -76,9 +76,10 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 
 void Tool_Bezier::Bezier() {
 
+	//currentCanvas = NewCanvas(600, 600, 0, 0);
 	/*ListeSommetsCurve = {};
 
-	step = 10;
+	step = 20;
 
 	std::list<std::array<Tuple, 4>> ListeSommetsBezier;
 
@@ -96,21 +97,21 @@ void Tool_Bezier::Bezier() {
 	ListeSommetsCurve.push_back(SommetsBezier[0]);
 	for (int i = 1; i < step; i++) {
 
-		for (int i = 0; i < SommetsBezier.size(); i++) {
+		sommetsTemp = SommetsBezier;
+		for (int j = 0; j < SommetsBezier.size(); j++) {
 
-			sommetsTemp = SommetsBezier;
+			
 			temp = sommetsTemp[0];
-			for (int k = 1; k < SommetsBezier.size(); k++) {
+			for (int k = 1; k < sommetsTemp.size() - j; k++) {
 
 
-				sommetsTemp[0] = Bary(i, step, temp, SommetsBezier[k]);
+				sommetsTemp[k - 1] = Bary(i, step, temp, sommetsTemp[k]);
 				temp = sommetsTemp[k];
 
 			}
 
-			SommetsBezier = sommetsTemp;
 		}
-		ListeSommetsCurve.push_back(SommetsBezier[0]);
+		ListeSommetsCurve.push_back(sommetsTemp[0]);
 
 	}
 	ListeSommetsCurve.push_back(SommetsBezier.back());*/
