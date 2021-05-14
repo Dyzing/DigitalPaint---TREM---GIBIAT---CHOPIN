@@ -44,7 +44,7 @@ class Canvas {
 			struct Colour white = { 1.0f, 1.0f, 1.0f };
 			pixels = new Colour*[w];
 			for (int x = 0; x < w; ++x) {
-				pixels[x] = new Colour[h*5];
+				pixels[x] = new Colour[h * 5];
 				for (int y = 0; y < h; y++) {
 					pixels[x][y] = white;
 				}
@@ -87,6 +87,14 @@ class Canvas {
 		*/
 		void SetPixelColour(int x, int y, Colour c) {
 			pixels[x][y] = c;
+		}
+
+		void ResetPixelsColour() {
+			for (int x = 0; x < width; ++x) {
+				for (int y = 0; y < height; y++) {
+					pixels[x][y] = { 1.0f, 1.0f, 1.0f };
+				}
+			}
 		}
 
 

@@ -164,7 +164,8 @@ public:
 	static std::list<std::list<Tuple>> MultiSommets;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static void BezierEtienne();
-	static void Bezier();
+	static void Bezier1();
+	static void Bezier2();
 	static void drawCurve();
 	static Tuple Mid(Tuple a, Tuple b);
 	static Tuple Bary(int iStep, int step, Tuple a, Tuple b);

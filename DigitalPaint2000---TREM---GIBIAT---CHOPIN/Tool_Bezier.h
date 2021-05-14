@@ -86,12 +86,20 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 					EndBezier();
 				}*/
 				if (ListeSommets.size() == 4) {
-					Bezier();
+					currentCanvas.ResetPixelsColour();
+					Bezier1();
 					firstBezier = false;
 				}
-				if (!firstBezier && (ListeSommets.size() - 4) % 3 == 0) {
-					Bezier();
+				if (!firstBezier) {
+					currentCanvas.ResetPixelsColour();
+					Bezier1();
 				}
+				int ind = 0;
+				for (ind; ind < polygonControl.size() - 1; ind++) {
+					DrawCircleAroundControlPoint(ind, selection);
+					currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
+				}
+				DrawCircleAroundControlPoint(ind, selection);
 
 			}
 			startMouseX = cx;
@@ -131,8 +139,8 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 
 				if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
 					polygonControl[storedPoint] = { cx,cy };
-					currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
-					Bezier();
+					currentCanvas.ResetPixelsColour();
+					Bezier1();
 
 					int ind = 0;
 					for (ind; ind < polygonControl.size() - 1; ind++) {
@@ -149,46 +157,9 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 	}
 }
 
-void Tool_Bezier::Bezier() {
-	currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
-	/*ListeSommetsCurve = {};
+void Tool_Bezier::Bezier2() {
 
-	step = 20;
-
-	std::list<std::array<Tuple, 4>> ListeSommetsBezier;
-
-	int i = 0;
-
-	std::vector<Tuple> SommetsBezier{};
-	std::vector<Tuple> sommetsTemp{};
-	for (auto const& it : ListeSommets) {
-		
-		SommetsBezier.push_back(it);
 	
-	}
-
-	Tuple temp;
-	ListeSommetsCurve.push_back(SommetsBezier[0]);
-	for (int i = 1; i < step; i++) {
-
-		sommetsTemp = SommetsBezier;
-		for (int j = 0; j < SommetsBezier.size(); j++) {
-
-			
-			temp = sommetsTemp[0];
-			for (int k = 1; k < sommetsTemp.size() - j; k++) {
-
-
-				sommetsTemp[k - 1] = Bary(i, step, temp, sommetsTemp[k]);
-				temp = sommetsTemp[k];
-
-			}
-
-		}
-		ListeSommetsCurve.push_back(sommetsTemp[0]);
-
-	}
-	ListeSommetsCurve.push_back(SommetsBezier.back());*/
 
 	ListeSommetsCurve = {};
 
@@ -197,10 +168,10 @@ void Tool_Bezier::Bezier() {
 	std::list<std::array<Tuple, 4>> ListeSommetsBezier;
 
 	int i = 0;
-	 
+
 	std::array<Tuple, 4> SommetsBezier{};
 	for (auto const& it : polygonControl) {
-		
+
 
 		SommetsBezier[i] = it;
 
@@ -212,7 +183,7 @@ void Tool_Bezier::Bezier() {
 		}
 
 		i++;
-		
+
 	}
 
 
@@ -236,8 +207,53 @@ void Tool_Bezier::Bezier() {
 			ListeSommetsCurve.push_back(a6);
 
 		}
+		ListeSommetsCurve.push_back(SommetsBezier[3]);
 
 	}
+
+	drawCurve();
+}
+
+void Tool_Bezier::Bezier1() {
+	
+	ListeSommetsCurve = {};
+
+	step = 20;
+
+	std::list<std::array<Tuple, 4>> ListeSommetsBezier;
+
+	int i = 0;
+
+	std::vector<Tuple> SommetsBezier{};
+	std::vector<Tuple> sommetsTemp{};
+	for (auto const& it : ListeSommets) {
+
+		SommetsBezier.push_back(it);
+
+	}
+
+	Tuple temp;
+	ListeSommetsCurve.push_back(SommetsBezier[0]);
+	for (int i = 1; i < step; i++) {
+
+		sommetsTemp = SommetsBezier;
+		for (int j = 0; j < SommetsBezier.size(); j++) {
+
+
+			temp = sommetsTemp[0];
+			for (int k = 1; k < sommetsTemp.size() - j; k++) {
+
+
+				sommetsTemp[k - 1] = Bary(i, step, temp, sommetsTemp[k]);
+				temp = sommetsTemp[k];
+
+			}
+
+		}
+		ListeSommetsCurve.push_back(sommetsTemp[0]);
+
+	}
+	ListeSommetsCurve.push_back(SommetsBezier.back());
 
 	drawCurve();
 }
@@ -336,7 +352,7 @@ void Tool_Bezier::SuppressionControle() {
 			currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
 		}
 		DrawCircleAroundControlPoint(ind, selection);
-		Bezier();
+		Bezier1();
 	}
 }
 
