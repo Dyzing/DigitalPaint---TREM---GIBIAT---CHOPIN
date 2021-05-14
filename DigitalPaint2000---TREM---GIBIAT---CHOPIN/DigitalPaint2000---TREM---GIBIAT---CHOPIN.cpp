@@ -115,6 +115,17 @@ Colour Tool_Polygone::bord_color = { 0.0f, 0.0f, 0.0f };
 std::list<Tuple> Tool_Polygone::ListeSommets = {};
 std::list<cotes> Tool_Polygone::ListeCotes = {};
 std::list<std::list<Tuple>> Tool_Polygone::MultiSommets = {};
+#include "Tool_Bezier.h"
+bool Tool_Bezier::isMouseDown = false;
+int Tool_Bezier::startMouseX = 0;
+int Tool_Bezier::startMouseY = 0;
+int Tool_Bezier::departX = 0;
+int Tool_Bezier::departY = 0;
+bool Tool_Bezier::firstPick = true;
+Colour Tool_Bezier::bord_color = { 0.0f, 0.0f, 0.0f };
+std::list<Tuple> Tool_Bezier::ListeSommets = {};
+std::list<cotes> Tool_Bezier::ListeCotes = {};
+std::list<std::list<Tuple>> Tool_Bezier::MultiSommets = {};
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;
@@ -216,7 +227,14 @@ void vRappelMenuPrincipal(int i)
 		Toolbar::selectedButton = 25;
 		break;
 
+	case 50:
+		// Bouton Polygone 1
+		Toolbar::selectedButton = 50;
+		break;
 	}
+	
+
+
 
 }
 
@@ -857,6 +875,7 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
 	glutAddMenuEntry("Remplissage Cercle", 4);
+	glutAddMenuEntry("Bezier", 50);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle

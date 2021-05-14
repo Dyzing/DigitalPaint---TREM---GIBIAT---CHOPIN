@@ -37,5 +37,6 @@
     <ClInclude Include="Top Menu Bar Callbacks.h" />
     <ClInclude Include="Top Menu Bar.h" />
     <ClInclude Include="Yes No Dialogue.h" />
+    <ClInclude Include="Tool_Bezier.h" />
   </ItemGroup>
 </Project>

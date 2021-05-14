@@ -173,6 +173,7 @@
     <ClInclude Include="Pointer.h" />
     <ClInclude Include="Save File Dialogue.h" />
     <ClInclude Include="Toolbar.h" />
+    <ClInclude Include="Tool_Bezier.h" />
     <ClInclude Include="Tool_Circle.h" />
     <ClInclude Include="Tool_Fill.h" />
     <ClInclude Include="Tool_Move.h" />

@@ -127,6 +127,21 @@ public:
 	static bool BlockMousePress(int button, int state, int x, int y);
 	static void EndPolygon();
 };
+class Tool_Bezier {
+public:
+	static bool isMouseDown;
+	static int startMouseX;
+	static int startMouseY;
+	static int departX;
+	static int departY;
+	static bool firstPick;
+	static Colour bord_color;
+	static std::list<cotes> ListeCotes;
+	static std::list<Tuple> ListeSommets;
+	static std::list<std::list<Tuple>> MultiSommets;
+	static bool Pressed(int button, int state, int cx, int cy);
+	static void EndBezier();
+};
 /*
 	This class implements the toolbar on the left of the window
 */
@@ -375,6 +390,10 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 		Tool_Fill::printTable();
 	case 7:
 		if (Tool_Fill::PressedLCA(button, state, x, y)){
+			return true;
+		}
+	case 50:
+		if (Tool_Bezier::Pressed(button, state, x, y)) {
 			return true;
 		}
 	case 10:
