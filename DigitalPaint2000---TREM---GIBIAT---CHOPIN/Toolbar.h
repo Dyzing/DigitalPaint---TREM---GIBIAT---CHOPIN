@@ -12,6 +12,19 @@
 struct Tuple {
 	int x;
 	int y;
+	friend Tuple operator*(float a,Tuple t) {
+		Tuple tmp;
+			tmp.x = t.x * a;
+			tmp.y = t.y * a;
+			return tmp;
+	}
+
+	friend Tuple operator+(Tuple a, Tuple t) {
+		Tuple tmp;
+		tmp.x = t.x + a.x;
+		tmp.y = t.y + a.y;
+		return tmp;
+	}
 };
 
 struct cotes {
@@ -137,6 +150,10 @@ public:
 	static int departX;
 	static int departY;
 	static bool firstPick;
+	static bool Select;
+	static bool drop;
+	static bool BezierEnded;
+	static bool duplicate;
 	static bool firstBezier;
 	static int nIter;
 	static int step;
@@ -151,6 +168,9 @@ public:
 	static void drawCurve();
 	static Tuple Mid(Tuple a, Tuple b);
 	static Tuple Bary(int iStep, int step, Tuple a, Tuple b);
+	static void EndBezier();
+	static void SuppressionControle();
+	static void DuplicateControle();
 };
 /*
 	This class implements the toolbar on the left of the window

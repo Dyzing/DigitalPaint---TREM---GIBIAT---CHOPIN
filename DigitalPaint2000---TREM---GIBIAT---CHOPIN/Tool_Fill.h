@@ -6,7 +6,7 @@
 #pragma once
 
 #include <vector>
-#define maxHt 800 
+#define maxHt 900 
 #define maxWd 600 
 #define maxVer 10000 
 

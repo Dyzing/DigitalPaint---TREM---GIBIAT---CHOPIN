@@ -1,3 +1,4 @@
+#include "Toolbar.h"
 /*
 	Tool_Rect.h
 	Implements the Rect tool
@@ -100,3 +101,4 @@ void Tool_Polygone::EndPolygon() {
 	storeEdgeInTable(departX, departY, startMouseX, startMouseY);
 	firstPick = true;
 }
+

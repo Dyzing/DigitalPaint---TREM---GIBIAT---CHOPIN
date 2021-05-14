@@ -126,6 +126,10 @@ bool Tool_Bezier::firstBezier = true;
 int Tool_Bezier::nIter = 3;
 int Tool_Bezier::step = 4;
 Colour Tool_Bezier::bord_color = { 0.0f, 0.0f, 0.0f };
+bool Tool_Bezier::Select = false;
+bool Tool_Bezier::drop = false;
+bool Tool_Bezier::BezierEnded = false;
+bool Tool_Bezier::duplicate = false;
 std::list<Tuple> Tool_Bezier::ListeSommets = {};
 std::list<Tuple> Tool_Bezier::ListeSommetsCurve = {};
 std::list<cotes> Tool_Bezier::ListeCotes = {};
@@ -464,6 +468,21 @@ void my_display_code()
 		overlay("Consignes", "appuyer une premiere fois sur le clic gauche puis deplacez la souris et relachez pour dessiner la fenetre");
 	if (Toolbar::selectedButton == 4)
 		overlay("Consignes", "Cliquer pour definir les point (dans le sens trigonometrique) puis appuyez sur \"z\" pour terminer la fenetre");
+	if (Toolbar::selectedButton == 50 && !Tool_Bezier::Select) {
+		overlay("Consignes", "Cliquer pour definir les points de la courbe puis appuyez sur \"w\" pour passer en selection ");
+	}
+	if (Toolbar::selectedButton == 50 && Tool_Bezier::Select && !Tool_Bezier::drop) {
+		overlay("Consignes", "Cliquer sur un point puis appuyez sur \"x\" pour drag and drop le point selectionner");
+	}
+	if (Toolbar::selectedButton == 50 && Tool_Bezier::Select && Tool_Bezier::drop) {
+		overlay("Consignes", "Cliquer sur le canvas pour definir la nouvelle position du point, appuyez sur \"x\" pour choisir un nouveau point");
+	}
+	if (Toolbar::selectedButton == 50 && !Tool_Bezier::Select && !Tool_Bezier::BezierEnded) {
+		overlay("Consignes", "appuyez sur \"v\" pour dessiner la courbe");
+	}
+	if (Toolbar::selectedButton == 50 && Tool_Bezier::Select) {
+		overlay("Consignes", "appuyez sur \"backspace\" pour supprimer le point selectionner");
+	}
 }
 
 int nSousmenu1, nSousmenu2, nSousmenu3, nMenuprincipal; // Num�ros (identifiants) des menus
@@ -728,8 +747,27 @@ void keyboard(unsigned char key, int x, int y)
 		if (canvasAssigned) {
 			Tool_Selection::End_Selection();
 		}
-	
+		break;
+
+	case 'w':
+		Tool_Bezier::Select = !Tool_Bezier::Select;
+		break;
+	case 'x':
+		Tool_Bezier::drop = !Tool_Bezier::drop;
+		break;
+	case 'c':
+		Tool_Bezier::duplicate = true;
+		break;
+	case 'v':
+		Tool_Bezier::BezierEnded = !Tool_Bezier::BezierEnded;
+		break;
+	case 8: //touche effacer
+		if (Tool_Bezier::Select) {
+			Tool_Bezier::SuppressionControle();
+		}
+		break;
 	}
+	
 }
 
 
