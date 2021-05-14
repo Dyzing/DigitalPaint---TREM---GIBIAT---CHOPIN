@@ -3,6 +3,7 @@
 	Implements the toolbar on the left of the screen
 */
 #include <list>
+#include <array>
 #pragma once
 
 // define class structures
@@ -119,6 +120,7 @@ public:
 	static int departX;
 	static int departY;
 	static bool firstPick;
+	static int nIter;
 	static Colour bord_color;
 	static std::list<cotes> ListeCotes;
 	static std::list<Tuple> ListeSommets;
@@ -135,12 +137,20 @@ public:
 	static int departX;
 	static int departY;
 	static bool firstPick;
+	static bool firstBezier;
+	static int nIter;
+	static int step;
 	static Colour bord_color;
 	static std::list<cotes> ListeCotes;
 	static std::list<Tuple> ListeSommets;
+	static std::list<Tuple> ListeSommetsCurve;
 	static std::list<std::list<Tuple>> MultiSommets;
 	static bool Pressed(int button, int state, int cx, int cy);
-	static void EndBezier();
+	static void BezierEtienne();
+	static void Bezier();
+	static void drawCurve();
+	static Tuple Mid(Tuple a, Tuple b);
+	static Tuple Bary(int iStep, int step, Tuple a, Tuple b);
 };
 /*
 	This class implements the toolbar on the left of the window

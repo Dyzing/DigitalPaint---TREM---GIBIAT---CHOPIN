@@ -122,8 +122,12 @@ int Tool_Bezier::startMouseY = 0;
 int Tool_Bezier::departX = 0;
 int Tool_Bezier::departY = 0;
 bool Tool_Bezier::firstPick = true;
+bool Tool_Bezier::firstBezier = true;
+int Tool_Bezier::nIter = 3;
+int Tool_Bezier::step = 4;
 Colour Tool_Bezier::bord_color = { 0.0f, 0.0f, 0.0f };
 std::list<Tuple> Tool_Bezier::ListeSommets = {};
+std::list<Tuple> Tool_Bezier::ListeSommetsCurve = {};
 std::list<cotes> Tool_Bezier::ListeCotes = {};
 std::list<std::list<Tuple>> Tool_Bezier::MultiSommets = {};
 #include "Tool_Move.h"
