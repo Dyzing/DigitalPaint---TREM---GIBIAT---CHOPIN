@@ -61,11 +61,10 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 
 		
 
-		if (ListeSommets.size() == 4) {
+		if (firstBezier && ListeSommets.size() == 4) {
 			Bezier();
 			firstBezier = false;
-		}
-		if (!firstBezier && (ListeSommets.size() - 4) % 3 == 0) {
+		}else if (!firstBezier && (ListeSommets.size() - 4) % 3 == 0) {
 			Bezier();
 		}
 
@@ -116,6 +115,8 @@ void Tool_Bezier::Bezier() {
 	}
 	ListeSommetsCurve.push_back(SommetsBezier.back());*/
 
+	ListeSommetsCurve = {};
+
 	step = 10;
 
 	std::list<std::array<Tuple, 4>> ListeSommetsBezier;
@@ -131,7 +132,7 @@ void Tool_Bezier::Bezier() {
 		if (i == 3) {
 			ListeSommetsBezier.push_back(SommetsBezier);
 			SommetsBezier[0] = SommetsBezier[3];
-			/*SommetsBezier[1] = SommetsBezier[3];*/
+			//SommetsBezier[1] = SommetsBezier[3];
 			i = 0;
 		}
 
@@ -148,7 +149,7 @@ void Tool_Bezier::Bezier() {
 
 		ListeSommetsCurve.push_back(SommetsBezier[0]);
 
-		for (int i = 1; i <= step - 1; i++) {
+		for (int i = 1; i < step; i++) {
 
 			Tuple a1 = Bary(i, step, SommetsBezier[0], SommetsBezier[1]);
 			Tuple a2 = Bary(i, step, SommetsBezier[1], SommetsBezier[2]);
@@ -160,7 +161,6 @@ void Tool_Bezier::Bezier() {
 			ListeSommetsCurve.push_back(a6);
 
 		}
-		ListeSommetsCurve.push_back(SommetsBezier[3]);
 
 	}
 
