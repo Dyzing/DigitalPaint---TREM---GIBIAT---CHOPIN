@@ -157,6 +157,7 @@ public:
 	static bool firstBezier;
 	static int nIter;
 	static int step;
+	static bool B1;
 	static Colour bord_color;
 	static std::list<cotes> ListeCotes;
 	static std::list<Tuple> ListeSommets;
@@ -170,8 +171,9 @@ public:
 	static Tuple Mid(Tuple a, Tuple b);
 	static Tuple Bary(int iStep, int step, Tuple a, Tuple b);
 	static void EndBezier();
-	static void SuppressionControle();
+	static void SuppressionControle1();
 	static void DuplicateControle();
+	static void Redraw();
 };
 /*
 	This class implements the toolbar on the left of the window
@@ -424,6 +426,10 @@ bool ToolEvents::Pressed(int button, int state, int x, int y) {
 			return true;
 		}
 	case 50:
+		if (Tool_Bezier::Pressed(button, state, x, y)) {
+			return true;
+		}
+	case 51:
 		if (Tool_Bezier::Pressed(button, state, x, y)) {
 			return true;
 		}

@@ -87,12 +87,18 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 				}*/
 				if (ListeSommets.size() == 4) {
 					currentCanvas.ResetPixelsColour();
-					Bezier1();
+					if (B1)
+						Bezier1();
+					else
+						Bezier2();
 					firstBezier = false;
 				}
 				if (!firstBezier) {
 					currentCanvas.ResetPixelsColour();
-					Bezier1();
+					if (B1)
+						Bezier1();
+					else
+						Bezier2();
 				}
 				int ind = 0;
 				for (ind; ind < polygonControl.size() - 1; ind++) {
@@ -140,7 +146,10 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 				if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN) && !isMouseDown) {
 					polygonControl[storedPoint] = { cx,cy };
 					currentCanvas.ResetPixelsColour();
-					Bezier1();
+					if (B1)
+						Bezier1();
+					else
+						Bezier2();
 
 					int ind = 0;
 					for (ind; ind < polygonControl.size() - 1; ind++) {
@@ -163,7 +172,7 @@ void Tool_Bezier::Bezier2() {
 
 	ListeSommetsCurve = {};
 
-	step = 10;
+
 
 	std::list<std::array<Tuple, 4>> ListeSommetsBezier;
 
@@ -218,15 +227,13 @@ void Tool_Bezier::Bezier1() {
 	
 	ListeSommetsCurve = {};
 
-	step = 20;
-
 	std::list<std::array<Tuple, 4>> ListeSommetsBezier;
 
 	int i = 0;
 
 	std::vector<Tuple> SommetsBezier{};
 	std::vector<Tuple> sommetsTemp{};
-	for (auto const& it : ListeSommets) {
+	for (auto const& it : polygonControl) {
 
 		SommetsBezier.push_back(it);
 
@@ -316,7 +323,7 @@ void Tool_Bezier::drawCurve() {
 	for (auto const& it : ListeSommetsCurve) {
 
 		if (i != 0) {
-			currentCanvas.DrawALine(temp.x, temp.y, it.x, it.y, selectedColour);
+			currentCanvas.DrawALine(temp.x, temp.y, it.x, it.y, { 0.0f, 0.0f, 0.0f });
 		}
 
 		temp = it;
@@ -341,7 +348,7 @@ Tuple Tool_Bezier::Bary(int iStep, int step,  Tuple a, Tuple b) {
 }
 
 
-void Tool_Bezier::SuppressionControle() {
+void Tool_Bezier::SuppressionControle1() {
 	if (polygonControl.size() > 4) {
 		auto iter = polygonControl.begin() + storedPoint;
 		polygonControl.erase(iter);
@@ -359,6 +366,20 @@ void Tool_Bezier::SuppressionControle() {
 void Tool_Bezier::DuplicateControle() {
 	polygonControl.insert(polygonControl.begin() + storedPoint + 1,polygonControl[storedPoint]);
 	nbPoints++;
+}
+
+void Tool_Bezier::Redraw() {
+	if (B1)
+		Bezier1();
+	else
+		Bezier2();
+	drawCurve();
+	int ind = 0;
+	for (ind; ind < polygonControl.size() - 1; ind++) {
+		DrawCircleAroundControlPoint(ind, selection);
+		currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
+	}
+	DrawCircleAroundControlPoint(ind, selection);
 }
 
 

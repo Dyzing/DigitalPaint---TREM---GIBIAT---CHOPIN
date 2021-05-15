@@ -125,6 +125,7 @@ bool Tool_Bezier::firstPick = true;
 bool Tool_Bezier::firstBezier = true;
 int Tool_Bezier::nIter = 3;
 int Tool_Bezier::step = 4;
+bool Tool_Bezier::B1 = true;
 Colour Tool_Bezier::bord_color = { 0.0f, 0.0f, 0.0f };
 bool Tool_Bezier::Select = false;
 bool Tool_Bezier::drop = false;
@@ -236,8 +237,14 @@ void vRappelMenuPrincipal(int i)
 		break;
 
 	case 50:
-		// Bouton Polygone 1
+		// Bouton Bezier 1
+		Tool_Bezier::B1 = true;
 		Toolbar::selectedButton = 50;
+		break;
+	case 51:
+		// Bouton Bezier 2
+		Tool_Bezier::B1 = false;
+		Toolbar::selectedButton = 51;
 		break;
 	}
 	
@@ -483,6 +490,9 @@ void my_display_code()
 	if (Toolbar::selectedButton == 50 && Tool_Bezier::Select) {
 		overlay("Consignes", "appuyez sur \"backspace\" pour supprimer le point selectionner");
 	}
+	if (Toolbar::selectedButton == 50 && !Tool_Bezier::Select) {
+		overlay("Step: ", std::to_string(Tool_Bezier::step).c_str());
+	}
 }
 
 int nSousmenu1, nSousmenu2, nSousmenu3, nMenuprincipal; // Num�ros (identifiants) des menus
@@ -722,6 +732,22 @@ void keyboard(unsigned char key, int x, int y)
 	// otherwise check for quitting or zoom
 	switch (key)
 	{
+	case '+':
+		// zoom in
+		if (canvasAssigned) {
+			Tool_Bezier::step++;
+			currentCanvas.ResetPixelsColour();
+			Tool_Bezier::Redraw();
+		}
+		break;
+	case '-':
+		// zoom out
+		if (canvasAssigned) {
+			Tool_Bezier::step--;
+			currentCanvas.ResetPixelsColour();
+			Tool_Bezier::Redraw();
+		}
+		break;
 	case 's':
 		// zoom in
 		if (canvasAssigned) {
@@ -763,7 +789,8 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	case 8: //touche effacer
 		if (Tool_Bezier::Select) {
-			Tool_Bezier::SuppressionControle();
+			if(Tool_Bezier::B1)
+				Tool_Bezier::SuppressionControle1();
 		}
 		break;
 	}
@@ -917,7 +944,9 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Tracé fenêtre", 2);
 	glutAddMenuEntry("Fenêtrage", 3);
 	glutAddMenuEntry("Remplissage Cercle", 4);
-	glutAddMenuEntry("Bezier", 50);
+
+	glutAddMenuEntry("Bezier1", 50);
+	glutAddMenuEntry("Bezier2", 51);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	// start first render cycle
