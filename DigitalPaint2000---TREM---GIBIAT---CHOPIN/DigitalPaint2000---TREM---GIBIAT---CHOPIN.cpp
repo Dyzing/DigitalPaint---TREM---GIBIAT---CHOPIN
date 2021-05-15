@@ -491,7 +491,7 @@ void my_display_code()
 		overlay("Consignes", "appuyez sur \"backspace\" pour supprimer le point selectionner");
 	}
 	if (Toolbar::selectedButton == 50 && !Tool_Bezier::Select) {
-		overlay("Step: ", std::to_string(Tool_Bezier::step).c_str());
+		overlay("Step", std::to_string(Tool_Bezier::step).c_str());
 	}
 }
 
@@ -791,6 +791,8 @@ void keyboard(unsigned char key, int x, int y)
 		if (Tool_Bezier::Select) {
 			if(Tool_Bezier::B1)
 				Tool_Bezier::SuppressionControle1();
+			else
+				Tool_Bezier::SuppressionControle2();
 		}
 		break;
 	}

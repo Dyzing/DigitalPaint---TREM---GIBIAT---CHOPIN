@@ -85,25 +85,40 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 				/*if (nbPoints >= 3 && BezierEnded) {
 					EndBezier();
 				}*/
-				if (ListeSommets.size() == 4) {
-					currentCanvas.ResetPixelsColour();
-					if (B1)
+
+				if (B1) {
+					if (ListeSommets.size() == 3) {
+						currentCanvas.ResetPixelsColour();
 						Bezier1();
-					else
-						Bezier2();
-					firstBezier = false;
-				}
-				if (!firstBezier) {
-					currentCanvas.ResetPixelsColour();
-					if (B1)
+
+						firstBezier = false;
+					}
+					if (!firstBezier) {
+						currentCanvas.ResetPixelsColour();
 						Bezier1();
-					else
-						Bezier2();
+					}
 				}
+				else {
+					if (ListeSommets.size() == 4) {
+						currentCanvas.ResetPixelsColour();
+						Bezier2();
+						firstBezier = false;
+					}
+					if (!firstBezier && (ListeSommets.size() - 4) % 3 == 0) {
+						currentCanvas.ResetPixelsColour();
+						Bezier2();
+					}
+				}
+
+
+				
+				
 				int ind = 0;
 				for (ind; ind < polygonControl.size() - 1; ind++) {
 					DrawCircleAroundControlPoint(ind, selection);
 					currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
+
+					
 				}
 				DrawCircleAroundControlPoint(ind, selection);
 
@@ -128,7 +143,14 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 							storedPoint = i;
 							DrawCircleAroundControlPoint(i, SelectionControle);
 							if (duplicate) {
+								currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
 								DuplicateControle();
+								int ind = 0;
+								for (ind; ind < polygonControl.size() - 1; ind++) {
+									DrawCircleAroundControlPoint(ind, selection);
+									currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
+								}
+								DrawCircleAroundControlPoint(ind, selection);
 								duplicate = false;
 
 							}
@@ -157,6 +179,7 @@ bool Tool_Bezier::Pressed(int button, int state, int x, int y) {
 						currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
 					}
 					DrawCircleAroundControlPoint(ind, selection);
+
 				}
 				return true;
 			}
@@ -363,9 +386,39 @@ void Tool_Bezier::SuppressionControle1() {
 	}
 }
 
+void Tool_Bezier::SuppressionControle2() {
+	if (polygonControl.size() > 4) {
+
+		if ((storedPoint + 1) % 3 == 0) {
+			auto iter = polygonControl.begin() + storedPoint - 1;
+			polygonControl.erase(iter, iter + 3);
+		}
+		if ((storedPoint + 1) % 3 == 1) {
+			auto iter = polygonControl.begin() + storedPoint - 2;
+			polygonControl.erase(iter, iter + 3);
+		}
+		if ((storedPoint + 1) % 3 == 2) {
+			auto iter = polygonControl.begin() + storedPoint;
+			polygonControl.erase(iter, iter + 3);
+		}
+		currentCanvas = NewCanvas(currentCanvas.width, currentCanvas.height, 0, 0);
+		int ind = 0;
+		for (ind; ind < polygonControl.size() - 1; ind++) {
+			DrawCircleAroundControlPoint(ind, selection);
+			currentCanvas.DrawALine(polygonControl[ind].x, polygonControl[ind].y, polygonControl[ind + 1].x, polygonControl[ind + 1].y, selectedColour);
+		}
+		DrawCircleAroundControlPoint(ind, selection);
+		Bezier2();
+	}
+}
+
 void Tool_Bezier::DuplicateControle() {
 	polygonControl.insert(polygonControl.begin() + storedPoint + 1,polygonControl[storedPoint]);
 	nbPoints++;
+	if (B1)
+		Bezier1();
+	else
+		Bezier2();
 }
 
 void Tool_Bezier::Redraw() {

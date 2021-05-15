@@ -172,6 +172,7 @@ public:
 	static Tuple Bary(int iStep, int step, Tuple a, Tuple b);
 	static void EndBezier();
 	static void SuppressionControle1();
+	static void SuppressionControle2();
 	static void DuplicateControle();
 	static void Redraw();
 };
