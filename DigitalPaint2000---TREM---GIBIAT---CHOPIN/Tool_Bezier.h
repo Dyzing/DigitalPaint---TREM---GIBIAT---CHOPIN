@@ -246,6 +246,44 @@ void Tool_Bezier::Bezier2() {
 	drawCurve();
 }
 
+void Tool_Bezier::showStep() {
+
+	currentCanvas.ResetPixelsColour();
+	Redraw();
+
+	std::vector<Tuple> SommetsBezier{};
+	std::vector<Tuple> sommetsTemp{};
+	for (auto const& it : polygonControl) {
+
+		SommetsBezier.push_back(it);
+
+	}
+
+	Colour color = { 0.0f, 0.1f, 0.1f };
+
+	Tuple temp;
+	sommetsTemp = SommetsBezier;
+	for (int j = 0; j < SommetsBezier.size(); j++) {
+
+
+		temp = sommetsTemp[0];
+		for (int k = 1; k < sommetsTemp.size() - j; k++) {
+
+
+			sommetsTemp[k - 1] = Bary(stepi, step, temp, sommetsTemp[k]);
+			currentCanvas.DrawALine(temp.x, temp.y, sommetsTemp[k].x, sommetsTemp[k].y, color);
+			temp = sommetsTemp[k];
+			
+
+		}
+		color = { 0.0f, color.g + (1.0f / SommetsBezier.size()) , color.b + (1.0f / SommetsBezier.size()) };
+
+	}
+
+}
+
+
+
 void Tool_Bezier::Bezier1() {
 	
 	ListeSommetsCurve = {};

@@ -125,6 +125,7 @@ bool Tool_Bezier::firstPick = true;
 bool Tool_Bezier::firstBezier = true;
 int Tool_Bezier::nIter = 3;
 int Tool_Bezier::step = 4;
+int Tool_Bezier::stepi = 4;
 bool Tool_Bezier::B1 = true;
 Colour Tool_Bezier::bord_color = { 0.0f, 0.0f, 0.0f };
 bool Tool_Bezier::Select = false;
@@ -746,6 +747,31 @@ void keyboard(unsigned char key, int x, int y)
 			Tool_Bezier::step--;
 			currentCanvas.ResetPixelsColour();
 			Tool_Bezier::Redraw();
+		}
+		break;
+	case '9':
+		// zoom in
+		if (canvasAssigned) {
+			Tool_Bezier::showStep();
+		}
+		break;
+	case '7':
+		// zoom in
+		if (canvasAssigned) {
+			Tool_Bezier::stepi++;
+			if (Tool_Bezier::stepi > Tool_Bezier::step)
+				Tool_Bezier::stepi = Tool_Bezier::step;
+			Tool_Bezier::showStep();
+		}
+		break;
+	case '8':
+		// zoom out
+		if (canvasAssigned) {
+			Tool_Bezier::stepi--;
+			if (Tool_Bezier::stepi < 0)
+				Tool_Bezier::stepi = 0;
+
+			Tool_Bezier::showStep();
 		}
 		break;
 	case 's':

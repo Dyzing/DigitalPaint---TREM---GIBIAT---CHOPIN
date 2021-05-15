@@ -16,9 +16,11 @@ C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---C
 C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(117,19): warning C4018: '<' : incompatibilité signed/unsigned
 C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(149,23): warning C4018: '<' : incompatibilité signed/unsigned
 C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(177,20): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(266,20): warning C4018: '<' : incompatibilité signed/unsigned
 C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(270,21): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(274,22): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(380,17): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(406,17): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(431,16): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(308,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(312,22): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(418,17): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(444,17): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Tool_Bezier.h(469,16): warning C4018: '<' : incompatibilité signed/unsigned
   DigitalPaint2000---TREM---GIBIAT---CHOPIN.vcxproj -> C:\Users\pouyoupy\Documents\Unreal Projects\DigitalPaint2000---TREM---GIBIAT---CHOPIN\Debug\DigitalPaint2000---TREM---GIBIAT---CHOPIN.exe

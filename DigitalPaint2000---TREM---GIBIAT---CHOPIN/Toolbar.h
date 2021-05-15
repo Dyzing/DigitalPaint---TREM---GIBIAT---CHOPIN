@@ -157,6 +157,7 @@ public:
 	static bool firstBezier;
 	static int nIter;
 	static int step;
+	static int stepi;
 	static bool B1;
 	static Colour bord_color;
 	static std::list<cotes> ListeCotes;
@@ -167,6 +168,7 @@ public:
 	static void BezierEtienne();
 	static void Bezier1();
 	static void Bezier2();
+	static void showStep();
 	static void drawCurve();
 	static Tuple Mid(Tuple a, Tuple b);
 	static Tuple Bary(int iStep, int step, Tuple a, Tuple b);
