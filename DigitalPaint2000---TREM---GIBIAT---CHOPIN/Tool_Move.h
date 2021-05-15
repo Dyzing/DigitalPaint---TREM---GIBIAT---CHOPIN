@@ -140,6 +140,28 @@ bool Tool_Move::SpecialKey(int key, int x, int y) {
 		int maxX = std::max(startMouseX, endMouseX);
 		int minY = std::min(startMouseY, endMouseY);
 		int maxY = std::max(startMouseY, endMouseY);
+		int sizePoly = Tool_Bezier::polygonControl.size();
+		int ind = 0;
+		int x, y;
+		Colour SelectionControle = { 0,1, 0.97 };
+		currentCanvas.ResetPixelsColour();
+		for (ind; ind < Tool_Bezier::polygonControl.size() - 1; ind++) {
+			
+			for (int t = 0; t < TMax; t++)
+			{
+				y = Tool_Bezier::polygonControl[ind].y + rayon * sin(t * 2 * M_PI / TMax);
+				x = Tool_Bezier::polygonControl[ind].x + rayon * cos(t * 2 * M_PI / TMax);
+				currentCanvas.SetPixelColour(x, y, {0,0,0});
+			}
+			currentCanvas.DrawALine(Tool_Bezier::polygonControl[ind].x, Tool_Bezier::polygonControl[ind].y, Tool_Bezier::polygonControl[ind + 1].x, Tool_Bezier::polygonControl[ind + 1].y, selectedColour);
+		}
+		for (int t = 0; t < TMax; t++)
+		{
+			y = Tool_Bezier::polygonControl[ind].y + rayon * sin(t * 2 * M_PI / TMax);
+			x = Tool_Bezier::polygonControl[ind].x + rayon * cos(t * 2 * M_PI / TMax);
+			currentCanvas.SetPixelColour(x, y, { 0,0,0 });
+		}
+		Tool_Bezier::Bezier1();
 		switch (key)
 		{
 			case GLUT_KEY_LEFT:
@@ -150,11 +172,15 @@ bool Tool_Move::SpecialKey(int key, int x, int y) {
 						for (int y = 0; y < maxY - minY; y++) {
 							// move all pixels left
 							currentCanvas.SetPixelColour(minX + x - 1, minY + y, currentCanvas.GetPixelColour(minX + x, minY + y));
+							
 							if (x == maxX - minX - 1) {
 								// leave column of white pixels on the right
 								currentCanvas.SetPixelColour(minX + x, minY + y, white);
 							}
 						}
+					}
+					for (int i = 0; i < sizePoly; i++) {
+						Tool_Bezier::polygonControl[i].x -= 1;
 					}
 					// rectangle has moved
 					startMouseX--;
@@ -169,10 +195,14 @@ bool Tool_Move::SpecialKey(int key, int x, int y) {
 					for (int x = maxX - minX - 1; x >= 0; x--) {
 						for (int y = 0; y < maxY - minY; y++) {
 							currentCanvas.SetPixelColour(minX + x + 1, minY + y, currentCanvas.GetPixelColour(minX + x, minY + y));
+							
 							if (x == 0) {
 								currentCanvas.SetPixelColour(minX + x, minY + y, white);
 							}
 						}
+					}
+					for (int i = 0; i < sizePoly; i++) {
+						Tool_Bezier::polygonControl[i].x += 1;
 					}
 					startMouseX++;
 					endMouseX++;
@@ -185,10 +215,14 @@ bool Tool_Move::SpecialKey(int key, int x, int y) {
 					for (int x = 0; x < maxX - minX; x++) {
 						for (int y = 0; y < maxY - minY; y++) {
 							currentCanvas.SetPixelColour(minX + x, minY + y - 1, currentCanvas.GetPixelColour(minX + x, minY + y));
+							
 							if (y == maxY - minY - 1) {
 								currentCanvas.SetPixelColour(minX + x, minY + y, white);
 							}
 						}
+					}
+					for (int i = 0; i < sizePoly; i++) {
+						Tool_Bezier::polygonControl[i].y -= 1;
 					}
 					startMouseY--;
 					endMouseY--;
@@ -201,10 +235,14 @@ bool Tool_Move::SpecialKey(int key, int x, int y) {
 					for (int x = 0; x < maxX - minX; x++) {
 						for (int y = maxY - minY - 1; y >= 0; y--) {
 							currentCanvas.SetPixelColour(minX + x, minY + y + 1, currentCanvas.GetPixelColour(minX + x, minY + y));
+							
 							if (y == 0) {
 								currentCanvas.SetPixelColour(minX + x, minY + y, white);
 							}
 						}
+					}
+					for (int i = 0; i < sizePoly; i++) {
+						Tool_Bezier::polygonControl[i].y += 1;
 					}
 					startMouseY++;
 					endMouseY++;

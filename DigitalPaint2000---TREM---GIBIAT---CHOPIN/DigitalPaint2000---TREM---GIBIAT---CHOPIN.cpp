@@ -487,9 +487,6 @@ void my_display_code()
 	if (Toolbar::selectedButton == 50 && Tool_Bezier::Select && Tool_Bezier::drop) {
 		overlay("Consignes", "Cliquer sur le canvas pour definir la nouvelle position du point, appuyez sur \"x\" pour choisir un nouveau point");
 	}
-	if (Toolbar::selectedButton == 50 && !Tool_Bezier::Select && !Tool_Bezier::BezierEnded) {
-		overlay("Consignes", "appuyez sur \"v\" pour dessiner la courbe");
-	}
 	if (Toolbar::selectedButton == 50 && Tool_Bezier::Select) {
 		overlay("Consignes", "appuyez sur \"backspace\" pour supprimer le point selectionner");
 	}
