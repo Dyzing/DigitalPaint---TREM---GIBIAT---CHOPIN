@@ -132,6 +132,7 @@ bool Tool_Bezier::Select = false;
 bool Tool_Bezier::drop = false;
 bool Tool_Bezier::BezierEnded = false;
 bool Tool_Bezier::duplicate = false;
+bool Tool_Bezier::dejaScale = false;
 std::list<Tuple> Tool_Bezier::ListeSommets = {};
 std::list<Tuple> Tool_Bezier::ListeSommetsCurve = {};
 std::list<cotes> Tool_Bezier::ListeCotes = {};
@@ -826,6 +827,18 @@ void keyboard(unsigned char key, int x, int y)
 	case 127: //touche suppr
 		if (canvasAssigned) {
 			NewConfirmedCallback();
+		}
+		break;
+	case 'p':
+		if (canvasAssigned) {
+			Tool_Bezier::Scale(1.0);
+			Tool_Bezier::dejaScale = true;
+		}
+		break;
+	case 'o': 
+		if (canvasAssigned) {
+			Tool_Bezier::Scale(0.5);
+			Tool_Bezier::dejaScale = true;
 		}
 		break;
 	}

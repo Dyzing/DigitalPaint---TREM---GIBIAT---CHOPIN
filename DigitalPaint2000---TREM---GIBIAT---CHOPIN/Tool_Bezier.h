@@ -472,4 +472,116 @@ void Tool_Bezier::Redraw() {
 	DrawCircleAroundControlPoint(ind, selection);
 }
 
+int gaucheMax = 0, droiteMax = 0, hautMax = 0, basMax = 0;
+int gaucheActuel = 0, droiteActuel = 0, hautActuel = 0, basActuel = 0;
+int xCentre = 0, yCentre = 0;
+
+void Tool_Bezier::Scale(float const & pas)
+{
+	if (!dejaScale)
+	{
+		gaucheMax = 0, droiteMax = 0, hautMax = 0, basMax = 0;
+		gaucheActuel = 0, droiteActuel = 0, hautActuel = 0, basActuel = 0;
+
+		for (int i = 0; i < polygonControl.size() - 1; i++)
+		{
+			if (gaucheActuel < polygonControl[i + 1].x)
+			{
+				gaucheMax = gaucheActuel;
+			}
+		}
+
+		for (int i = 0; i < polygonControl.size() - 1; i++)
+		{
+			if (droiteActuel > polygonControl[i + 1].x)
+			{
+				droiteMax = droiteActuel;
+			}
+		}
+
+		for (int i = 0; i < polygonControl.size() - 1; i++)
+		{
+			if (hautActuel < polygonControl[i + 1].y)
+			{
+				hautMax = hautActuel;
+			}
+		}
+
+		for (int i = 0; i < polygonControl.size() - 1; i++)
+		{
+			if (basActuel > polygonControl[i + 1].y)
+			{
+				basMax = basActuel;
+			}
+		}
+
+		xCentre = (droiteMax + gaucheActuel) / 2;
+		yCentre = (hautMax + basMax) / 2;
+	}
+
+
+	for (auto & ptControl : polygonControl)
+	{
+		float minX = xCentre;
+		float maxX = ptControl.x;
+		float minY = yCentre;
+		float maxY = ptControl.y;
+		float difX = abs(minX - maxX);
+		float difY = abs(minY - maxY);
+
+		float y;
+		float x;
+		float CoefD = ((maxY - minY) / (maxX - minX));
+		float b = minY - CoefD * minX;
+
+		if (difX > difY)
+		{
+			x = pas;
+			maxX += pas;
+			y = CoefD * (maxX)  + b;
+			maxY = y;
+		}
+		else
+		{
+			if (difX == 0)
+			{
+				x = maxX + pas;
+				maxX = x;
+			}
+			else
+			{
+				maxY += pas;
+				x = ((maxY) - b) / CoefD;
+				maxX = x;
+
+			}
+		}
+		ptControl.x = maxX;
+		ptControl.y = maxY;
+	}
+
+	currentCanvas.ResetPixelsColour();
+	int x = 0;
+	int y = 0;
+	int ind = 0;
+	for (ind; ind < Tool_Bezier::polygonControl.size() - 1; ind++) {
+
+		for (int t = 0; t < TMax; t++)
+		{
+			y = Tool_Bezier::polygonControl[ind].y + rayon * sin(t * 2 * M_PI / TMax);
+			x = Tool_Bezier::polygonControl[ind].x + rayon * cos(t * 2 * M_PI / TMax);
+			currentCanvas.SetPixelColour(x, y, { 0,0,0 });
+		}
+		currentCanvas.DrawALine(Tool_Bezier::polygonControl[ind].x, Tool_Bezier::polygonControl[ind].y, Tool_Bezier::polygonControl[ind + 1].x, Tool_Bezier::polygonControl[ind + 1].y, selectedColour);
+	}
+	for (int t = 0; t < TMax; t++)
+	{
+		y = Tool_Bezier::polygonControl[ind].y + rayon * sin(t * 2 * M_PI / TMax);
+		x = Tool_Bezier::polygonControl[ind].x + rayon * cos(t * 2 * M_PI / TMax);
+		currentCanvas.SetPixelColour(x, y, { 0,0,0 });
+	}
+	Tool_Bezier::Bezier1();
+}
+
+
 

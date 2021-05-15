@@ -160,6 +160,7 @@ public:
 	static int stepi;
 	static bool B1;
 	static Colour bord_color;
+	static bool dejaScale;
 	static std::list<cotes> ListeCotes;
 	static std::list<Tuple> ListeSommets;
 	static std::list<Tuple> ListeSommetsCurve;
@@ -179,6 +180,8 @@ public:
 	static void DuplicateControle();
 	static void Redraw();
 	static void DrawCircleAroundControlPoint(int index, Colour c);
+	static void Scale(float const& pas);
+
 };
 /*
 	This class implements the toolbar on the left of the window
