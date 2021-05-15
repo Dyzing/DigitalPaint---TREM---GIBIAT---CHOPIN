@@ -164,6 +164,7 @@ public:
 	static std::list<Tuple> ListeSommets;
 	static std::list<Tuple> ListeSommetsCurve;
 	static std::list<std::list<Tuple>> MultiSommets;
+	static std::vector<Tuple> polygonControl;
 	static bool Pressed(int button, int state, int cx, int cy);
 	static void BezierEtienne();
 	static void Bezier1();
@@ -177,6 +178,7 @@ public:
 	static void SuppressionControle2();
 	static void DuplicateControle();
 	static void Redraw();
+	static void DrawCircleAroundControlPoint(int index, Colour c);
 };
 /*
 	This class implements the toolbar on the left of the window

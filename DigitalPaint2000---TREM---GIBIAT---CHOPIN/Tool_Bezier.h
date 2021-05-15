@@ -11,13 +11,12 @@
 	@return Has the tool handled the event?
 */
 int nbPoints;
-std::vector<Tuple> polygonControl = {};
 int storedPoint;
 int TMax = 5000;
 int rayon = 10;
 Colour SelectionControle = {0,1, 0.97}; //Cyan
 
-void DrawCircleAroundControlPoint(int index,Colour c) {
+void Tool_Bezier::DrawCircleAroundControlPoint(int index,Colour c) {
 	int x, y;
 	for (int t = 0; t < TMax; t++)
 	{

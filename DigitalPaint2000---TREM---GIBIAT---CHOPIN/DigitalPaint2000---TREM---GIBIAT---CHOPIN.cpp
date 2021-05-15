@@ -136,6 +136,7 @@ std::list<Tuple> Tool_Bezier::ListeSommets = {};
 std::list<Tuple> Tool_Bezier::ListeSommetsCurve = {};
 std::list<cotes> Tool_Bezier::ListeCotes = {};
 std::list<std::list<Tuple>> Tool_Bezier::MultiSommets = {};
+std::vector<Tuple> Tool_Bezier::polygonControl = {};
 #include "Tool_Move.h"
 int Tool_Move::flickerFrameCount;
 bool Tool_Move::flickerColor;
@@ -276,6 +277,7 @@ void NewConfirmedCallback() {
 	Tool_Polygone::MultiSommets.clear();
 	Tool_Polygone::firstPick = true;
 	Tool_Selection::firstPickSelect = true;
+	Tool_Bezier::polygonControl.clear();
 	int nbmenuajoute = (Tool_Selection::nbpoly)%20;
 	for (int i = 0; i < nbmenuajoute; ++i)
 	{
@@ -819,6 +821,11 @@ void keyboard(unsigned char key, int x, int y)
 				Tool_Bezier::SuppressionControle1();
 			else
 				Tool_Bezier::SuppressionControle2();
+		}
+		break;
+	case 127: //touche suppr
+		if (canvasAssigned) {
+			NewConfirmedCallback();
 		}
 		break;
 	}
